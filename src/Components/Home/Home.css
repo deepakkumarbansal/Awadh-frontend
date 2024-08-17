@@ -1,0 +1,54 @@
+#hero{
+    grid-area: hero;
+}
+#latest{
+    grid-area: latest;
+}
+#follow{
+    grid-area: follow;
+}
+#technology{
+    grid-area: technology;
+}
+#popular{
+    grid-area: popular;
+}
+#lifestyle{
+    grid-area: lifestyle;
+}
+#ad{
+    grid-area: ad;
+}
+#Trending{
+    grid-area: Trending;
+}
+#travel{
+    grid-area: travel;
+}
+#gadgets{
+    grid-area: gadgets;
+}
+#health{
+    grid-area: health;
+}
+/* 
+#homeContainer {
+    display: grid;
+    grid-template-areas: 
+        "hero hero hero"
+        "latest latest follow"
+        "technology technology popular"
+        ". . ad"
+        "lifestyle lifestyle ad"
+        "lifestyle lifestyle trending"
+        "travel gadgets health";
+    grid-gap: 10px;
+} */
+
+/* @media (width >= 1024px) {
+    #container2{
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 20px;
+    }
+} */
