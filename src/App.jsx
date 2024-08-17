@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { Header, Footer } from './Components'
+import { FaAngleUp } from "react-icons/fa";
+import { useSelector } from 'react-redux';
+import { MdOutlineAccountCircle } from "react-icons/md";
 
 function App() {
   const [latestNewsData, setLatestNewsData] = useState([]);
@@ -12,37 +15,48 @@ function App() {
   const [travelNewsData, setTravelNewsData] = useState([]);
   const [healthNewsData, setHealthNewsData] = useState([]);
   const [gadgetsNewsData, setGadgetsNewsData] = useState([]);
-  const url = 'https://google-news13.p.rapidapi.com/?lr=hi-IN';
-  const options = {
-    method: 'GET',
-    headers: {
-      'x-rapidapi-key': 'f86b29b5f3mshcc34b8de96e06f4p10b7b9jsned4f133ee9ac',
-      'x-rapidapi-host': 'google-news13.p.rapidapi.com'
-    }
-  };
-  useEffect(()=>{
-    async function fetchNews(){
+  const [enableScroll, setEnableScroll] = useState(false);
+  const isLogin = useSelector((state)=>state.auth.isLogin);
+  const navigate = useNavigate();
+  useEffect(() => {
+    async function fetchNews() {
       try {
-        const response = await fetch(url, options);
-        const result = await response.text();
-        console.log(result);
+
       } catch (error) {
         console.error(error);
       }
     }
     fetchNews();
+
+    function handleScroll() {
+      if (window.scrollY > 150) {
+        setEnableScroll(true);
+      } else {
+        setEnableScroll(false);
+      }
+    }
+    window.addEventListener('scroll', handleScroll)
+
   }, []);
 
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
   return (
-    <>
+    <div>
       <div className='px-2 lg:px-24'>
+        {!isLogin && <div className='flex justify-end mt-2 text-4xl text-red-500 cursor-pointer' onClick={()=>navigate('login')}><MdOutlineAccountCircle /></div>}
         <Header />
         <Outlet />
       </div>
-      <Footer className='px-2 lg:px-24'/>
-    </>
+      <Footer className='px-2 lg:px-24' />
+      <div className={`border-[3px] bg-white fixed bottom-5 right-5 hover:border-red-500 transition-all duration-300 h-10 w-10 text-2xl flex items-center justify-center shadow-lg ${enableScroll ? 'opacity-1' : 'opacity-0'} transition-all duration-300`} onClick={scrollToTop}><FaAngleUp /></div>
+    </div>
   )
 }
 
 export default App
-//hello

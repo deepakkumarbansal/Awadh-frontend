@@ -29,6 +29,7 @@ import SubmitButton from "./SubmitButton/SubmitButton";
 import Input from "./Input/Input";
 import Password from "./Password/Password";
 import Login from "./Login/Login";
+import AdminDashboard from './Admin/AdminDashboard'
 export {
     Layout,
     NavBar,
@@ -60,5 +61,6 @@ export {
     SubmitButton,
     Input,
     Password,
-    Login
+    Login,
+    AdminDashboard
 }

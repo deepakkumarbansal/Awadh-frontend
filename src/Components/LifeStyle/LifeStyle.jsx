@@ -8,9 +8,9 @@ const LifeStyle = ({ newsData }) => {
     return (
         <>
             <SectionCatagory name='LifeStyle' backgroundColor='#fe7806'/>
-            <div className='md:flex md:justify-between'>
+            <div className='md:flex md:justify-between md:gap-4'>
                 <FeaturedNewsSection newsData={leftPart} catagoryBackground={'#fe7806'} categoryRequired/>
-                <FeaturedNewsSection newsData={rightPart} catagoryBackground={'#fe7806'} categoryRequired/>
+                <FeaturedNewsSection newsData={rightPart} catagoryBackground={'#fe7806'} categoryRequired className='mt-7 md:mt-0'/>
             </div>
         </>
     )
