@@ -3,10 +3,10 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Home, Layout, Login, NewsDetails, Signup } from './Components/index.js';
+import { AdminDashboard, Home, Layout, Login, NewsDetails, Signup } from './Components/index.js';
 import { Provider } from 'react-redux';
 import { store } from './store/store.js';
-
+import { createTheme, ThemeProvider } from '@mui/material';
 const router = createBrowserRouter([
   {
     path: '',
@@ -37,6 +37,10 @@ const router = createBrowserRouter([
     element: <Login/>
   },
   {
+    path: '/admin',
+    element: <AdminDashboard/>
+  },
+  {
     path: "*",
     element: <p>Page not found</p>
   }
@@ -44,6 +48,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <RouterProvider router={router}/>
+    <ThemeProvider theme={createTheme()}>
+      <RouterProvider router={router}/>
+    </ThemeProvider>
   </Provider>
 )

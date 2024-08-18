@@ -36,7 +36,7 @@ const LatestNews = ({ newsData }) => {
             heading={newsItem.title}
             author={newsItem.author}
             slug={newsItem.slug}
-            className="w-full border-2 max-w-[400px] justify-self-center"
+            className="w-full max-w-[400px] justify-self-center"
             imageHeight="150px"
             imageWidth="100%"
           >

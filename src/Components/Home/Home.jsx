@@ -460,23 +460,27 @@ const Home = () => {
   ];
 
   return (
-    <>
+    <div>
       <Section id="hero"><Hero newsData={latestNewsData} /></Section>
       <div id='container1'>
-        <Section id="latest"><LatestNews newsData={latestNewsData} /></Section>
-        <Section id="technology"><Technology newsData={technologyNewsData} /></Section>
-        <Section id="lifestyle"><LifeStyle newsData={lifeStyleNewsData} /></Section>
-        <Section id='follow'><FollowUs /></Section>
-        <Section id="popular"><PopularNews newsData={popularNewsData} /></Section>
-        <div id="ad" className="h-[300px] w-300px bg-gray-300"></div>
-        <Section id="trending"><TrendingNews newsData={trendingNewsData} /></Section>
+        <div>
+          <Section id="latest"><LatestNews newsData={latestNewsData} /></Section>
+          <Section id="technology"><Technology newsData={technologyNewsData} /></Section>
+          <Section id="lifestyle"><LifeStyle newsData={lifeStyleNewsData} /></Section>
+        </div>
+        <div>
+          <Section id='follow'><FollowUs /></Section>
+          <Section id="popular"><PopularNews newsData={popularNewsData} /></Section>
+          <div className='bg-gray-400 h-[300px] w-full my-10'>Ad</div>
+          <Section id="trending"><TrendingNews newsData={trendingNewsData} /></Section>
+        </div>
       </div>
       <div id='container2'>
         <Section id="travel"><Travel newsData={travelNewsData} /></Section>
         <Section id="gadgets"><Gagets newsData={gadgetsNewsData} /></Section>
         <Section id="health"><Health newsData={healthNewsData} /></Section>
       </div>
-    </>
+    </div>
   )
 }
 
