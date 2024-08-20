@@ -3,6 +3,7 @@ import {Input, Logo, Password, SubmitButton} from '../index'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { login } from '../../store/authSlice';
 
 const Signup = () => {
     const [error, setError] = useState('');
@@ -20,7 +21,11 @@ const Signup = () => {
                 setIsSubmitPending(false);
                 return;
             }
-            //to be done
+            //to be done the processing
+            console.log(data);
+            dispatch(login({userData:data, userType:'admin'}));
+            navigate('/')
+
         } catch (error) {
             setError(error.message);
         }

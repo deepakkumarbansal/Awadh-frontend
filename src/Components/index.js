@@ -30,6 +30,9 @@ import Input from "./Input/Input";
 import Password from "./Password/Password";
 import Login from "./Login/Login";
 import AdminDashboard from './Admin/AdminDashboard'
+import MyArticles from "./Reporters/MyArticles";
+import ReportersHome from "./Reporters/ReportersHome";
+import Profile from "./Profile/Profile";
 export {
     Layout,
     NavBar,
@@ -62,5 +65,8 @@ export {
     Input,
     Password,
     Login,
-    AdminDashboard
+    AdminDashboard,
+    ReportersHome,
+    MyArticles,
+    Profile
 }

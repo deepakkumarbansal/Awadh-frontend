@@ -1,11 +1,9 @@
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import HistoryIcon from "@mui/icons-material/History";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import SettingsIcon from "@mui/icons-material/Settings";
 import QueueMusicIcon from "@mui/icons-material/QueueMusic";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
-import ShareIcon from "@mui/icons-material/Share";
 import {
   List,
   ListItem,
@@ -35,11 +33,9 @@ const Sidebar = ({ userRole, handleMenuItemClick }) => {
         {
           name: "Dashboard",
           icon: <DashboardIcon />,
-          route: "/creatordashboard",
+          route: "/reporterdashboard",
         },
-        { name: "My Content", icon: <VideoLibraryIcon />, route: "/mycontent" },
-        { name: "Analytics", icon: <AssessmentIcon />, route: "/analytics" },
-        { name: "Social Media", icon: <ShareIcon />, route: "/socialmedia" },
+        { name: "My Articles", icon: <VideoLibraryIcon />, route: "/myarticles" },
         { name: "Profile", icon: <SettingsIcon />, route: "/profile" },
       ];
       break;

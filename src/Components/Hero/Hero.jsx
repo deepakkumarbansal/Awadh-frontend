@@ -16,7 +16,7 @@ const Hero = ({ newsData}) => {
 
             return (
               <PhotoNewsCard
-                key={item.slug}
+                key={index}
                 catagory={item.category}
                 title={item.title}
                 date={item.date}

@@ -18,10 +18,10 @@ const FollowUs = () => {
         { href: 'https://www.facebook.com/awadh.kesari.5', icon: SocialMediaIcons.FacebookIcon, style: iconStyles.facebook },
         { href: 'https://x.com/i/flow/login?redirect_after_login=%2FKesariAwadh', icon: SocialMediaIcons.TwitterIcon, style: iconStyles.twitter },
         // { href: 'https://plus.google.com', icon: SocialMediaIcons.GooglePlusIcon, style: iconStyles.googlePlus },
-        // { href: 'https://www.linkedin.com', icon: SocialMediaIcons.LinkedinIcon, style: iconStyles.linkedin },
+        { href: 'https://www.linkedin.com', icon: SocialMediaIcons.LinkedinIcon, style: iconStyles.linkedin },
         // { href: 'https://www.skype.com', icon: SocialMediaIcons.SkypeIcon, style: iconStyles.skype },
         // { href: 'https://www.pinterest.com', icon: SocialMediaIcons.PinterestIcon, style: iconStyles.pinterest },
-        // { href: 'https://www.instagram.com', icon: SocialMediaIcons.InstagramIcon, style: iconStyles.instagram },
+        { href: 'https://www.instagram.com', icon: SocialMediaIcons.InstagramIcon, style: iconStyles.instagram },
         // { href: 'https://www.rss.com', icon: SocialMediaIcons.RssIcon, style: iconStyles.rss },
         // { href: 'https://outlook.com', icon: SocialMediaIcons.OutlookIcon, style: iconStyles.outlook },
         { href: 'https://www.youtube.com/channel/UCXVoJ6KyjplG8A61yAVHxPg', icon: SocialMediaIcons.YoutubeIcon, style: iconStyles.googlePlus}
