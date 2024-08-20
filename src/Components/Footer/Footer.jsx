@@ -111,6 +111,8 @@ const Footer = ({ className = '' }) => {
                 </div>
             </div>
             <div className='bg-gray-400 h-[2px] mx:2 md:mx-10'></div>
+            <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus modi repellat illum fuga quas. Ipsam dignissimos, a aliquam nobis non quasi distinctio corporis, quis beatae dolorum laboriosam totam architecto qui sequi eius doloremque. Aliquid nam iste voluptate praesentium. Quis similique, eveniet minima ut minus earum eligendi fugit placeat fugiat repudiandae vero impedit culpa porro eaque libero qui sapiente maxime eum praesentium. Ullam hic obcaecati repudiandae esse tenetur iste reiciendis velit! Cupiditate dolorum recusandae soluta voluptas eum deserunt eligendi praesentium dicta, rerum nesciunt labore fugit temporibus provident? Delectus asperiores cum atque eveniet perspiciatis impedit, at corrupti maxime dolorem vitae eaque reiciendis.</div>
+            <div className='bg-gray-400 h-[2px] my-1 mx:2 md:mx-10'></div>
             <Logo className='flex justify-center mt-4' image='/images/LogoWithNoBg.png'/>
             <p>News247 Worldwide is a popular online newsportal and going source for technical and digital content for its influential audience around the globe. You can reach us via email or phone.</p>
             <div className='flex gap-10 justify-center relative'>

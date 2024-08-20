@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
-import ArticleDetails from "./ArticlesDetails";
 
 // लेखों के लिए नकली डेटा
 const ArticlesData = () => {

@@ -14,28 +14,26 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
 import LogoutIcon from "@mui/icons-material/Logout";
-// import { Logo } from "../assets/assest.js";
-import Logo from "../../../public/images/logo.png";
 import Sidebar from "./Sidebar.jsx";
 import renderCurrentPage from "./PageRender.jsx";
+import { useSelector } from "react-redux";
 
 const drawerWidth = 280;
 
 const Workspace = (props) => {
+  // const user = useSelector(state=>state.auth.user)
+  const user = {
+    name:'deepak',
+    role: 'reporter'
+  }
   const { window } = props;
   const [currentPage, setCurrentPage] = useState("Dashboard");
 
   const handleMenuItemClick = (pageName) => {
     setCurrentPage(pageName);
-    handleDrawerClose();
-  };
-
-  const userData = {
-    activeDashboard: "admin",
+    handleDrawerClose(); //Where it is
   };
 
   const drawer = (
@@ -49,7 +47,7 @@ const Workspace = (props) => {
           margin: "1rem",
         }}
       >
-        <img src={Logo} alt="Career Explorer" width={"60%"} />
+        <img src={'/images/logo.png'} alt="Awadh Kesari" width={"100%"} />
       </Box>
 
       <Box
@@ -66,22 +64,18 @@ const Workspace = (props) => {
           mr: "1rem",
         }}
       >
-        {/* <Avatar
-          alt="User Name"
-          src="" // Placeholder image source
-          sx={{ width: 55, height: 55 }}
-        /> */}
         <Typography
           variant="h7"
           sx={{ fontFamily: "sans-serif", fontWeight: "600" }}
         >
-          User Name
+          {user.name}
         </Typography>
       </Box>
       <Divider />
-      <Sidebar userRole="admin" handleMenuItemClick={handleMenuItemClick} />
+      <Sidebar userRole={user.role} handleMenuItemClick={handleMenuItemClick} />
       <Divider />
       <MenuItem>
+      {/* Need to add the click handler for logout */}
         <Box
           component="button"
           sx={{
@@ -117,7 +111,7 @@ const Workspace = (props) => {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex", backgroundColor: "#f9fafb" }}>
+    <Box sx={{ display: "flex", backgroundColor: "#f9f9fb" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -139,24 +133,10 @@ const Workspace = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          {/* <TextField
-            fullWidth
-            InputProps={{
-              endAdornment: (
-                <IconButton>
-                  <SearchIcon />
-                </IconButton>
-              ),
-            }}
-          /> */}
           <Box sx={{ flexGrow: 1 }} />
           <Tooltip title="Open settings">
             <IconButton sx={{ p: 0 }}>
-              {/* <Avatar
-                alt="User Name"
-                src="" // Placeholder image source
-                sx={{ width: 55, height: 55, marginRight: 1 }}
-              /> */}
+      
             </IconButton>
           </Tooltip>
           <Menu
@@ -220,10 +200,7 @@ const Workspace = (props) => {
         }}
       >
         <Toolbar />
-        {/* Placeholder for the main content area */}
-
-        {/* {userData && renderCurrentPage(currentPage, userData)} */}
-        {renderCurrentPage(currentPage, userData)}
+        {renderCurrentPage(currentPage, user)}
       </Box>
     </Box>
   );
