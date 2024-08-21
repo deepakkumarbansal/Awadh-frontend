@@ -1,5 +1,5 @@
-import React from 'react'
-import { FollowUs, Gagets, Health, Hero, LifeStyle, PopularNews, Section, Technology, Travel, TrendingNews } from '../index'
+import React, { useEffect, useState } from 'react'
+import { Epaper, FollowUs, Gagets, Health, Hero, LifeStyle, PopularNews, Section, SectionCatagory, Technology, Travel, TrendingNews } from '../index'
 import { LatestNews } from '../index'
 import './Home.css'
 const Home = () => {
@@ -458,28 +458,80 @@ const Home = () => {
       slug: 'wearable-tech-2024',
     }
   ];
-
+  const ytVideos = [
+    <iframe max-width="460" height="215" src="https://www.youtube.com/embed/niQMB7NV9NU?si=QhPeuHbgSjPTWp60" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/e3xORtmMH9o?si=42NoPWMgJ30cjgA6" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/mW85_7ARy9I?si=1cXv682kmqzBBN7E" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/tYDM2r8PhCk?si=gxA-KPCVoxSdxQ2r" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/IYBXnMgTQu8?si=zcgIYtGdLrdkYQSW" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/QGpo9UQW6ZE?si=r--FpKqgrzeoAxTJ" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/h-2L2eyBwzg?si=fdWMqWfpqj6sfWfP" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/r00tZpzz-0M?si=IDG0gEe-pNIKToWc" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/8OZKurrGBjw?si=WDcGGCTr_nhMCFt6" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/dtuG6NeVB8k?si=dPLip0EQXpPQUH3J" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/TkpHLE7J0wQ?si=scSa9xE9b-t_nBCZ" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/RPDPuz8gVTw?si=4ntQ8TqF7NSfLI7G" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/bfk5BLVeLT4?si=FeVmOHqQPUJcKR1T" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/z8iQFmLzSYg?si=cuL4Vzf9cpps_N6D" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/OurT-SW_cLs?si=qkBPtCpqcjO2f806" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/Xheufu4n3K0?si=etiELZVjRWq-a2oP" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/iLTVbxcylRA?si=YYNPCVgW7vmbPUDy" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/U8OfcnERTbk?si=GSOVkXq5Y7YSuk2B" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+              <iframe max-width="460" height="215" src="https://www.youtube.com/embed/x7OlH1vGE8g?si=9752HytZ2KAT_YAp" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>,
+  ]
+  const [youtubeVideos, setYoutubeVideos] = useState(ytVideos)
+  useEffect(()=>{
+      window.addEventListener('resize', ()=>{
+        if(window.innerWidth <= 1024){
+          setYoutubeVideos(youtubeVideos.slice(0,5));
+        } else{
+          setYoutubeVideos(youtubeVideos);
+        }
+      })
+      return ()=>{
+        window.removeEventListener('resize', ()=>{
+          if(window.innerWidth <= 768){
+            setYoutubeVideos(youtubeVideos.slice(0,5));
+          }
+        })
+      }
+  },)
   return (
     <div>
+      <div className='md:flex justify-between gap-10'>
+        <Section className='w-1/2' id='follow'><FollowUs /></Section>
+        <Section className='w-1/2'><Epaper /></Section>
+      </div>
       <Section id="hero"><Hero newsData={latestNewsData} /></Section>
       <div id='container1'>
         <div>
           <Section id="latest"><LatestNews newsData={latestNewsData} /></Section>
           <Section id="technology"><Technology newsData={technologyNewsData} /></Section>
           <Section id="lifestyle"><LifeStyle newsData={lifeStyleNewsData} /></Section>
+
+          <Section id="travel"><Travel newsData={travelNewsData} /></Section>
+          <Section id="gadgets"><Gagets newsData={gadgetsNewsData} /></Section>
+          <Section id="health"><Health newsData={healthNewsData} /></Section>
         </div>
         <div>
-          <Section id='follow'><FollowUs /></Section>
-          <Section id="popular"><PopularNews newsData={popularNewsData} /></Section>
+          {/* <Section id="popular"><PopularNews newsData={popularNewsData} /></Section>
           <div className='bg-gray-400 h-[300px] w-full my-10'>Ad</div>
-          <Section id="trending"><TrendingNews newsData={trendingNewsData} /></Section>
+          <Section id="trending"><TrendingNews newsData={trendingNewsData} /></Section> */}
+          <Section>
+            <SectionCatagory name='Youtube videos' />
+            <div className='flex flex-col gap-5'>
+              {
+                youtubeVideos.map((item, index)=>(<div key={index}>{item}</div>))
+              }
+            </div>
+          </Section>
         </div>
       </div>
-      <div id='container2'>
+      {/* <div id='container2'>
         <Section id="travel"><Travel newsData={travelNewsData} /></Section>
         <Section id="gadgets"><Gagets newsData={gadgetsNewsData} /></Section>
         <Section id="health"><Health newsData={healthNewsData} /></Section>
-      </div>
+      </div> */}
     </div>
   )
 }

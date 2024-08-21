@@ -24,7 +24,7 @@ const Hero = ({ newsData}) => {
                 width='100%'
                 className={`${gridClasses} h-[240px] md:h-full mb-5 md:mb-0`}
                 categoryRequired
-                catagoryBackground={'black'}
+                catagoryBackground='#e70940'
               />
             );
           })

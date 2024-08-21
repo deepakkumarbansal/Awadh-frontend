@@ -40,7 +40,7 @@ const FollowUs = () => {
       );
   return (
     <>
-      <SectionCatagory name='Follow us'/>
+      <SectionCatagory name='Follow us' backgroundColor='red'/>
       <ul className="flex space-x-1">
       {socialMediaData.map((item, index) => (
         <SocialMediaLink

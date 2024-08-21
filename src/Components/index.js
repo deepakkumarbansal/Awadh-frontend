@@ -33,6 +33,7 @@ import AdminDashboard from './Admin/AdminDashboard'
 import MyArticles from "./Reporters/MyArticles";
 import ReportersHome from "./Reporters/ReportersHome";
 import Profile from "./Profile/Profile";
+import Epaper from "./Epaper/Epaper";
 export {
     Layout,
     NavBar,
@@ -68,5 +69,6 @@ export {
     AdminDashboard,
     ReportersHome,
     MyArticles,
-    Profile
+    Profile,
+    Epaper
 }

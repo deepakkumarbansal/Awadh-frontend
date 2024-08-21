@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Logo = ({className, image}) => {
+const Logo = ({className, image, ...props}) => {
   return (
     <div className={className}>
-      {image ? <img src={image} alt="Awadh Kesari" /> : <img src="/images/logo.png" alt="Awadh Kesari" />}
+      <img src={image ? image : "/images/logo.png"} alt="Awadh Kesari" {...props}/>
     </div>
   )
 }

@@ -10,12 +10,21 @@ const Signup = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isSubmitPending, setIsSubmitPending] = useState(false);
+    const [userType, setUserType] = useState('admin') //Example of the userType
 
     const handleSignup = async (data) => {
         setError("");
         setIsSubmitPending(true);
         try {
             //to be done
+            if(userType === 'admin' || 'reporter'){
+                //to be done
+                // dispatch()
+                navigate('/admin');
+            } else{
+                navigate('/');
+            }
+
         } catch (error) {
             setError(error.message);
         }
