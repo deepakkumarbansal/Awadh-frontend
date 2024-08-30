@@ -49,7 +49,6 @@ function App() {
   return (
     <div>
       <div className='px-2 lg:px-24'>
-        {!isLogin && <div className='flex justify-end mt-2 text-4xl text-red-500 cursor-pointer' onClick={()=>navigate('login')}><MdOutlineAccountCircle /></div>}
         <Header />
         <Outlet />
       </div>

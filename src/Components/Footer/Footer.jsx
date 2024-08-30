@@ -1,11 +1,40 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import { FaTwitter } from "react-icons/fa";
 import { Logo, TextNewsCard } from '../index';
 import { MdEmail } from "react-icons/md";
 import { MdLocalPhone } from "react-icons/md";
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '@mui/material';
+import { logout } from '../../store/authSlice';
 
 const Footer = ({ className = '' }) => {
+    const isLogin = useSelector((state)=>state.auth.isLogin);
+    const [visitorsCount, setVisitorsCount] = useState(999909120) // to be update
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const handleReload = () => {
+            setVisitorsCount(visitorsCount + 1);
+        };
+    
+        window.addEventListener('load', handleReload);
+    
+        return () => {
+            window.removeEventListener('load', handleReload);
+        };
+    }, [visitorsCount]);
+
+    const handleLogin = () => {
+        if(isLogin){
+            dispatch(logout());
+            navigate('/');
+        } else {
+            navigate('/login');
+        }
+    }
+
     //Sample
     const hotCatagoryData = [
         { name: 'Robotics', slug: '/robotics' },
@@ -61,8 +90,8 @@ const Footer = ({ className = '' }) => {
 
     return (
         <div className={`min-h-[100vh] bg-gray-950 text-gray-50  ${className} py-4 mt-10`}>
-            <div className='md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-                <div className='mb-7 md:justify-self-center'>
+            <div className='md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-10'>
+                <div className='mb-7'>
                     <h2 className='text-lg'>TRENDING NOW</h2>
                     <div>
                         {
@@ -72,7 +101,7 @@ const Footer = ({ className = '' }) => {
                         }
                     </div>
                 </div>
-                <div className='mb-7 md:justify-self-center'>
+                <div className='mb-7'>
                     <h2 className='text-lg'>HOT CATEGORIES</h2>
                     <ul>
                         {
@@ -82,7 +111,7 @@ const Footer = ({ className = '' }) => {
                         }
                     </ul>
                 </div>
-                <div className='mb-7 md:justify-self-center'>
+                <div className='mb-7 '>
                     <h2 className='text-lg'>LATEST TWEETS</h2>
                     <ul>
                         {latestTweetes.map((tweet, index) => (
@@ -97,7 +126,7 @@ const Footer = ({ className = '' }) => {
                         ))}
                     </ul>
                 </div>
-                <div className='md:justify-self-center'>
+                {/* <div className=''>
                     <h2 className='text-lg'>POST GALLERY</h2>
                     <ul className='w-[307px] h-[304px] grid grid-cols-3 gap-[2px]'>
                         {
@@ -108,10 +137,37 @@ const Footer = ({ className = '' }) => {
                             ))
                         }
                     </ul>
+                </div> */}
+                <div className=''>
+                    <h2 className='text-lg'>Account</h2>
+                    <div className='flex gap-4 mt-4'>
+                        <Button onClick={handleLogin} variant='outlined'>{isLogin ? 'Logout' : 'Login'}</Button>
+                        {!isLogin ? <Button onClick={()=>navigate('/signup')} variant='contained'>Signup</Button> : ''}
+                    </div>
                 </div>
             </div>
             <div className='bg-gray-400 h-[2px] mx:2 md:mx-10'></div>
-            <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus modi repellat illum fuga quas. Ipsam dignissimos, a aliquam nobis non quasi distinctio corporis, quis beatae dolorum laboriosam totam architecto qui sequi eius doloremque. Aliquid nam iste voluptate praesentium. Quis similique, eveniet minima ut minus earum eligendi fugit placeat fugiat repudiandae vero impedit culpa porro eaque libero qui sapiente maxime eum praesentium. Ullam hic obcaecati repudiandae esse tenetur iste reiciendis velit! Cupiditate dolorum recusandae soluta voluptas eum deserunt eligendi praesentium dicta, rerum nesciunt labore fugit temporibus provident? Delectus asperiores cum atque eveniet perspiciatis impedit, at corrupti maxime dolorem vitae eaque reiciendis.</div>
+            <div className='flex items-center my-4 flex-col'>
+                <div className='flex items-center'>
+                    <h1>You want to become the part of Awadh Kesari &nbsp; </h1>
+                    <Button variant="contained">Donate Now...</Button>
+                </div>
+                <div className='mt-4'>
+                    <h2>Or pay using account details:</h2>
+                    <div className='flex gap-2'>
+                        <p>Account Holder:</p>
+                        <p className='font-bold'>Deepak Bansal</p>
+                    </div>
+                    <div className='flex gap-2'>
+                        <p>Account Number:</p>
+                        <p className='font-bold'>05830100018116</p>
+                    </div>
+                    <div className='flex gap-2'>
+                        <p>IFSC:</p>
+                        <p className='font-bold'>BARB0ALIGAR</p>
+                    </div>
+                </div>
+            </div>
             <div className='bg-gray-400 h-[2px] my-1 mx:2 md:mx-10'></div>
             <Logo className='flex justify-center mt-4' image='/images/LogoWithNoBg.png'/>
             <p>News247 Worldwide is a popular online newsportal and going source for technical and digital content for its influential audience around the globe. You can reach us via email or phone.</p>
@@ -119,6 +175,7 @@ const Footer = ({ className = '' }) => {
                 <p className='flex items-center gap-2'><MdLocalPhone /><span>99999999999</span></p>
                 <p className='flex items-center gap-2'><MdEmail /><span>sample@gmail.com</span></p>
             </div>
+            <div className=''>Visiters Count: {visitorsCount}</div>
         </div>
     )
 }
