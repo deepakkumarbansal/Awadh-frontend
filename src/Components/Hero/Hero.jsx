@@ -1,7 +1,10 @@
 import React from 'react';
 import { PhotoNewsCard } from '../index';
 
-const Hero = ({ newsData}) => {
+const Hero = ({ newsData }) => {
+  if (!Array.isArray(newsData) || newsData.length === 0) {
+    return <div>Loading...</div>; // Or a fallback UI while data is loading
+  }
   return (
     <>
       <div className='md:grid md:grid-cols-3 md:grid-rows-2 md:gap-[2px] md:h-[535px]' style={{ gridTemplateColumns: '2.5fr 1fr 1fr', gridTemplateRows: '1.5fr 1fr' }}>
@@ -24,6 +27,7 @@ const Hero = ({ newsData}) => {
                 width='100%'
                 className={`${gridClasses} h-[240px] md:h-full mb-5 md:mb-0`}
                 categoryRequired
+                backgroundImage={item?.images&&item?.images[0]}
                 catagoryBackground='#e70940'
               />
             );

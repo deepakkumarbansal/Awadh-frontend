@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:4000/api";
+const BASE_URL = "http://localhost:8400/api";
 
 export const profileEndpoints = {
   GET_ALL_USER_API: BASE_URL + "/admin/all-users",
@@ -11,7 +11,7 @@ export const profileEndpoints = {
 
 export const articlesEndPoints = {
   CREATE_ARTICLE: BASE_URL + "/article/create",
-  GET_ALL_ARTICLE: BASE_URL + "/article/all-articles",
+  GET_ALL_ARTICLE: BASE_URL + "/admin/all-articles",
   GET_ARTICLE_BY_ID:()=> BASE_URL + `/article/whole-article/: ${articleId}`,
   UPDATE_ARTICLE_BY_ID: ()=> BASE_URL + `/article/update-article/: ${articleId}`,
   DELETE_ARTICLE_BY_ID: ()=> BASE_URL + `/article/delete-article/: ${articleId}`,
