@@ -7,6 +7,8 @@ import { AdminDashboard, Home, Layout, Login, NewsDetails, Signup } from './Comp
 import { Provider } from 'react-redux';
 import { store } from './store/store.js';
 import { createTheme, ThemeProvider } from '@mui/material';
+import { configureStore } from '@reduxjs/toolkit';
+import rootReducer from './store/reducers/index.js';
 const router = createBrowserRouter([
   {
     path: '',
@@ -45,6 +47,11 @@ const router = createBrowserRouter([
     element: <p>Page not found</p>
   }
 ]);
+
+
+const store = configureStore({
+  reducer: rootReducer,
+});
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
