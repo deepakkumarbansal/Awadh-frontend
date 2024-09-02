@@ -3,13 +3,13 @@ import {NewsCatagory, SectionCatagory, TextNewsCard} from '../index'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import usePagination from '../../hooks/usePagination';
 
-const Videsh = ({newsData}) => {
+const Rajnetic = ({newsData}) => {
   const [data, setData] = useState(newsData);
   const {visibleData, prevPage, nextPage, currentPage, totalPages} = usePagination(data, 6)
   
   return (
     <>
-      <SectionCatagory name="हेल्थ" backgroundColor="red">
+      <SectionCatagory name="राजनीतिक" backgroundColor="red">
         <button
           className="border-gray-300 border-2 p-1 mr-2"
           onClick={prevPage}
@@ -52,4 +52,4 @@ const Videsh = ({newsData}) => {
   )
 }
 
-export default Videsh
+export default Rajnetic

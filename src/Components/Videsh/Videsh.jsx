@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import SectionCatagory from '../SectionCatagory/SectionCatagory';
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import { NewsCatagory, TextNewsCard } from '../index';
+import React, { useState } from 'react'
+import {NewsCatagory, SectionCatagory, TextNewsCard} from '../index'
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import usePagination from '../../hooks/usePagination';
 
-const LatestNews = ({ newsData }) => {
-
+const Videsh = ({newsData}) => {
   const [data, setData] = useState(newsData);
   const {visibleData, prevPage, nextPage, currentPage, totalPages} = usePagination(data, 6)
-
+  
   return (
     <>
-      <SectionCatagory name="Latest" backgroundColor="red">
+      <SectionCatagory name="विदेश" backgroundColor="red">
         <button
           className="border-gray-300 border-2 p-1 mr-2"
           onClick={prevPage}
@@ -27,8 +25,8 @@ const LatestNews = ({ newsData }) => {
           <FaAngleRight />
         </button>
       </SectionCatagory>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {visibleData.map((newsItem, index) => (
+      <div className="grid w-full grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-4">
+        {visibleData?.map((newsItem, index) => (
           <TextNewsCard
             key={index}
             image={newsItem.img}
@@ -36,9 +34,10 @@ const LatestNews = ({ newsData }) => {
             heading={newsItem.title}
             author={newsItem.author}
             slug={newsItem.slug}
-            className="w-full max-w-[400px] justify-self-center"
-            imageHeight="150px"
+            className="w-full justify-self-center"
+            imageHeight="auto"
             imageWidth="100%"
+            
           >
             <NewsCatagory
               catagory={newsItem.category}
@@ -50,7 +49,7 @@ const LatestNews = ({ newsData }) => {
         ))}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default LatestNews;
+export default Videsh

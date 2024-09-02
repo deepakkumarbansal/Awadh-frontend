@@ -1,7 +1,7 @@
 export const font = {
-    heading: '',
-    subheading: '',
-    content: '',
+    heading: "Palanquin Dark, sans-serif",
+    subheading: "Noto Sans, sans-serif",
+    content: "Kalam, cursive",
 }
 
 

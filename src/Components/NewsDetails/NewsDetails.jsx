@@ -4,6 +4,7 @@ import LoadingBar from 'react-top-loading-bar';
 
 const NewsDetails = () => {
     const { slug } = useParams();
+    
     const loaderRef = useRef(null);
     const [newsItem, setNewsItem] = useState(null);
     const [error, setError] = useState(null);

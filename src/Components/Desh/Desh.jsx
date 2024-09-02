@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
-import {NewsCatagory, SectionCatagory, TextNewsCard} from '../index'
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import SectionCatagory from '../SectionCatagory/SectionCatagory';
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import { NewsCatagory, TextNewsCard } from '../index';
 import usePagination from '../../hooks/usePagination';
 
-const Videsh = ({newsData}) => {
+const Desh = ({ newsData }) => {
+
   const [data, setData] = useState(newsData);
   const {visibleData, prevPage, nextPage, currentPage, totalPages} = usePagination(data, 6)
-  
+
   return (
     <>
-      <SectionCatagory name="हेल्थ" backgroundColor="red">
+      <SectionCatagory name="देश" backgroundColor="red">
         <button
           className="border-gray-300 border-2 p-1 mr-2"
           onClick={prevPage}
@@ -26,7 +28,7 @@ const Videsh = ({newsData}) => {
         </button>
       </SectionCatagory>
       <div className="grid w-full grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-4">
-        {visibleData?.map((newsItem, index) => (
+        {visibleData.map((newsItem, index) => (
           <TextNewsCard
             key={index}
             image={newsItem.img}
@@ -49,7 +51,7 @@ const Videsh = ({newsData}) => {
         ))}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Videsh
+export default Desh;
