@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import {
   Epaper,
   FollowUs,
@@ -19,6 +19,7 @@ import { articlesEndPoints } from "../../Services/apis";
 import { toast } from "react-hot-toast";
 import { apiConnector } from "../../Services/connector";
 import { getAllArticles } from "../../Services/Operations/article";
+const Youtube = lazy(()=>import('./Youtube/Youtube'))
 const { GET_ALL_ARTICLE } = articlesEndPoints;
 const Home = () => {
   // const disptach =useDispatch()
@@ -370,7 +371,6 @@ const Home = () => {
       allowFullScreen
     ></iframe>,
   ];
-  const [youtubeVideos, setYoutubeVideos] = useState(ytVideos);
 
   const [articles, setArticles] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -391,26 +391,10 @@ const Home = () => {
   }, []);
 
   console.log("articles in jome", articles);
-  useEffect(() => {
-    window.addEventListener("resize", () => {
-      if (window.innerWidth <= 1024) {
-        setYoutubeVideos(youtubeVideos.slice(0, 5));
-      } else {
-        setYoutubeVideos(youtubeVideos);
-      }
-    });
-    return () => {
-      window.removeEventListener("resize", () => {
-        if (window.innerWidth <= 768) {
-          setYoutubeVideos(youtubeVideos.slice(0, 5));
-        }
-      });
-    };
-  });
   return (
     <div>
       <Section id="hero">
-        <Hero newsData={loading ? latestNewsData : articles} />
+          <Hero newsData={loading ? latestNewsData : articles} />
       </Section>
       <div id="container1">
         <div className="w-full">
@@ -440,11 +424,9 @@ const Home = () => {
           <Section id="trending"><TrendingNews newsData={trendingNewsData} /></Section> */}
           <Section>
             <SectionCatagory name="Youtube videos" />
-            <div className="flex flex-col gap-5">
-              {youtubeVideos.map((item, index) => (
-                <div key={index}>{item}</div>
-              ))}
-            </div>
+              <Suspense fallback={<h1>Loading....</h1>}>
+                <Youtube ytVideos={ytVideos}/>
+              </Suspense>
           </Section>
         </div>
       </div>

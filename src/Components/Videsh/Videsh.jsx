@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import {NewsCatagory, SectionCatagory, TextNewsCard} from '../index'
+import { NewsCatagory, SectionCatagory, TextNewsCard } from '../index'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import usePagination from '../../hooks/usePagination';
 
-const Videsh = ({newsData}) => {
+const Videsh = ({ newsData }) => {
   const [data, setData] = useState(newsData);
-  const {visibleData, prevPage, nextPage, currentPage, totalPages} = usePagination(data, 6)
-  
+  const { visibleData, prevPage, nextPage, currentPage, totalPages } = usePagination(data, 6)
+
   return (
     <>
       <SectionCatagory name="विदेश" backgroundColor="red">
@@ -25,7 +25,7 @@ const Videsh = ({newsData}) => {
           <FaAngleRight />
         </button>
       </SectionCatagory>
-      <div className="grid w-full grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid w-full grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4">
         {visibleData?.map((newsItem, index) => (
           <TextNewsCard
             key={index}
@@ -37,7 +37,7 @@ const Videsh = ({newsData}) => {
             className="w-full justify-self-center"
             imageHeight="auto"
             imageWidth="100%"
-            
+
           >
             <NewsCatagory
               catagory={newsItem.category}

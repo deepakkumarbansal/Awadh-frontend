@@ -83,7 +83,7 @@ const Navbar = () => {
             <ul className="nav-list absolute z-[100] top-20 lg:static bg-white opacity-0 lg:opacity-100 transition-opacity duration-700 lg:flex font-bold gap-3 items-center shadow-md shadow-black lg:shadow-none"> {/* error of opacity on large screen */}
                 {navItems.map((item, index) => (
                     <li key={index} className="relative group border-b-2 lg:border-none pt-2 lg:pt-0 mx-2 lg:mx-0">
-                        <Link to={item.slug} className={`flex items-center ${item.name === 'ई-पेपर' ? 'text-red-500 ml-[1rem]' : ''}`}>
+                        <Link to={item.slug} className={`flex items-center ${item.name === 'ई-पेपर' ? 'text-purple-600 ml-[1rem]' : ''}`}>
                             {item.name}
                             {item.subMenu && <FaAngleDown className="ml-1" />}
                         </Link>

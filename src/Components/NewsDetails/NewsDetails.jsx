@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import LoadingBar from 'react-top-loading-bar';
-
+import { apiConnector } from '../../Services/connector';
+import {articlesEndPoints} from '../../Services/apis'
 const NewsDetails = () => {
     const { slug } = useParams();
-    
+    const {GET_ARTICLE_BY_ID} = articlesEndPoints;
     const loaderRef = useRef(null);
     const [newsItem, setNewsItem] = useState(null);
     const [error, setError] = useState(null);
@@ -13,7 +14,11 @@ const NewsDetails = () => {
         async function fetchNews() {
             loaderRef.current.continuousStart();
             try {
-                const response = await fetch(`/api/news/${slug}`);
+                console.log(slug);
+                
+                const response = await apiConnector('GET', GET_ARTICLE_BY_ID)
+                console.log(response);
+                
                 if (!response.ok) throw new Error('News item not found');
                 const data = await response.json();
                 setNewsItem(data);

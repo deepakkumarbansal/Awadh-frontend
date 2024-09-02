@@ -27,7 +27,7 @@ const Desh = ({ newsData }) => {
           <FaAngleRight />
         </button>
       </SectionCatagory>
-      <div className="grid w-full grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid w-full grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4">
         {visibleData.map((newsItem, index) => (
           <TextNewsCard
             key={index}
