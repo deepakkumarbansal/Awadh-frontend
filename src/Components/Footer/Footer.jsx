@@ -6,7 +6,7 @@ import { MdEmail } from "react-icons/md";
 import { MdLocalPhone } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@mui/material';
-import { logout } from '../../store/authSlice';
+import { logout } from '../../Services/Operations/auth';
 
 const Footer = ({ className = '' }) => {
     const isLogin = useSelector((state)=>state.auth.isLogin);

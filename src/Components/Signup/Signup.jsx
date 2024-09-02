@@ -3,7 +3,7 @@ import {Input, Logo, Password, SubmitButton} from '../index'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { login } from '../../store/authSlice';
+import { login } from '../../Services/Operations/auth';
 
 const Signup = () => {
     const [error, setError] = useState('');
@@ -23,7 +23,7 @@ const Signup = () => {
             }
             //to be done the processing
             console.log(data);
-            dispatch(login({userData:data, userType:'admin'}));
+            dispatch(login(data.email,data.password));
             navigate('/')
 
         } catch (error) {
