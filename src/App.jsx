@@ -48,7 +48,7 @@ function App() {
 
   return (
     <div>
-      <div className='px-2 lg:px-24'>
+      <div className='px-2 xl:px-10'>
         <Header />
         <Outlet />
       </div>

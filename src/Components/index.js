@@ -7,20 +7,20 @@ import Search from "./Search/Search";
 import Home from "./Home/Home";
 import Hero from "./Hero/Hero";
 import NewsCatagory from "./NewsCatagory/NewsCatagory";
-import LatestNews from "./LatestNews/LatestNews";
+import Desh from "./Desh/Desh";
 import Footer from "./Footer/Footer";
 import TextNewsCard from "./TextNewsCard/TextNewsCard";
 import FollowUs from "./FollowUs/FollowUs";
 import SectionCatagory from "./SectionCatagory/SectionCatagory";
 import SocialMediaIcons from "./SocialMediaIcons/SocialMediaIcons";
 import PopularNews from "./PopularNews/PopularNews";
-import Technology from "./Technology/Technology";
-import LifeStyle from "./LifeStyle/LifeStyle";
+import Videsh from "./Videsh/Videsh";
+import Rajya from "./Rajya/Rajaya";
 import TrendingNews from "./TrendingNews/TrendingNews";
 import FeaturedNewsSection from "./FeaturedNewsSection/FeaturedNewsSection";
-import Gagets from "./Gagets/Gagets";
+import SamacharSangrah from "./Samachar Sangrah/SamacharSangrah";
 import Health from "./Health/Health";
-import Travel from "./Travel/Travel";
+import Rajnetic from "./Rajnetic/Rajnetic";
 import Section from "./Section/Section";
 import NewsDetails from "./NewsDetails/NewsDetails";
 import Signup from "./Signup/Signup";
@@ -44,20 +44,20 @@ export {
     Home,
     Hero,
     NewsCatagory,
-    LatestNews,
+    Desh,
     Footer,
     TextNewsCard,
     FollowUs,
     SectionCatagory,
     SocialMediaIcons,
     PopularNews,
-    Technology,
-    LifeStyle,
+    Videsh,
+    Rajya,
     TrendingNews,
     FeaturedNewsSection,
-    Travel,
+    Rajnetic,
     Health,
-    Gagets,
+    SamacharSangrah,
     Section,
     NewsDetails,
     Signup,

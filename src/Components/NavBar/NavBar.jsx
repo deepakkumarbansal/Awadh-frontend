@@ -5,6 +5,7 @@ import { Search } from '../index';
 import { FaSearch } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { FaBars } from "react-icons/fa6";
+import { font } from '../../utility/font';
 const Navbar = () => {
     const navItemsData = [
         { name: 'देश', slug: '/' },
@@ -53,8 +54,15 @@ const Navbar = () => {
                 { name: 'साहित्य Re-mix', slug: '/' },
             ],
         },
-        { name: 'अवध केसरी लाइव', slug: '/' },
-        { name: 'All', slug: '/' },
+        // { name: 'अवध केसरी लाइव', slug: '/' },
+        // { name: 'All', slug: '/' },
+        {
+            name: 'ई-पेपर', slug: '#',
+            subMenu: [
+                {name: 'अवध केसरी हिंदी दैनिक', slug: '/'},
+                {name: 'अवध केसरी हिंदी साप्ताहिक', slug: '/'}
+            ]
+        }
     ];
 
     const [navItems, setNavItems] = useState(navItemsData);
@@ -70,17 +78,17 @@ const Navbar = () => {
         setShowMenu(!showMenu);
     }
     return (
-        <div className='flex justify-between items-center border-t-red-500 border-t-4 border-b-2 border-b-gray-400 py-7 h-10 relative gap-2'>
-            <span onClick={toggleMenu} className='lg:hidden'>{showMenu ? <IoClose className='text-xl'/> : <FaBars />}</span>
-            <ul className="nav-list absolute top-20 lg:static bg-white opacity-0 lg:opacity-100 transition-opacity duration-700 lg:flex font-bold gap-3 items-center shadow-md shadow-black lg:shadow-none"> {/* error of opacity on large screen */}
+        <div className={`flex justify-between items-center border-t-red-500 border-t-4 border-b-2 border-b-gray-400 py-7 h-10 relative gap-2 text-xl`} style={{fontFamily: font.heading}}>
+            <span onClick={toggleMenu} className='lg:hidden'>{showMenu ? <IoClose className='text-xl' /> : <FaBars />}</span>
+            <ul className="nav-list absolute z-[100] top-20 lg:static bg-white opacity-0 lg:opacity-100 transition-opacity duration-700 lg:flex font-bold gap-3 items-center shadow-md shadow-black lg:shadow-none"> {/* error of opacity on large screen */}
                 {navItems.map((item, index) => (
                     <li key={index} className="relative group border-b-2 lg:border-none pt-2 lg:pt-0 mx-2 lg:mx-0">
-                        <Link to={item.slug} className="flex items-center">
+                        <Link to={item.slug} className={`flex items-center ${item.name === 'ई-पेपर' ? 'text-purple-600 ml-[1rem]' : ''}`}>
                             {item.name}
                             {item.subMenu && <FaAngleDown className="ml-1" />}
                         </Link>
                         {item.subMenu && (
-                            <div className='absolute hidden group-hover:block'>
+                            <div className='absolute z-[1000] hidden group-hover:block'>
                                 <div className='bg-white shadow-lg mt-2 px-4 shadow-gray-900'>
                                     <ul className="space-y-1">
                                         {item.subMenu.map((subItem, subIndex) => (
@@ -96,9 +104,9 @@ const Navbar = () => {
                 ))}
             </ul>
             <button onClick={toggleSearch} className="p-2 rounded hover:bg-gray-200">
-                {showSearch ? <IoClose className='text-2xl'/> :<FaSearch className='w-6 h-6'/>}
+                {showSearch ? <IoClose className='text-2xl' /> : <FaSearch className='w-6 h-6' />}
             </button>
-            {showSearch && 
+            {showSearch &&
                 <div className='absolute right-0 bg-blue-50 top-16'>
                     <Search />
                 </div>
