@@ -24,7 +24,8 @@ const Hero = ({ newsData }) => {
                 catagory={item.category}
                 title={item.title}
                 date={item.date}
-                slug={item._id}
+                slug={item?._id}
+
                 width='100%'
                 className={`${gridClasses} h-[240px] md:h-full mb-5 md:mb-0 border-2`}
                 categoryRequired

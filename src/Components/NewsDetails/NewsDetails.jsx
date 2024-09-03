@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import LoadingBar from 'react-top-loading-bar';
+import { articlesEndPoints } from "../../Services/apis"
 import { apiConnector } from '../../Services/connector';
-import {articlesEndPoints} from '../../Services/apis'
+const {GET_ARTICLE_BY_ID} =articlesEndPoints
 const NewsDetails = () => {
     const { slug } = useParams();
     const {GET_ARTICLE_BY_ID} = articlesEndPoints;
@@ -14,15 +15,14 @@ const NewsDetails = () => {
         async function fetchNews() {
             loaderRef.current.continuousStart();
             try {
+                const response = await apiConnector("GET", GET_ARTICLE_BY_ID(slug))
+                console.log("news details",response.data?.article?.category)
+                setNewsItem(response.data?.article);
                 console.log(slug);
                 
-                const response = await apiConnector('GET', GET_ARTICLE_BY_ID)
-                console.log(response);
-                
-                if (!response.ok) throw new Error('News item not found');
-                const data = await response.json();
-                setNewsItem(data);
+              
             } catch (error) {
+                console.log(error)
                 setError(error.message);
             } finally {
                 loaderRef.current.complete();
@@ -37,9 +37,9 @@ const NewsDetails = () => {
             {newsItem &&
                 <div className='m-2 lg:flex lg:gap-2'>
                     <div className='rounded-md lg:w-[75%]'>
-                        <h1>{newsItem.title}</h1>
+                        <h1>{newsItem?.title}</h1>
                         <div>
-                            <img src={newsItem.image} alt="NewsImage" /> {/* I have to ask that only one image or array of image is given */}
+                            <img src={newsItem?.image} alt="NewsImage" /> {/* I have to ask that only one image or array of image is given */}
                         </div>
                         <div>
                             <img src={newsItem.authorAvatar} onError={(e) => { e.target.src = '/images/author.jpg'; }} alt="AuthorImage" /> {/* I am giving default image if error */}
