@@ -1,9 +1,10 @@
-import { StrictMode } from 'react'
+import { lazy, StrictMode, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { AdminDashboard, Home, Layout, Login, NewsDetails, Signup } from './Components/index.js';
+import { AdminDashboard, Layout, Login, NewsDetails, Signup } from './Components/index.js';
+const Home = lazy(()=>import('./Components/Home/Home.jsx'))
 import { Provider } from 'react-redux';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { configureStore } from '@reduxjs/toolkit';
@@ -15,15 +16,18 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element:<App/>,
+        element: <App />,
         children: [
           {
             path: '/',
-            element: <Home/>
+            element: 
+            <Suspense fallback={<h2>Loading component...</h2>}>
+              <Home/>
+            </Suspense>
           },
           {
             path: '/news/:slug',
-            element: <NewsDetails/>
+            element: <NewsDetails />
           },
         ]
       },
@@ -31,15 +35,15 @@ const router = createBrowserRouter([
   },
   {
     path: '/signup',
-    element: <Signup/>
+    element: <Signup />
   },
   {
     path: '/login',
-    element: <Login/>
+    element: <Login />
   },
   {
     path: '/admin',
-    element: <AdminDashboard/>
+    element: <AdminDashboard />
   },
   {
     path: "*",
@@ -55,7 +59,7 @@ const store = configureStore({
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <ThemeProvider theme={createTheme()}>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </ThemeProvider>
   </Provider>
 )

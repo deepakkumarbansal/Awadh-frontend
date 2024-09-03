@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import {
   Epaper,
   FollowUs,
-  Gagets,
+  SamacharSangrah,
   Health,
   Hero,
-  LifeStyle,
+  Rajya,
   PopularNews,
   Section,
   SectionCatagory,
-  Technology,
-  Travel,
+  Videsh,
+  Rajnetic,
   TrendingNews,
+  Desh
 } from "../index";
-import { LatestNews } from "../index";
 import "./Home.css";
 import { articlesEndPoints } from "../../Services/apis";
 import { toast } from "react-hot-toast";
 import { apiConnector } from "../../Services/connector";
 import { getAllArticles } from "../../Services/Operations/article";
+const Youtube = lazy(()=>import('./Youtube/Youtube'))
 const { GET_ALL_ARTICLE } = articlesEndPoints;
 const Home = () => {
   // const disptach =useDispatch()
@@ -176,313 +177,6 @@ const Home = () => {
       img: "https://via.placeholder.com/150?text=Image+1",
       slug: "/",
       author: "एरिक कैंपबेल",
-    },
-  ];
-  const popularNewsData = [
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-1",
-      category: "प्रौद्योगिकी",
-      title: "आधुनिक प्रौद्योगिकी में एआई का उदय",
-      date: "2024-08-14",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-2",
-      category: "स्वास्थ्य",
-      title: "स्वस्थ जीवनशैली के लिए 10 सुझाव",
-      date: "2024-08-13",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-3",
-      category: "वित्त",
-      title: "क्रिप्टोक्यूरेंसी के मूल बातें समझना",
-      date: "2024-08-12",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-4",
-      category: "यात्रा",
-      title: "2024 में यात्रा के लिए शीर्ष 5 गंतव्य",
-      date: "2024-08-11",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-5",
-      category: "शिक्षा",
-      title: "ऑनलाइन पाठ्यक्रम शिक्षा को कैसे बदल रहे हैं",
-      date: "2024-08-10",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-6",
-      category: "खाना",
-      title: "गर्मियों के लिए स्वादिष्ट रेसिपी",
-      date: "2024-08-09",
-    },
-  ];
-  const technologyNewsData = [
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-1",
-      category: "प्रौद्योगिकी",
-      title: "आधुनिक प्रौद्योगिकी में एआई का उदय",
-      date: "2024-08-14",
-      author: "deepak",
-      content:
-        "आर्टिफिशियल इंटेलिजेंस (एआई) आधुनिक प्रौद्योगिकी में क्रांति ला रहा है, जिससे नई संभावनाएं और चुनौतियां उत्पन्न हो रही हैं।",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-2",
-      category: "स्वास्थ्य",
-      title: "स्वस्थ जीवनशैली के लिए 10 सुझाव",
-      date: "2024-08-13",
-      author: "deepak",
-      content:
-        "स्वस्थ जीवनशैली बनाए रखने के लिए महत्वपूर्ण टिप्स और आदतें जो आपको लंबी उम्र और खुशहाल जीवन के लिए अपनानी चाहिए।",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-3",
-      category: "वित्त",
-      title: "क्रिप्टोक्यूरेंसी के मूल बातें समझना",
-      date: "2024-08-12",
-      author: "deepak",
-      content:
-        "क्रिप्टोक्यूरेंसी क्या है, यह कैसे काम करती है, और क्यों यह भविष्य के वित्तीय प्रणाली का हिस्सा हो सकती है।",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-4",
-      category: "यात्रा",
-      title: "2024 में यात्रा के लिए शीर्ष 5 गंतव्य",
-      date: "2024-08-11",
-      author: "deepak",
-      content:
-        "2024 में यात्रा के लिए सबसे अच्छे और अनोखे गंतव्य जो आपको अद्वितीय अनुभव प्रदान करेंगे।",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-5",
-      category: "शिक्षा",
-      title: "ऑनलाइन पाठ्यक्रम शिक्षा को कैसे बदल रहे हैं",
-      date: "2024-08-10",
-      author: "deepak",
-      content:
-        "ऑनलाइन शिक्षा के उदय और यह कैसे पारंपरिक शिक्षा प्रणाली को बदल रहा है, इस पर गहन चर्चा।",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-6",
-      category: "खाना",
-      title: "गर्मियों के लिए स्वादिष्ट रेसिपी",
-      date: "2024-08-09",
-      author: "deepak",
-      content:
-        "गर्मियों में आनंद लेने के लिए सरल और स्वादिष्ट रेसिपी जिन्हें आप अपने परिवार और दोस्तों के साथ साझा कर सकते हैं।",
-    },
-  ];
-  const lifeStyleNewsData = [
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-1",
-      category: "प्रौद्योगिकी",
-      title: "आधुनिक प्रौद्योगिकी में एआई का उदय",
-      date: "2024-08-14",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-2",
-      category: "स्वास्थ्य",
-      title: "स्वस्थ जीवनशैली के लिए 10 सुझाव",
-      date: "2024-08-13",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-3",
-      category: "वित्त",
-      title: "क्रिप्टोक्यूरेंसी के मूल बातें समझना",
-      date: "2024-08-12",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-4",
-      category: "यात्रा",
-      title: "2024 में यात्रा के लिए शीर्ष 5 गंतव्य",
-      date: "2024-08-11",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-5",
-      category: "शिक्षा",
-      title: "ऑनलाइन पाठ्यक्रम शिक्षा को कैसे बदल रहे हैं",
-      date: "2024-08-10",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-1",
-      category: "प्रौद्योगिकी",
-      title: "आधुनिक प्रौद्योगिकी में एआई का उदय",
-      date: "2024-08-14",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-2",
-      category: "स्वास्थ्य",
-      title: "स्वस्थ जीवनशैली के लिए 10 सुझाव",
-      date: "2024-08-13",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-3",
-      category: "वित्त",
-      title: "क्रिप्टोक्यूरेंसी के मूल बातें समझना",
-      date: "2024-08-12",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-4",
-      category: "यात्रा",
-      title: "2024 में यात्रा के लिए शीर्ष 5 गंतव्य",
-      date: "2024-08-11",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-5",
-      category: "शिक्षा",
-      title: "ऑनलाइन पाठ्यक्रम शिक्षा को कैसे बदल रहे हैं",
-      date: "2024-08-10",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      slug: "example-article-6",
-      category: "खाना",
-      title: "गर्मियों के लिए स्वादिष्ट रेसिपी",
-      date: "2024-08-09",
-    },
-  ];
-  const trendingNewsData = [
-    {
-      category: "प्रौद्योगिकी",
-      title: "एआई का उदय: कैसे यह दुनिया को बदल रहा है",
-      date: "2024-08-16",
-      image: "https://via.placeholder.com/150",
-      slug: "the-rise-of-ai",
-    },
-    {
-      category: "स्वास्थ्य",
-      title: "स्वस्थ जीवनशैली के लिए 10 टिप्स",
-      date: "2024-08-15",
-      image: "https://via.placeholder.com/150",
-      slug: "healthier-lifestyle-tips",
-    },
-    {
-      category: "व्यवसाय",
-      title: "कार्य का भविष्य: दूरस्थ और हाइब्रिड मॉडल",
-      date: "2024-08-14",
-      image: "https://via.placeholder.com/150",
-      slug: "future-of-work",
-    },
-    {
-      category: "मनोरंजन",
-      title: "इस गर्मी में देखने लायक टॉप 10 फिल्में",
-      date: "2024-08-13",
-      image: "https://via.placeholder.com/150",
-      slug: "top-movies-summer-2024",
-    },
-    {
-      category: "खेल",
-      title: "ताज़ा फ़ुटबॉल ट्रांसफ़र का विश्लेषण",
-      date: "2024-08-12",
-      image: "https://via.placeholder.com/150",
-      slug: "football-transfers-2024",
-    },
-    {
-      category: "विज्ञान",
-      title: "गहरे अंतरिक्ष के रहस्यों की खोज",
-      date: "2024-08-11",
-      image: "https://via.placeholder.com/150",
-      slug: "mysteries-of-deep-space",
-    },
-  ];
-  const travelNewsData = [
-    {
-      title: "हिमालय के छिपे रत्नों की खोज",
-      date: "2024-08-16",
-      image: "https://via.placeholder.com/150",
-      slug: "hidden-gems-himalayas",
-    },
-    {
-      title: "इस गर्मी में घूमने के लिए शीर्ष 5 समुद्र तट",
-      date: "2024-08-15",
-      image: "https://via.placeholder.com/150",
-      slug: "top-summer-beaches",
-    },
-    {
-      title: "यूरोप में बैकपैकिंग के लिए एक गाइड",
-      date: "2024-08-14",
-      image: "https://via.placeholder.com/150",
-      slug: "backpacking-europe-guide",
-    },
-    {
-      title: "दक्षिण पूर्व एशिया के सांस्कृतिक चमत्कार",
-      date: "2024-08-13",
-      image: "https://via.placeholder.com/150",
-      slug: "cultural-wonders-se-asia",
-    },
-  ];
-  const healthNewsData = [
-    {
-      title: "आधुनिक जीवन में मानसिक स्वास्थ्य का महत्व",
-      date: "2024-08-16",
-      image: "https://via.placeholder.com/150",
-      slug: "mental-health-modern-life",
-    },
-    {
-      title: "5 सुपरफूड्स जो आपको अपने आहार में शामिल करने चाहिए",
-      date: "2024-08-15",
-      image: "https://via.placeholder.com/150",
-      slug: "superfoods-to-add",
-    },
-    {
-      title: "योग के लाभों को समझना",
-      date: "2024-08-14",
-      image: "https://via.placeholder.com/150",
-      slug: "benefits-of-yoga",
-    },
-    {
-      title: "घर से काम करते हुए फिट कैसे रहें",
-      date: "2024-08-13",
-      image: "https://via.placeholder.com/150",
-      slug: "stay-fit-working-home",
-    },
-  ];
-  const gadgetsNewsData = [
-    {
-      title: "2024 में नवीनतम स्मार्टफोन नवाचार",
-      date: "2024-08-16",
-      image: "https://via.placeholder.com/150",
-      slug: "latest-smartphone-innovations",
-    },
-    {
-      title: "तकनीक प्रेमियों के लिए शीर्ष 10 आवश्यक गैजेट्स",
-      date: "2024-08-15",
-      image: "https://via.placeholder.com/150",
-      slug: "must-have-gadgets-2024",
-    },
-    {
-      title: "अपने रहने की जगह को अपग्रेड करने के लिए स्मार्ट होम डिवाइसेस",
-      date: "2024-08-14",
-      image: "https://via.placeholder.com/150",
-      slug: "smart-home-devices",
-    },
-    {
-      title: "2024 में पहनने योग्य तकनीक: नया क्या है",
-      date: "2024-08-13",
-      image: "https://via.placeholder.com/150",
-      slug: "wearable-tech-2024",
     },
   ];
   const ytVideos = [
@@ -677,7 +371,6 @@ const Home = () => {
       allowFullScreen
     ></iframe>,
   ];
-  const [youtubeVideos, setYoutubeVideos] = useState(ytVideos);
 
   const [articles, setArticles] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -691,61 +384,38 @@ const Home = () => {
       setLoading(false);
       console.log("data in home", data);
       // You can do more with the data here
+
     }
 
     fetchArticles();
   }, []);
 
   console.log("articles in jome", articles);
-  useEffect(() => {
-    window.addEventListener("resize", () => {
-      if (window.innerWidth <= 1024) {
-        setYoutubeVideos(youtubeVideos.slice(0, 5));
-      } else {
-        setYoutubeVideos(youtubeVideos);
-      }
-    });
-    return () => {
-      window.removeEventListener("resize", () => {
-        if (window.innerWidth <= 768) {
-          setYoutubeVideos(youtubeVideos.slice(0, 5));
-        }
-      });
-    };
-  });
   return (
     <div>
-      <div className="md:flex justify-between gap-10">
-        <Section className="w-1/2" id="follow">
-          <FollowUs />
-        </Section>
-        <Section className="w-1/2">
-          <Epaper />
-        </Section>
-      </div>
       <Section id="hero">
-        <Hero newsData={loading ? latestNewsData : articles} />
+          <Hero newsData={loading ? latestNewsData : articles} />
       </Section>
       <div id="container1">
-        <div>
-          <Section id="latest">
-            <LatestNews newsData={latestNewsData} />
+        <div className="w-full">
+          <Section id="desh" className="w-full">
+            <Desh newsData={latestNewsData} />
           </Section>
-          <Section id="technology">
-            <Technology newsData={technologyNewsData} />
+          <Section id="videsh">
+            <Videsh newsData={latestNewsData} />
           </Section>
-          <Section id="lifestyle">
-            <LifeStyle newsData={lifeStyleNewsData} />
+          <Section id="Rajya">
+            <Rajya newsData={latestNewsData} />
           </Section>
-
+          <h1>Instagram</h1>
           <Section id="travel">
-            <Travel newsData={travelNewsData} />
-          </Section>
-          <Section id="gadgets">
-            <Gagets newsData={gadgetsNewsData} />
+            <Rajnetic newsData={latestNewsData} />
           </Section>
           <Section id="health">
-            <Health newsData={healthNewsData} />
+            <Health newsData={latestNewsData} />
+          </Section>
+          <Section id="SamacharSangrah">
+            <SamacharSangrah newsData={latestNewsData} />
           </Section>
         </div>
         <div>
@@ -754,11 +424,9 @@ const Home = () => {
           <Section id="trending"><TrendingNews newsData={trendingNewsData} /></Section> */}
           <Section>
             <SectionCatagory name="Youtube videos" />
-            <div className="flex flex-col gap-5">
-              {youtubeVideos.map((item, index) => (
-                <div key={index}>{item}</div>
-              ))}
-            </div>
+              <Suspense fallback={<h1>Loading....</h1>}>
+                <Youtube ytVideos={ytVideos}/>
+              </Suspense>
           </Section>
         </div>
       </div>

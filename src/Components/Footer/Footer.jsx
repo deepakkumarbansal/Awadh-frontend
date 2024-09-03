@@ -9,7 +9,7 @@ import { Button } from '@mui/material';
 import { logout } from '../../Services/Operations/auth';
 
 const Footer = ({ className = '' }) => {
-    const isLogin = useSelector((state)=>state.auth.isLogin);
+    const isLogin = useSelector((state) => state.auth.isLogin);
     const [visitorsCount, setVisitorsCount] = useState(999909120) // to be update
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -18,16 +18,16 @@ const Footer = ({ className = '' }) => {
         const handleReload = () => {
             setVisitorsCount(visitorsCount + 1);
         };
-    
+
         window.addEventListener('load', handleReload);
-    
+
         return () => {
             window.removeEventListener('load', handleReload);
         };
     }, [visitorsCount]);
 
     const handleLogin = () => {
-        if(isLogin){
+        if (isLogin) {
             dispatch(logout());
             navigate('/');
         } else {
@@ -87,6 +87,7 @@ const Footer = ({ className = '' }) => {
     const [latestTweetes, setLatestTweets] = useState(tweets.slice(0, 3));
     const [postGalaryImages, setPostGalaryImages] = useState(postImages.slice(0, 9)); // slice to avoid represent more than 9
     const [trandingPosts, setTrandingPosts] = useState(tranding.slice(0, 3));
+    const [toggleJoin, setToggleJoin] = useState(false);
 
     return (
         <div className={`min-h-[100vh] bg-gray-950 text-gray-50  ${className} py-4 mt-10`}>
@@ -142,34 +143,34 @@ const Footer = ({ className = '' }) => {
                     <h2 className='text-lg'>Account</h2>
                     <div className='flex gap-4 mt-4'>
                         <Button onClick={handleLogin} variant='outlined'>{isLogin ? 'Logout' : 'Login'}</Button>
-                        {!isLogin ? <Button onClick={()=>navigate('/signup')} variant='contained'>Signup</Button> : ''}
+                        {!isLogin ? <Button onClick={() => navigate('/signup')} variant='contained'>Signup</Button> : ''}
                     </div>
                 </div>
             </div>
-            <div className='bg-gray-400 h-[2px] mx:2 md:mx-10'></div>
-            <div className='flex items-center my-4 flex-col'>
-                <div className='flex items-center'>
-                    <h1>You want to become the part of Awadh Kesari &nbsp; </h1>
-                    <Button variant="contained">Donate Now...</Button>
-                </div>
-                <div className='mt-4'>
-                    <h2>Or pay using account details:</h2>
-                    <div className='flex gap-2'>
-                        <p>Account Holder:</p>
-                        <p className='font-bold'>Deepak Bansal</p>
-                    </div>
-                    <div className='flex gap-2'>
-                        <p>Account Number:</p>
-                        <p className='font-bold'>05830100018116</p>
-                    </div>
-                    <div className='flex gap-2'>
-                        <p>IFSC:</p>
-                        <p className='font-bold'>BARB0ALIGAR</p>
-                    </div>
+            <div className='flex items-center justify-between mx-10 border-x-0 py-4 my-4  border-gray-400 border-2'>
+                <Logo className='flex justify-center mt-4' image='/images/LogoWithNoBg.png' />
+                <div>
+                    <h1 className='mb-2'>You want to become the part of Awadh Kesari &nbsp; </h1>
+                    <Button variant="contained" onClick={() => setToggleJoin(!toggleJoin)}>{toggleJoin ? 'Hide details' : 'Join Now...'}</Button>
+                    {
+                        toggleJoin && <div className='mt-4'>
+                            <h2>Or pay using account details:</h2>
+                            <div className='flex gap-2'>
+                                <p>Account Holder:</p>
+                                <p className='font-bold'>Deepak Bansal</p>
+                            </div>
+                            <div className='flex gap-2'>
+                                <p>Account Number:</p>
+                                <p className='font-bold'>05830100018116</p>
+                            </div>
+                            <div className='flex gap-2'>
+                                <p>IFSC:</p>
+                                <p className='font-bold'>BARB0ALIGAR</p>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
-            <div className='bg-gray-400 h-[2px] my-1 mx:2 md:mx-10'></div>
-            <Logo className='flex justify-center mt-4' image='/images/LogoWithNoBg.png'/>
             <p>News247 Worldwide is a popular online newsportal and going source for technical and digital content for its influential audience around the globe. You can reach us via email or phone.</p>
             <div className='flex gap-10 justify-center relative'>
                 <p className='flex items-center gap-2'><MdLocalPhone /><span>99999999999</span></p>

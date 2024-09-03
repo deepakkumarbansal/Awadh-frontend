@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { login } from '../../Services/Operations/auth';
 
+
 const Signup = () => {
     const [error, setError] = useState('');
     const { handleSubmit, register, setValue, control, formState:{errors} } = useForm();
@@ -22,7 +23,7 @@ const Signup = () => {
                 return;
             }
             //to be done the processing
-            console.log(data);
+            
             dispatch(login(data.email,data.password));
             navigate('/')
 

@@ -8,11 +8,11 @@ const usePagination = (data, initialPostsPerPage) => {
     const handleResize = () => {
       const width = window.innerWidth;
       if (width < 640) {
-        setPostPerPage(2);
+        setPostPerPage(1);
       } else if (width < 768) {
-        setPostPerPage(4);
+        setPostPerPage(2);
       } else {
-        setPostPerPage(6);
+        setPostPerPage(4);
       }
     };
 

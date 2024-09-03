@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom'
 import LoadingBar from 'react-top-loading-bar';
 import { articlesEndPoints } from "../../Services/apis"
 import { apiConnector } from '../../Services/connector';
-
 const {GET_ARTICLE_BY_ID} =articlesEndPoints
 const NewsDetails = () => {
     const { slug } = useParams();
+    const {GET_ARTICLE_BY_ID} = articlesEndPoints;
     const loaderRef = useRef(null);
     const [newsItem, setNewsItem] = useState(null);
     const [error, setError] = useState(null);
@@ -18,6 +18,9 @@ const NewsDetails = () => {
                 const response = await apiConnector("GET", GET_ARTICLE_BY_ID(slug))
                 console.log("news details",response.data?.article?.category)
                 setNewsItem(response.data?.article);
+                console.log(slug);
+                
+              
             } catch (error) {
                 console.log(error)
                 setError(error.message);
