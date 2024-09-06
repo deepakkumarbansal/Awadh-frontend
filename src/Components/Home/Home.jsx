@@ -12,17 +12,18 @@ import {
   Videsh,
   Rajnetic,
   TrendingNews,
-  Desh
+  Desh,
 } from "../index";
+import { useDispatch, useSelector } from "react-redux";
 import "./Home.css";
 import { articlesEndPoints } from "../../Services/apis";
-import { toast } from "react-hot-toast";
-import { apiConnector } from "../../Services/connector";
 import { getAllArticles } from "../../Services/Operations/article";
-const Youtube = lazy(()=>import('./Youtube/Youtube'))
-const { GET_ALL_ARTICLE } = articlesEndPoints;
+import { setNews } from "../../store/slice/newsSlice";
+const Youtube = lazy(() => import("./Youtube/Youtube"));
 const Home = () => {
-  // const disptach =useDispatch()
+  const dispatch = useDispatch();
+
+  const articled = useSelector((state) => state.news.articles);
   const latestNewsData = [
     {
       category: "विश्व",
@@ -371,7 +372,7 @@ const Home = () => {
       allowFullScreen
     ></iframe>,
   ];
-
+  console.log("newwwws", articled);
   const [articles, setArticles] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -380,21 +381,20 @@ const Home = () => {
     async function fetchArticles() {
       setLoading(true);
       const data = await getAllArticles();
+      dispatch(setNews(data));
+      localStorage.setItem("Articles", JSON.stringify(data));
       setArticles(data);
       setLoading(false);
       console.log("data in home", data);
       // You can do more with the data here
-
     }
-
     fetchArticles();
   }, []);
 
-  console.log("articles in jome", articles);
   return (
     <div>
       <Section id="hero">
-          <Hero newsData={loading ? latestNewsData : articles} />
+        <Hero newsData={loading ? latestNewsData : articles} />
       </Section>
       <div id="container1">
         <div className="w-full">
@@ -424,9 +424,9 @@ const Home = () => {
           <Section id="trending"><TrendingNews newsData={trendingNewsData} /></Section> */}
           <Section>
             <SectionCatagory name="Youtube videos" />
-              <Suspense fallback={<h1>Loading....</h1>}>
-                <Youtube ytVideos={ytVideos}/>
-              </Suspense>
+            <Suspense fallback={<h1>Loading....</h1>}>
+              <Youtube ytVideos={ytVideos} />
+            </Suspense>
           </Section>
         </div>
       </div>
