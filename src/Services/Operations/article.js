@@ -2,6 +2,7 @@ import { apiConnector } from "../connector";
 import { articlesEndPoints } from "../apis";
 import { toast } from "react-hot-toast";
 const { GET_ALL_ARTICLE } = articlesEndPoints;
+// import {setNews} from "../../store/slice"
 
 export const getAllArticles = async () => {
   const toastId = toast.loading("Loading...");

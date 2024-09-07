@@ -1,9 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  news: localStorage.getItem("news")
-    ? JSON.parse(localStorage.getItem("news"))
-    : null,
+  news: (() => {
+    try {
+      return localStorage.getItem("Articles")
+        ? JSON.parse(localStorage.getItem("Articles"))
+        : [];
+    } catch (e) {
+      console.error("Error parsing stored Articles:", e);
+      return null; // or [] depending on your use case
+    }
+  })(),
   loading: false,
 };
 
@@ -13,6 +20,7 @@ const newsSlice = createSlice({
   reducers: {
     setNews(state, value) {
       state.news = value.payload;
+      console.log("hell",state)
     },
     setLoading(state, value) {
       state.loading = value.payload;
