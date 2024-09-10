@@ -4,7 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AdminDashboard, Layout, Login, NewsDetails, Signup } from './Components/index.js';
-const Home = lazy(()=>import('./Components/Home/Home.jsx'))
+const Home = lazy(()=>import('./Pages/Home/Home.jsx'));
 import { Provider } from 'react-redux';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { configureStore } from '@reduxjs/toolkit';

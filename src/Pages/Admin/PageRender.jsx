@@ -2,7 +2,7 @@ import AdminHome from "./AdminHome.jsx";
 import UsersData from "./UsersData.jsx";
 import ArticleData from "./ArticleData.jsx";
 import ReportersData from "./ReportersData.jsx";
-import {ReportersHome, MyArticles, Profile} from '../index.js'
+import {ReportersHome, MyArticles, Profile} from '../../Components/index'
 
 const renderCurrentPage = (currentPage, user) => {
   if (user.role === "admin") {
