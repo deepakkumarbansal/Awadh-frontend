@@ -16,6 +16,7 @@ export const articlesEndPoints = {
   UPDATE_ARTICLE_BY_ID: (articleId)=> BASE_URL + `/article/update-article/${articleId}`,
   DELETE_ARTICLE_BY_ID: (articleId)=> BASE_URL + `/article/delete-article/${articleId}`,
   GET_ARTICLE_BY_REPORTERS_ID: (articleId)=> BASE_URL + `/article/whole-article/${articleId}`,
+  GET_ARTICLES_BY_CATAGORY: (articleCatagory)=> BASE_URL + `/article/${articleCatagory}`,
 };
 export const commentsEndPoints = {
   CREATE_COMMENT: BASE_URL + "/comment/create",

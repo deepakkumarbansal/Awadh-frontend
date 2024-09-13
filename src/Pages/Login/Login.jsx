@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import {Input, Logo, Password, SubmitButton} from '../../Components/index'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginAction } from '../../store/slice/authSlice';
 
 const Signup = () => {
     const [error, setError] = useState('');
@@ -10,21 +11,14 @@ const Signup = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isSubmitPending, setIsSubmitPending] = useState(false);
-    const [userType, setUserType] = useState('admin') //Example of the userType
-
     const handleSignup = async (data) => {
         setError("");
         setIsSubmitPending(true);
         try {
             //to be done
-            if(userType === 'admin' || 'reporter'){
-                //to be done
-                // dispatch()
-                navigate('/admin');
-            } else{
-                navigate('/');
-            }
-
+            console.log(data);
+            dispatch(loginAction({formdata:data, navigate}));
+            
         } catch (error) {
             setError(error.message);
         }

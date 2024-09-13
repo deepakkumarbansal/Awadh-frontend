@@ -13,16 +13,38 @@ import {
   Rajnetic,
   TrendingNews,
   Desh,
+  InstaPost,
 } from "../../Components/index";
 import { useDispatch, useSelector } from "react-redux";
 import "./Home.css";
-import { articlesEndPoints } from "../../Services/apis";
-import { getAllArticles } from "../../Services/Operations/article";
-import { setNews } from "../../store/slice/newsSlice";
+import { fetchHomeNewsByCatagoriesAction, selectHomeNewsByCatagories, setNews } from "../../store/slice/newsSlice";
+import { envConfig } from "../../config/envConfig";
 const Youtube = lazy(() => import("../../Components/Youtube/Youtube"));
 const Home = () => {
-  const dispatch = useDispatch();
+  const [videos, setVideos] = useState([])
+  const fetchVideos = async () => {
+    const YOUTUBE_API_KEY = envConfig.youtubeApiKey;
+    const channelID = envConfig.channelId;
+    const url = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${channelID}&part=snippet,id&order=date&maxResults=10`;
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      const information = data?.items;
+      const videoIds = information?.map((item) => item.id.videoId);
+      console.log("youtube 2", videoIds);
+      setVideos(videoIds);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
+  const dispatch = useDispatch();
+  const instaPosts = [
+    "https://www.instagram.com/reel/C_nRampp6tB/?utm_source=ig_embed&amp;utm_campaign=loading",
+    "https://www.instagram.com/reel/C_m1rndJIde/?utm_source=ig_embed&amp;utm_campaign=loading",
+    "https://www.instagram.com/reel/C_mxQ1spY4U/?utm_source=ig_embed&amp;utm_campaign=loading",
+    "https://www.instagram.com/reel/C_kBFdZpfNc/?utm_source=ig_embed&amp;utm_campaign=loading"
+  ]
   const articled = useSelector((state) => state.news.articles);
   const latestNewsData = [
     {
@@ -191,10 +213,38 @@ const Home = () => {
       referrerPolicy="strict-origin-when-cross-origin"
       allowFullScreen
     ></iframe>,
+    <iframe max-width="460" height="215" src="https://www.youtube.com/embed/0j9TXAAfJA0?si=x_wV-2OBCqhA1YgI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>,
+    <iframe max-width="460" height="215" src="https://www.youtube.com/embed/ABoUY4hMbPw?si=8W7-PIOaw0Qlu9LP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>,
+    <iframe max-width="460" height="215" src="https://www.youtube.com/embed/jHyE9nMHcoM?si=j13UUehKui0ATJg8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>,
+    <iframe max-width="460" height="215" src="https://www.youtube.com/embed/oma--woSH54?si=9earXZ_lsRmeV3AM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>,
+    <iframe max-width="460" height="215" src="https://www.youtube.com/embed/P5SvpLcZl1A?si=29OY31yTFH3Ay-PU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>,
+    <iframe max-width="460" height="215" src="https://www.youtube.com/embed/PArYRGhIfWo?si=lzrkAeQ813tvEC0C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>,
+    <iframe max-width="460" height="215" src="https://www.youtube.com/embed/VcSZejPUTqA?si=x8X4yDPTUCHN6Ezi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>,
+
     <iframe
       max-width="460"
       height="215"
       src="https://www.youtube.com/embed/e3xORtmMH9o?si=42NoPWMgJ30cjgA6"
+      title="YouTube video player"
+      frameBorder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerPolicy="strict-origin-when-cross-origin"
+      allowFullScreen
+    ></iframe>,
+    <iframe
+      max-width="460"
+      height="215"
+      src="https://www.youtube.com/embed/U8OfcnERTbk?si=GSOVkXq5Y7YSuk2B"
+      title="YouTube video player"
+      frameBorder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerPolicy="strict-origin-when-cross-origin"
+      allowFullScreen
+    ></iframe>,
+    <iframe
+      max-width="460"
+      height="215"
+      src="https://www.youtube.com/embed/x7OlH1vGE8g?si=9752HytZ2KAT_YAp"
       title="YouTube video player"
       frameBorder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -251,6 +301,9 @@ const Home = () => {
       referrerPolicy="strict-origin-when-cross-origin"
       allowFullScreen
     ></iframe>,
+    <iframe max-width="460" height="215" src="https://www.youtube.com/embed/jHyE9nMHcoM?si=j13UUehKui0ATJg8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>,
+    <iframe max-width="460" height="215" src="https://www.youtube.com/embed/oma--woSH54?si=9earXZ_lsRmeV3AM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>,
+
     <iframe
       max-width="460"
       height="215"
@@ -281,6 +334,8 @@ const Home = () => {
       referrerPolicy="strict-origin-when-cross-origin"
       allowFullScreen
     ></iframe>,
+    <iframe max-width="460" height="215" src="https://www.youtube.com/embed/0j9TXAAfJA0?si=x_wV-2OBCqhA1YgI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>,
+
     <iframe
       max-width="460"
       height="215"
@@ -311,6 +366,9 @@ const Home = () => {
       referrerPolicy="strict-origin-when-cross-origin"
       allowFullScreen
     ></iframe>,
+    <iframe max-width="460" height="215" src="https://www.youtube.com/embed/P5SvpLcZl1A?si=29OY31yTFH3Ay-PU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>,
+    <iframe max-width="460" height="215" src="https://www.youtube.com/embed/PArYRGhIfWo?si=lzrkAeQ813tvEC0C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>,
+    <iframe max-width="460" height="215" src="https://www.youtube.com/embed/VcSZejPUTqA?si=x8X4yDPTUCHN6Ezi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>,
     <iframe
       max-width="460"
       height="215"
@@ -371,26 +429,45 @@ const Home = () => {
       referrerPolicy="strict-origin-when-cross-origin"
       allowFullScreen
     ></iframe>,
+    <iframe
+      max-width="460"
+      height="215"
+      src="https://www.youtube.com/embed/TkpHLE7J0wQ?si=scSa9xE9b-t_nBCZ"
+      title="YouTube video player"
+      frameBorder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerPolicy="strict-origin-when-cross-origin"
+      allowFullScreen
+    ></iframe>,
   ];
-  console.log("newwwws", articled);
   const [articles, setArticles] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  // fetching all the articles
+  const catagories = ["desh", "videsh", "rajya", "rajnetic", "health", "others"];
+  const [databyCatagory, setDataByCatagory] = useState({});
+  // fetching all the articles by catagory
   useEffect(() => {
     async function fetchArticles() {
       setLoading(true);
-      const data = await getAllArticles();
-      dispatch(setNews(data));
-      localStorage.setItem("Articles", JSON.stringify(data));
-      setArticles(data);
+      dispatch(fetchHomeNewsByCatagoriesAction(catagories));
+      setDataByCatagory(useSelector(selectHomeNewsByCatagories)); //error
       setLoading(false);
-      console.log("data in home", data);
-      // You can do more with the data here
     }
     fetchArticles();
+    fetchVideos();
   }, []);
+  //embbed the insta js
+  useEffect(() => {
+    // Dynamically load Instagram's embed.js script
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = "//www.instagram.com/embed.js";
+    document.body.appendChild(script);
 
+    return () => {
+      // Clean up the script element after component unmount
+      document.body.removeChild(script);
+    };
+  }, []);
   return (
     <div>
       <Section id="hero">
@@ -399,23 +476,50 @@ const Home = () => {
       <div id="container1">
         <div className="w-full">
           <Section id="desh" className="w-full">
-            <Desh newsData={latestNewsData} />
+            <Desh newsData={
+              // databyCatagory?.desh
+              latestNewsData
+            } />
           </Section>
           <Section id="videsh">
-            <Videsh newsData={latestNewsData} />
+            <Videsh newsData={
+              // databyCatagory?.videsh
+              latestNewsData
+            } />
           </Section>
           <Section id="Rajya">
-            <Rajya newsData={latestNewsData} />
+            <Rajya newsData={
+              // databyCatagory?.rajya
+              latestNewsData
+            } />
           </Section>
-          <h1>Instagram</h1>
-          <Section id="travel">
-            <Rajnetic newsData={latestNewsData} />
+          <Section>
+            <SectionCatagory name="Instagram Post" />
+            <div className="w-[100%] md:flex md:flex-wrap md:justify-between">
+              {
+                instaPosts.map((url, index) => (
+                  <InstaPost key={index} url={url} className="md:w-[49%]" />
+                ))
+              }
+            </div>
+          </Section>
+          <Section id="rajnetic">
+            <Rajnetic newsData={
+              // databyCatagory?.rajnetic
+              latestNewsData
+            } />
           </Section>
           <Section id="health">
-            <Health newsData={latestNewsData} />
+            <Health newsData={
+              // databyCatagory?.health
+              latestNewsData
+            } />
           </Section>
           <Section id="SamacharSangrah">
-            <SamacharSangrah newsData={latestNewsData} />
+            <SamacharSangrah newsData={
+              // databyCatagory.others
+              latestNewsData
+            } />
           </Section>
         </div>
         <div>
@@ -425,7 +529,7 @@ const Home = () => {
           <Section>
             <SectionCatagory name="Youtube videos" />
             <Suspense fallback={<h1>Loading....</h1>}>
-              <Youtube ytVideos={ytVideos} />
+              <Youtube videoIds={videos} />
             </Suspense>
           </Section>
         </div>

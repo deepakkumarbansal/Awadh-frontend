@@ -34,6 +34,8 @@ import MyArticles from "../Pages/Reporters/MyArticles";
 import ReportersHome from "../Pages/Reporters/ReportersHome";
 import Profile from "./Profile/Profile";
 import Epaper from "./Epaper/Epaper";
+import ScrollContainer from "./HorizonalScrollContainer/ScrollContainer";
+import InstaPost from "./InstaPost/InstaPost";
 export {
     Layout,
     NavBar,
@@ -70,5 +72,7 @@ export {
     ReportersHome,
     MyArticles,
     Profile,
-    Epaper
+    Epaper,
+    ScrollContainer,
+    InstaPost
 }

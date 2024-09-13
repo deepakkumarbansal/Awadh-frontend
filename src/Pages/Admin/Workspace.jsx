@@ -23,11 +23,7 @@ import { useSelector } from "react-redux";
 const drawerWidth = 280;
 
 const Workspace = (props) => {
-  // const user = useSelector(state=>state.auth.user)
-  const user = {
-    name:'deepak',
-    role: 'reporter'
-  }
+  const {user, role} = useSelector(state=>state.auth);
   const { window } = props;
   const [currentPage, setCurrentPage] = useState("Dashboard");
 
