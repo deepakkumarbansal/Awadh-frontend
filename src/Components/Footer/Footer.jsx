@@ -147,8 +147,14 @@ const Footer = ({ className = '' }) => {
                     </div>
                 </div>
             </div>
-            <div className='flex items-center justify-between mx-10 border-x-0 py-4 my-4  border-gray-400 border-2'>
+            <div className='flex items-center justify-between mx-10 border-x-0 py-4 my-4 flex-col md:flex-row  border-gray-400 border-2 gap-5'>
                 <Logo className='flex justify-center mt-4' image='/images/LogoWithNoBg.png' />
+                <div className='flex gap-2 items-center flex-col items-start'>
+                    <p className='text-lg font-medium text-white'>Visitors Count: </p>
+                    <div className='bg-gradient-to-r from-yellow-300 to-yellow-500 text-black font-semibold px-4 py-2 rounded-md shadow-inner'>
+                        {visitorsCount}
+                    </div>
+                </div>
                 <div>
                     <h1 className='mb-2'>You want to become the part of Awadh Kesari &nbsp; </h1>
                     <Button variant="contained" onClick={() => setToggleJoin(!toggleJoin)}>{toggleJoin ? 'Hide details' : 'Join Now...'}</Button>
@@ -176,7 +182,6 @@ const Footer = ({ className = '' }) => {
                 <p className='flex items-center gap-2'><MdLocalPhone /><span>99999999999</span></p>
                 <p className='flex items-center gap-2'><MdEmail /><span>sample@gmail.com</span></p>
             </div>
-            <div className=''>Visiters Count: {visitorsCount}</div>
         </div>
     )
 }

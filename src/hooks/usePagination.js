@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const usePagination = (data, initialPostsPerPage) => {
+const usePagination = (data=[], initialPostsPerPage) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(initialPostsPerPage);
 

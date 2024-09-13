@@ -1,7 +1,8 @@
 import React from 'react'
-import { FollowUs, Logo, NavBar } from '../index'
+import { FollowUs, Logo, NavBar, ScrollContainer } from '../index'
 
-const Header = () => {
+const Header = ({scrollContainerItems}) => {
+
   return (
     <>
       <div className='sm:flex gap-6 py-10'>
@@ -14,6 +15,7 @@ const Header = () => {
         <FollowUs/>
       </div>
       <NavBar />
+      <ScrollContainer items={scrollContainerItems}/>
     </>
   )
 }

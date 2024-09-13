@@ -4,7 +4,7 @@ import NavBar from "./NavBar/NavBar";
 import NewsCard from "./TextNewsCard/TextNewsCard";
 import PhotoNewsCard from "./PhotoNewsCard/PhotoNewsCard";
 import Search from "./Search/Search";
-import Home from "./Home/Home";
+import Home from "../Pages/Home/Home";
 import Hero from "./Hero/Hero";
 import NewsCatagory from "./NewsCatagory/NewsCatagory";
 import Desh from "./Desh/Desh";
@@ -22,18 +22,20 @@ import SamacharSangrah from "./Samachar Sangrah/SamacharSangrah";
 import Health from "./Health/Health";
 import Rajnetic from "./Rajnetic/Rajnetic";
 import Section from "./Section/Section";
-import NewsDetails from "./NewsDetails/NewsDetails";
-import Signup from "./Signup/Signup";
+import NewsDetails from "../Pages/NewsDetails/NewsDetails";
+import Signup from "../Pages/Signup/Signup";
 import Logo from "./Logo/Logo";
 import SubmitButton from "./SubmitButton/SubmitButton";
 import Input from "./Input/Input";
 import Password from "./Password/Password";
-import Login from "./Login/Login";
-import AdminDashboard from './Admin/AdminDashboard'
-import MyArticles from "./Reporters/MyArticles";
-import ReportersHome from "./Reporters/ReportersHome";
+import Login from '../Pages/Login/Login'
+import AdminDashboard from '../Pages/Admin/AdminDashboard'
+import MyArticles from "../Pages/Reporters/MyArticles";
+import ReportersHome from "../Pages/Reporters/ReportersHome";
 import Profile from "./Profile/Profile";
 import Epaper from "./Epaper/Epaper";
+import ScrollContainer from "./HorizonalScrollContainer/ScrollContainer";
+import InstaPost from "./InstaPost/InstaPost";
 export {
     Layout,
     NavBar,
@@ -70,5 +72,7 @@ export {
     ReportersHome,
     MyArticles,
     Profile,
-    Epaper
+    Epaper,
+    ScrollContainer,
+    InstaPost
 }
