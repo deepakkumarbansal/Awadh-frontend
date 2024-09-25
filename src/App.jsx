@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import { Link, Outlet, useNavigate } from 'react-router-dom'
-import { Header, Footer, ReportersHome } from './Components'
+import { Header, Footer, ReportersHome, ArticleForm } from './Components'
 import { FaAngleUp } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 import { MdOutlineAccountCircle } from "react-icons/md";
+import InstagramPosts from './Components/InstagramPosts';
 
 function App() {
   const [latestNewsData, setLatestNewsData] = useState([]);
@@ -63,7 +64,7 @@ function App() {
       </div>
       <Footer className='px-2 lg:px-24' />
       <div className={`border-[3px] bg-white fixed bottom-5 right-5 hover:border-red-500 transition-all duration-300 h-10 w-10 text-2xl flex items-center justify-center shadow-lg ${enableScroll ? 'opacity-1' : 'opacity-0'} transition-all duration-300`} onClick={scrollToTop}><FaAngleUp /></div>
-
+      {/* <InstagramPosts/> */}
     </div>
   )
 }

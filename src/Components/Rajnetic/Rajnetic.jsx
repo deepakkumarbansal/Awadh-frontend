@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
-import {NewsCatagory, SectionCatagory, TextNewsCard} from '../index'
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
-import usePagination from '../../hooks/usePagination';
+import React, { useState } from "react";
+import { NewsCatagory, SectionCatagory, TextNewsCard } from "../index";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import usePagination from "../../hooks/usePagination";
 
-const Rajnetic = ({newsData}) => {
-  const [data, setData] = useState(newsData);
-  const {visibleData, prevPage, nextPage, currentPage, totalPages} = usePagination(data, 6)
-  
+const Rajnetic = ({ newsData }) => {
+  const { articles, limit, page, totalCount } = newsData || {};
+  const { visibleData, prevPage, nextPage, currentPage, totalPages } =
+    usePagination(articles, 6);
+
   return (
     <>
       <SectionCatagory name="राजनीतिक" backgroundColor="red">
@@ -29,27 +30,24 @@ const Rajnetic = ({newsData}) => {
         {visibleData?.map((newsItem, index) => (
           <TextNewsCard
             key={index}
-            image={newsItem.img}
-            date={newsItem.date}
+            image={newsItem.images[0]}
+            date={newsItem.updatedAt}
             heading={newsItem.title}
-            author={newsItem.author}
-            slug={newsItem.slug}
+            author={newsItem.reporterId.name}
+            slug={newsItem._id}
             className="w-full justify-self-center"
-            imageHeight="auto"
-            imageWidth="100%"
-            
           >
-            <NewsCatagory
-              catagory={newsItem.category}
-              className="absolute top-4 left-4"
-              backgroundColor="red"
-              color="white"
-            />
+            {/* <NewsCatagory
+            catagory={newsItem.category}
+            className="absolute top-4 left-4"
+            backgroundColor="red"
+            color="white"
+          /> */}
           </TextNewsCard>
         ))}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Rajnetic
+export default Rajnetic;

@@ -4,6 +4,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import QueueMusicIcon from "@mui/icons-material/QueueMusic";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
+import EditIcon from '@mui/icons-material/Edit';
 import {
   List,
   ListItem,
@@ -26,6 +27,7 @@ const Sidebar = ({ userRole, handleMenuItemClick }) => {
         { name: "Reporters", icon: <QueueMusicIcon />, route: "/reporters" },
         { name: "Articles", icon: <AssessmentIcon />, route: "/articles" },
         { name: "Profile", icon: <SettingsIcon />, route: "/profile" },
+        { name: "Add Article", icon: <EditIcon />, route: "/profile" }
       ];
       break;
     case "reporter":
@@ -37,6 +39,7 @@ const Sidebar = ({ userRole, handleMenuItemClick }) => {
         },
         { name: "My Articles", icon: <VideoLibraryIcon />, route: "/myarticles" },
         { name: "Profile", icon: <SettingsIcon />, route: "/profile" },
+        { name: "Add Article", icon: <EditIcon />, route: "/profile" }
       ];
       break;
     default:

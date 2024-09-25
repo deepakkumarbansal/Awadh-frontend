@@ -16,20 +16,19 @@ const Hero = ({ newsData }) => {
               'md:row-span-1 md:col-span-2',
               'md:row-start-2 md:col-start-2',
               'md:row-start-2 md:col-start-3',
-            ][index];
-
+            ][index];            
             return (
               <PhotoNewsCard
                 key={index}
                 catagory={item.category}
                 title={item.title}
-                date={item.date}
+                date={item.updatedAt}
                 slug={item?._id}
 
                 width='100%'
                 className={`${gridClasses} h-[240px] md:h-full mb-5 md:mb-0 border-2`}
                 categoryRequired
-                backgroundImage={item?.images&&item?.images[0]}
+                backgroundImage={item?.images[0]}
                 catagoryBackground='#e70940'
               />
             );

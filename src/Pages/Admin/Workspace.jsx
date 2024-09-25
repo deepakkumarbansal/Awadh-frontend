@@ -24,12 +24,14 @@ const drawerWidth = 280;
 
 const Workspace = (props) => {
   const {user, role} = useSelector(state=>state.auth);
+  console.log(user, role, "work");
+  
   const { window } = props;
   const [currentPage, setCurrentPage] = useState("Dashboard");
 
   const handleMenuItemClick = (pageName) => {
     setCurrentPage(pageName);
-    handleDrawerClose(); //Where it is
+    // handleDrawerClose(); //Where it is
   };
 
   const drawer = (
@@ -64,11 +66,11 @@ const Workspace = (props) => {
           variant="h7"
           sx={{ fontFamily: "sans-serif", fontWeight: "600" }}
         >
-          {user.name}
+          {user}
         </Typography>
       </Box>
       <Divider />
-      <Sidebar userRole={user.role} handleMenuItemClick={handleMenuItemClick} />
+      <Sidebar userRole={role} handleMenuItemClick={handleMenuItemClick} />
       <Divider />
       <MenuItem>
       {/* Need to add the click handler for logout */}
@@ -107,7 +109,7 @@ const Workspace = (props) => {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex", backgroundColor: "#f9f9fb" }}>
+    <Box sx={{ display: "flex"}}> {/* "#f9f9fb" */}
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -196,7 +198,7 @@ const Workspace = (props) => {
         }}
       >
         <Toolbar />
-        {renderCurrentPage(currentPage, user)}
+        {renderCurrentPage(currentPage, role, user)}
       </Box>
     </Box>
   );

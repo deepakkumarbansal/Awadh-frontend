@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
@@ -17,13 +17,16 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
-
-// लेखों के लिए नकली डेटा
-const ArticlesData = () => {
+import {useDispatch, useSelector} from 'react-redux'
+import { fetchRepoterArticlesAction, selectReporterArticles } from "../../store/slice/newsSlice";
+const ArticlesData = ({reporterId}) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
+  // const [page, setPage] = useState(0);
+  // const [rowsPerPage, setRowsPerPage] = useState(10);
+  const dispatch = useDispatch();
+  const {totalCount=0, page=0, limit=10, articles} = useSelector(selectReporterArticles);
+  console.log(totalCount, page, limit, articles);
+  
   const mockArticlesData = [
     {
       _id: "1",
@@ -118,20 +121,22 @@ const ArticlesData = () => {
       publishDate: new Date("2024-04-26"),
     },
   ];
+  useEffect(()=>{
 
-  const articles = mockArticlesData.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
+    const res = dispatch(fetchRepoterArticlesAction(reporterId)).unwrap();
+    console.log(res);
+    
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  }, []);
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
+
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   const tableHeadStyle = {
     fontWeight: "600",
@@ -178,7 +183,7 @@ const ArticlesData = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {articles.map((article, index) => (
+            {articles?.map((article, index) => (
               <TableRow
                 key={article._id}
                 sx={{
@@ -245,11 +250,11 @@ const ArticlesData = () => {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={mockArticlesData.length}
-        rowsPerPage={rowsPerPage}
+        count={totalCount}
+        rowsPerPage={limit}
         page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        // onPageChange={handleChangePage}
+        // onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </>
   );
