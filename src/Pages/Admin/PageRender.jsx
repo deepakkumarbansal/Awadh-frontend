@@ -3,10 +3,17 @@ import UsersData from "./UsersData.jsx";
 import ArticleData from "./ArticleData.jsx";
 import ReportersData from "./ReportersData.jsx";
 import {ReportersHome, MyArticles, Profile, ArticleForm} from '../../Components/index'
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchRepoterArticlesAction } from "../../store/slice/newsSlice.js";
 
 const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, handleMenuItemClick, article='') => {
   console.log(currentPage, role);
-  
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    dispatch(fetchRepoterArticlesAction(reporterId))
+  }, [reporterId]);
+
   if (role === "admin") {
     switch (currentPage) {
       case "Dashboard":
@@ -20,7 +27,9 @@ const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, 
       case "Profile":
         return <Profile/>;
       case "Add Article":
-        return <ArticleForm/>
+        return <ArticleForm/>;
+      case "Edit Article":
+        return <ArticleForm article={article}/>
       default:
         return null;
     }
@@ -33,13 +42,13 @@ const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, 
         case "Dashboard":
           return <ReportersHome />;
         case "My Articles":
-          return <MyArticles reporterId={reporterId} setIsEditingDisabled={setIsEditingDisabled} role={role} handleMenuItemClick={handleMenuItemClick}/>;
+          return <MyArticles setIsEditingDisabled={setIsEditingDisabled} role={role} handleMenuItemClick={handleMenuItemClick}/>;
         case "Profile":
           return <Profile/>;
         case "Add Article":
-          return <ArticleForm/>;
+          return <ArticleForm handleMenuItemClick={handleMenuItemClick}/>;
         case "Edit Article":
-          return <ArticleForm article={article}/>
+          return <ArticleForm article={article} handleMenuItemClick={handleMenuItemClick} setIsEditingDisabled={setIsEditingDisabled}/>
         default:
           return null;
       }

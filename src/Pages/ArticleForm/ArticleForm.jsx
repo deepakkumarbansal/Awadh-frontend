@@ -8,10 +8,19 @@ import { Input } from "../../Components";
 import ReactSelect from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { createArticleAction, updateArticleAction } from "../../store/slice/adminSlice";
+import { fetchRepoterArticlesAction } from "../../store/slice/newsSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 // import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-const ArticleForm = ({ article }) => {
+const ArticleForm = ({ article, handleMenuItemClick, setIsEditingDisabled }) => {
+
+  const fonts = ['sans-serif', 'serif', 'monospace', 'Mukta'];
+const Font = ReactQuill.Quill.import('formats/font');
+Font.whitelist = fonts; // Allow these fonts in the dropdown
+ReactQuill.Quill.register(Font, true);
+
   const dispatch = useDispatch();
   const userData = useSelector((state)=>state.auth);
   const {user:reporterId, role} = userData;
@@ -27,6 +36,7 @@ const ArticleForm = ({ article }) => {
     label: category,
   }));
   const toolbarOptions = [
+    [{ font: fonts }],
     ["bold", "italic", "underline", "strike"], // toggled buttons
     ["blockquote", "code-block"],
     ["link", "image", "video", "formula"],
@@ -41,7 +51,6 @@ const ArticleForm = ({ article }) => {
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
 
     [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-    [{ font: [] }],
     [{ align: [] }],
 
     ["clean"], // remove formatting button
@@ -78,16 +87,47 @@ const ArticleForm = ({ article }) => {
         navigate('/');
       }, 10000)      
     } else {     
-      const articleId = article._id; 
-      const bodyData = {reporterId, articleId, ...data, category:getValues("category").value}
       if(article){
+        const articleId = article._id; 
+        const bodyData = {reporterId, articleId, ...data, category:getValues("category").value}
           // const imageURL = '';
-          dispatch(updateArticleAction(bodyData))
+          dispatch(updateArticleAction(bodyData)).unwrap()
+          .then(()=>{
+            toast.success("Updated Article Successfully")
+            dispatch(fetchRepoterArticlesAction(reporterId))
+            setTimeout(()=>{
+              handleMenuItemClick("My Articles");
+              setIsEditingDisabled(true)
+            }, 2000)
+            
+          })
+          .catch((e)=>{
+            toast.error("Failed to update the article!");
+            setTimeout(()=>{
+              handleMenuItemClick("My Articles");
+            }, 4000)
+          })
 
       } else {
+        const bodyData = {reporterId, ...data, category:getValues("category").value}
           const file = '' //some service of aws
           // if(file){
-              dispatch(createArticleAction(bodyData))
+              dispatch(createArticleAction(bodyData)).unwrap()
+              .then(()=>{
+                toast.success("Updated Article Successfully")
+                dispatch(fetchRepoterArticlesAction(reporterId))
+                setTimeout(()=>{
+                  handleMenuItemClick("My Articles");
+                }, 2000)
+               
+              })
+              .catch((e)=>{
+                toast.error("Failed to create the article!");
+                setTimeout(()=>{
+                  handleMenuItemClick("My Articles");
+                }, 4000)
+              })
+              
           }
       }
     }
@@ -124,11 +164,23 @@ const ArticleForm = ({ article }) => {
   };
 
   return (
+    <>
+    <ToastContainer 
+      position="top-right" 
+      autoClose={5000} 
+      hideProgressBar={false} 
+      newestOnTop={false} 
+      closeOnClick 
+      rtl={false} 
+      pauseOnFocusLoss 
+      draggable 
+      pauseOnHover 
+    />
     <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
       <div className="items-center w-full">
         <Input
           name="title"
-          placeholder="Heading"
+          placeholder="शीर्षक"  // Hindi placeholder for "Heading"
           register={register}
           className="w-1/2"
           errors={errors}
@@ -195,7 +247,7 @@ const ArticleForm = ({ article }) => {
         <div>
           <Input
             name="subheading"
-            placeholder="Subheading"
+            placeholder="उपशीर्षक"  // Hindi placeholder for "Subheading"
             register={register}
             className="w-1/2"
             errors={errors}
@@ -208,7 +260,7 @@ const ArticleForm = ({ article }) => {
               <ReactSelect
                 {...field}
                 options={updatedCategories}
-                placeholder="Select Category"
+                placeholder="श्रेणी चुनें" // Hindi placeholder for "Select Category"
                 isClearable
                 isSearchable
                 // styles={customStyles}
@@ -224,7 +276,7 @@ const ArticleForm = ({ article }) => {
       </div>
       <p className="text-red-600">{error}</p>
       <div>
-        <p className="text-start">Content:</p>
+      <p className="text-start">सामग्री:</p> {/* Hindi for "Content" */}
         {/* <div className="min-h-[50vh]"> */}
           <ReactQuill
             theme="snow"
@@ -239,8 +291,9 @@ const ArticleForm = ({ article }) => {
         className=" w-full mt-10 border-2 shadow-md font-bold px-4 py-2 bg-green-600 rounded-md hover:bg-orange-600"
         type="submit"
         // isSubmitPending={isSubmitPending}
-      >{article ? "Update" : "Submit"}</button>
+      >{article ? "अद्यतन करें" : "प्रस्तुत करें"}</button>  {/* Hindi for "Update" or "Submit" */}
     </form>
+    </>
   );
 };
 

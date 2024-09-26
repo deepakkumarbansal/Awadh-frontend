@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Avatar,
@@ -30,6 +30,10 @@ const Workspace = (props) => {
   const { window } = props;
   const [currentPage, setCurrentPage] = useState("Dashboard");
   const [isEditingDisabled, setIsEditingDisabled] = useState(true);
+  useEffect(()=>{
+    console.log(isEditingDisabled);
+  }, [isEditingDisabled])
+  
   const handleMenuItemClick = (pageName, article) => {
     setCurrentPage(pageName);
     setEditArticleData(article)
@@ -72,7 +76,7 @@ const Workspace = (props) => {
         </Typography>
       </Box>
       <Divider />
-      <Sidebar userRole={role} handleMenuItemClick={handleMenuItemClick} isEditingDisabled={isEditingDisabled} />
+      <Sidebar userRole={role} handleMenuItemClick={handleMenuItemClick} isEditingDisabled={isEditingDisabled} currentPage={currentPage}/>
       <Divider />
       <MenuItem>
       {/* Need to add the click handler for logout */}

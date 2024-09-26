@@ -48,6 +48,8 @@ const loginAction = createAsyncThunk('auth/login', async ({formdata, navigate}) 
       console.log("home");
       
       navigate('/');
+    } else if(data.role === 'reporter') {
+      navigate('/reporter')
     } else {
       navigate('/admin')
     }

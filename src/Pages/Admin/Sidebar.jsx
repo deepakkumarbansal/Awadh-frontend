@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 
-const Sidebar = ({ userRole, handleMenuItemClick, isEditingDisabled }) => {
+const Sidebar = ({ userRole, handleMenuItemClick, isEditingDisabled, currentPage }) => {
   let sideBarMenues = [];
   useEffect(()=>{
     console.log(isEditingDisabled);
@@ -111,9 +111,10 @@ const Sidebar = ({ userRole, handleMenuItemClick, isEditingDisabled }) => {
               }}
             >
               <ListItemButton
+                sx={{ color: "#899499", backgroundColor: currentPage === menuItem.name ? '#0dd276' : ''}}
                 onClick={() => handleMenuItemClick(menuItem.name)}
               >
-                <ListItemIcon sx={{ color: "#899499" }}>
+                <ListItemIcon sx={{ color: "#899499"}}>
                   {menuItem.icon}
                 </ListItemIcon>
                 <ListItemText

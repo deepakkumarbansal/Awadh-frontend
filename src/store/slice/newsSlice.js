@@ -7,7 +7,7 @@ const initialState = {
   loadingByCatagories: false,
   loading: false, //general loader,
   categoryNews: {},
-  reporterArticles: {},
+  reporterArticles: [],
 };
 
 const modifyDateFormatOfArticles = (articles)=> {

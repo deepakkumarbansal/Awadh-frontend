@@ -9,18 +9,20 @@ const initialState = {
 export const createArticleAction = createAsyncThunk('adminOrReposter/createArticle', async(data)=>{
     console.log('start creating article');
     try {
+        // throw new Error("testing error")
         const message = await createArticle(data);
         return message;
     } catch (error) {
-        return error;
+        throw error;
     }
 })
 export const updateArticleAction = createAsyncThunk('adminORReporter/updateArticle', async (data) => {
     try {
+        // throw new Error("testing error")
         const message = await updateArticle(data);
         return message;
     } catch (error) {
-        return error;
+        throw error;
     }
 })
 const adminSlice = createSlice({
@@ -37,7 +39,7 @@ const adminSlice = createSlice({
             state.loading = false;
         })
         .addCase(createArticleAction.rejected, (state)=>{
-            state.message = action.payload;
+            state.message = '';
             state.loading = false;
         })
         .addCase(updateArticleAction.pending, (state)=>{
