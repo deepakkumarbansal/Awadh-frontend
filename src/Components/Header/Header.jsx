@@ -7,7 +7,7 @@ const Header = ({scrollContainerItems}) => {
   return (
     <>
       <div className='sm:flex gap-6 py-10'>
-        <Logo width='1500px' onClick={()=>{navigate('/')}}/>
+        <Logo width='1500px' onClick={()=>{navigate('/')}} className={'cursor-pointer'}/>
         <div className='w-full bg-green-100 min-h-20'>
           AD
         </div>

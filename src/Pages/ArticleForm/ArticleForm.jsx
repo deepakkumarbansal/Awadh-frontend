@@ -6,10 +6,15 @@ import { catagories } from "../../utility/categories";
 import { useNavigate } from "react-router-dom";
 import { Input } from "../../Components";
 import ReactSelect from "react-select";
+import { useDispatch, useSelector } from "react-redux";
+import { createArticleAction, updateArticleAction } from "../../store/slice/adminSlice";
 // import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 // import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const ArticleForm = ({ article }) => {
+  const dispatch = useDispatch();
+  const userData = useSelector((state)=>state.auth);
+  const {user:reporterId, role} = userData;
   const s3Config = {
     bucketName: "awadh-kesari",
     dirName: "articles",
@@ -44,6 +49,12 @@ const ArticleForm = ({ article }) => {
   const modules = {
     toolbar: toolbarOptions,
   };
+
+  useEffect(()=>{
+    console.log("art",article);
+    
+  }, [article])
+
   const {
     register,
     handleSubmit,
@@ -55,20 +66,36 @@ const ArticleForm = ({ article }) => {
     defaultValues: {
       title: article?.title || "",
       subheading: article?.subheading || "",
-      category: article?.category || "अन्य",
+      category: article?.category || "",
       content: article?.content || "",
-      images: article?.images[0] || null,
+      images: article?.images && article?.images[0] || null,
     },
   });
+  const submit = async (data)=> {    
+    if(role === 'user'){
+      setMessage('User is not allowed to create a post')
+      setTimeout(()=>{
+        navigate('/');
+      }, 10000)      
+    } else {     
+      const articleId = article._id; 
+      const bodyData = {reporterId, articleId, ...data, category:getValues("category").value}
+      if(article){
+          // const imageURL = '';
+          dispatch(updateArticleAction(bodyData))
+
+      } else {
+          const file = '' //some service of aws
+          // if(file){
+              dispatch(createArticleAction(bodyData))
+          }
+      }
+    }
   const [error, setError] = useState("");
   const [isSubmitPending, setIsSubmitPending] = useState(false);
   const navigate = useNavigate();
 
   const [postImageUrl, setPostImageUrl] = useState("");
-
-  const createORUpdateArticle = () => {
-    setError("");
-  };
 
   const uploadImage = async (e) => {
     const file = e.target.files[0];
@@ -97,7 +124,7 @@ const ArticleForm = ({ article }) => {
   };
 
   return (
-    <div className="p-2">
+    <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
       <div className="items-center w-full">
         <Input
           name="title"
@@ -117,11 +144,14 @@ const ArticleForm = ({ article }) => {
           >
             <input
               type="file"
-              {...register("featuredImage", {
+              {...register("featuredImage", 
+                {
                 required: article?.featuredImage
                   ? false
-                  : "Post images are required",
-              })}
+                  // : "Post images are required",
+                  : false
+                }
+            )}
               id="upload-image"
               accept="image/jpg, image/png, image/gif"
               onChange={(e) => {
@@ -166,11 +196,10 @@ const ArticleForm = ({ article }) => {
           <Input
             name="subheading"
             placeholder="Subheading"
-            value={""}
-            onChange={() => {}}
             register={register}
-            className="w-[360px]"
+            className="w-1/2"
             errors={errors}
+            value={getValues("subheading")}
           />
           <Controller
             name="category"
@@ -196,24 +225,22 @@ const ArticleForm = ({ article }) => {
       <p className="text-red-600">{error}</p>
       <div>
         <p className="text-start">Content:</p>
-        <div className="min-h-[50vh]">
+        {/* <div className="min-h-[50vh]"> */}
           <ReactQuill
             theme="snow"
             modules={modules}
             value={getValues("content")}
-            onChange={setValue}
-            style={{height: '100%'}}
+            onChange={(value)=>{setValue("content", value)}}
+            // style={{height: '100%'}}
           />
-        </div>
+        {/* </div> */}
       </div>
-
       <button
-        className="w-fit"
-        isSubmitPending={isSubmitPending}
-        value={article ? "Update" : "Submit"}
-        onClick={handleSubmit(createORUpdateArticle)}
-      />
-    </div>
+        className=" w-full mt-10 border-2 shadow-md font-bold px-4 py-2 bg-green-600 rounded-md hover:bg-orange-600"
+        type="submit"
+        // isSubmitPending={isSubmitPending}
+      >{article ? "Update" : "Submit"}</button>
+    </form>
   );
 };
 

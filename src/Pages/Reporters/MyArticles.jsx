@@ -19,14 +19,20 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux'
 import { fetchRepoterArticlesAction, selectReporterArticles } from "../../store/slice/newsSlice";
-const ArticlesData = ({reporterId}) => {
+import { deleteArticleById } from "../../Services/Operations/article";
+import renderCurrentPage from "../Admin/PageRender";
+const ArticlesData = ({reporterId, setIsEditingDisabled, role, handleMenuItemClick}) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [article, setArticle] = useState('');
+  const [reporterArticles, setReporterArticles] = useState([]);
   // const [page, setPage] = useState(0);
   // const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
   const {totalCount=0, page=0, limit=10, articles} = useSelector(selectReporterArticles);
   console.log(totalCount, page, limit, articles);
-  
+  useEffect(()=>{
+    setReporterArticles(articles);
+  }, [articles])
   const mockArticlesData = [
     {
       _id: "1",
@@ -122,12 +128,8 @@ const ArticlesData = ({reporterId}) => {
     },
   ];
   useEffect(()=>{
-
-    const res = dispatch(fetchRepoterArticlesAction(reporterId)).unwrap();
-    console.log(res);
-    
-
-  }, []);
+    dispatch(fetchRepoterArticlesAction(reporterId))
+  }, [reporterId]);
 
   // const handleChangePage = (event, newPage) => {
   //   setPage(newPage);
@@ -147,13 +149,36 @@ const ArticlesData = ({reporterId}) => {
     color: "#717f8c",
   };
 
-  const handleClick = (event) => {
+  const handleClick = (event, article) => {
     setAnchorEl(event.currentTarget);
+    setArticle(article)
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const deleteArticle = async () => {
+    deleteArticleById(article._id)
+    .then((data)=>{
+      console.log(data);
+      const updatedArticles = reporterArticles.filter((reporterArticle)=>{
+        return reporterArticle._id != article._id;
+      });
+      setReporterArticles(updatedArticles);
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+    
+  }
+
+  const editArticle = async () => {
+    setIsEditingDisabled(false);
+    console.log("edi",article);
+    
+    handleMenuItemClick("Edit Article", article)
+  } 
 
   return (
     <>
@@ -183,7 +208,7 @@ const ArticlesData = ({reporterId}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {articles?.map((article, index) => (
+            {reporterArticles?.map((article, index) => (
               <TableRow
                 key={article._id}
                 sx={{
@@ -196,11 +221,11 @@ const ArticlesData = ({reporterId}) => {
               >
                 <TableCell sx={tableBodyStyle}>{index + 1}</TableCell>
                 <TableCell sx={tableBodyStyle}>
-                  <Link to={`/article/${article._id}`}>{article.title}</Link>
+                  <Link to={`/news/${article._id}`}>{article.title}</Link>
                 </TableCell>
                 <TableCell sx={tableBodyStyle}>{article.category}</TableCell>
                 <TableCell sx={tableBodyStyle}> {/* Todo: Make it to center */}
-                  {article.images.length > 0 ? (
+                  {article?.images?.length > 0 ? (
                     <Avatar
                       src={article.images[0]}
                       alt="article image"
@@ -229,7 +254,7 @@ const ArticlesData = ({reporterId}) => {
                   {article.status === "published" ? "स्वीकृत" : "अस्वीकृत"}
                 </TableCell>
                 <TableCell>
-                  <IconButton aria-label="more" onClick={handleClick}>
+                  <IconButton aria-label="more" onClick={(e)=>handleClick(e, article)}>
                     <MoreVertIcon />
                   </IconButton>
                   <Menu
@@ -237,8 +262,14 @@ const ArticlesData = ({reporterId}) => {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
-                    <MenuItem sx={tableBodyStyle}>संपादित करें</MenuItem>
-                    <MenuItem sx={tableBodyStyle}>हटाएं</MenuItem>
+                    <MenuItem sx={tableBodyStyle} onClick={()=>{
+                      editArticle();
+                      handleClose();
+                    }}>संपादित करें</MenuItem>
+                    <MenuItem sx={tableBodyStyle} onClick={()=>{
+                      deleteArticle();
+                      handleClose();
+                    }}>हटाएं</MenuItem>
                   </Menu>
                 </TableCell>
               </TableRow>

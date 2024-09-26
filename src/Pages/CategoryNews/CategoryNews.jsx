@@ -9,6 +9,7 @@ import {
 import { TextNewsCard } from "../../Components";
 import { GrLinkNext } from "react-icons/gr";
 import { GrLinkPrevious } from "react-icons/gr";
+import Loader from "../../Components/Loader/Loader";
 
 const CategoryNews = () => {
   const { slug } = useParams();
@@ -29,11 +30,9 @@ const CategoryNews = () => {
   }, [slug, page]);
   return (
     <div className="mt-12 pt-10 border-t-2">
-      {loading ? (
-        <div className="flex justify-center items-center w-full h-screen">
-          Loading...
-        </div>
-      ) : (
+      {loading ? 
+      <Loader/>
+      : (
         <>
           {data?.articles?.length > 0 ? (
             <div>

@@ -1,12 +1,35 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-const Youtube = ({ videoIds = [] }) => {
+import Loader from "../Loader/Loader";
+import { envConfig } from "../../config/envConfig";
 
-  useEffect(()=>{
-    fetch('http://localhost:8400/api/X/tweets').then((data)=>data.json()).then((data)=>{console.log(data);
-    })
-  },[])
+const Youtube = () => {
+  const [loading, setLoading] = useState(false);
+  const [videoIds, setVideoIds] = useState([]);
+  const fetchVideos = async () => {
+    setLoading(true);
+    const YOUTUBE_API_KEY = envConfig.youtubeApiKey;
+    const channelID = envConfig.channelId;
+    const url = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${channelID}&part=snippet,id&order=date&maxResults=10`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("failed to fetch youtube videos");
+      }
 
+      const data = await response.json();
+      const information = data?.items;
+      const videoIds = information?.map((item) => item.id.videoId);
+      setVideoIds(videoIds);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchVideos();
+  }, []);
   const [youtubeVideos, setYoutubeVideos] = useState([]);
   useEffect(() => {
     function handleYTVideosLength() {
@@ -24,12 +47,18 @@ const Youtube = ({ videoIds = [] }) => {
   }, [videoIds]);
 
   return (
-    <div className="flex sm:flex-col md:flex-row lg:flex-col gap-5 flex-wrap justify-center items-center">
-      {youtubeVideos.length > 0 &&
-        youtubeVideos.map((videoId, index) => (
-          <Video key={index} videoId={videoId} />
-        ))}
-    </div>
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="flex sm:flex-col md:flex-row lg:flex-col gap-5 flex-wrap justify-center items-center">
+          {youtubeVideos.length > 0 &&
+            youtubeVideos.map((videoId, index) => (
+              <Video key={index} videoId={videoId} />
+            ))}
+        </div>
+      )}
+    </>
   );
 };
 

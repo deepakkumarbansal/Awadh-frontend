@@ -4,7 +4,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import QueueMusicIcon from "@mui/icons-material/QueueMusic";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 import {
   List,
   ListItem,
@@ -12,9 +12,13 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 
-const Sidebar = ({ userRole, handleMenuItemClick }) => {
+const Sidebar = ({ userRole, handleMenuItemClick, isEditingDisabled }) => {
   let sideBarMenues = [];
+  useEffect(()=>{
+    console.log(isEditingDisabled);
+  }, [isEditingDisabled])
   switch (userRole) {
     case "admin":
       sideBarMenues = [
@@ -23,11 +27,36 @@ const Sidebar = ({ userRole, handleMenuItemClick }) => {
           icon: <DashboardIcon />,
           route: "/admindashboard",
         },
-        { name: "Users", icon: <HistoryIcon />, route: "/users" },
-        { name: "Reporters", icon: <QueueMusicIcon />, route: "/reporters" },
-        { name: "Articles", icon: <AssessmentIcon />, route: "/articles" },
-        { name: "Profile", icon: <SettingsIcon />, route: "/profile" },
-        { name: "Add Article", icon: <EditIcon />, route: "/profile" }
+        {
+          name: "Users",
+          icon: <HistoryIcon />,
+          route: "/users",
+          isDisabled: false,
+        },
+        {
+          name: "Reporters",
+          icon: <QueueMusicIcon />,
+          route: "/reporters",
+          isDisabled: false,
+        },
+        {
+          name: "Articles",
+          icon: <AssessmentIcon />,
+          route: "/articles",
+          isDisabled: false,
+        },
+        {
+          name: "Profile",
+          icon: <SettingsIcon />,
+          route: "/profile",
+          isDisabled: false,
+        },
+        {
+          name: "Add Article",
+          icon: <EditIcon />,
+          route: "/profile",
+          isDisabled: false,
+        },
       ];
       break;
     case "reporter":
@@ -37,9 +66,30 @@ const Sidebar = ({ userRole, handleMenuItemClick }) => {
           icon: <DashboardIcon />,
           route: "/reporterdashboard",
         },
-        { name: "My Articles", icon: <VideoLibraryIcon />, route: "/myarticles" },
-        { name: "Profile", icon: <SettingsIcon />, route: "/profile" },
-        { name: "Add Article", icon: <EditIcon />, route: "/profile" }
+        {
+          name: "My Articles",
+          icon: <VideoLibraryIcon/>,
+          route: "/myarticles",
+          isDisabled: false,
+        },
+        {
+          name: "Edit Article",
+          icon: <EditIcon />,
+          route: "/profile",
+          isDisabled: isEditingDisabled,
+        },
+        {
+          name: "Profile",
+          icon: <SettingsIcon />,
+          route: "/profile",
+          isDisabled: false,
+        },
+        {
+          name: "Add Article",
+          icon: <EditIcon />,
+          route: "/profile",
+          isDisabled: false,
+        },
       ];
       break;
     default:
@@ -48,31 +98,36 @@ const Sidebar = ({ userRole, handleMenuItemClick }) => {
 
   return (
     <List>
-      {sideBarMenues.map((menuItem, index) => (
-        <ListItem
-          key={index}
-          sx={{
-            cursor: "pointer",
-            mt: "-0.5rem",
-            padding: "0.5rem 0.5rem",
-            borderRadius: "0.5rem",
-          }}
-        >
-          <ListItemButton onClick={() => handleMenuItemClick(menuItem.name)}>
-            <ListItemIcon sx={{ color: "#899499" }}>
-              {menuItem.icon}
-            </ListItemIcon>
-            <ListItemText
-              primaryTypographyProps={{
-                fontWeight: "600",
-                color: "#717f8c",
-                fontSize: "0.9rem",
+      {sideBarMenues.map(
+        (menuItem, index) =>
+          !menuItem.isDisabled && (
+            <ListItem
+              key={index}
+              sx={{
+                cursor: "pointer",
+                mt: "-0.5rem",
+                padding: "0.5rem 0.5rem",
+                borderRadius: "0.5rem",
               }}
-              primary={menuItem.name}
-            />
-          </ListItemButton>
-        </ListItem>
-      ))}
+            >
+              <ListItemButton
+                onClick={() => handleMenuItemClick(menuItem.name)}
+              >
+                <ListItemIcon sx={{ color: "#899499" }}>
+                  {menuItem.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primaryTypographyProps={{
+                    fontWeight: "600",
+                    color: "#717f8c",
+                    fontSize: "0.9rem",
+                  }}
+                  primary={menuItem.name}
+                />
+              </ListItemButton>
+            </ListItem>
+          )
+      )}
     </List>
   );
 };

@@ -38,7 +38,10 @@ export const fetchNewsByCategoryAction = createAsyncThunk('news/fetchNewsByCateg
     console.log("Error::Fetch news by category", error);
   }
 })
+
 export const fetchAllNewsAction = createAsyncThunk('news/fetchAllNews', async(limit=10)=>{
+  console.log("fetch");
+  
   try {
     const response = await getAllArticles(limit);
     modifyDateFormatOfArticles(response);
@@ -78,9 +81,13 @@ const newsSlice = createSlice({
   extraReducers: (builder)=>{
     builder
     .addCase(fetchHomeNewsByCatagoriesAction.pending, (state)=>{
+      console.log("hi");
+      
       state.loadingByCatagories = true;
     })
     .addCase(fetchHomeNewsByCatagoriesAction.fulfilled, (state, action)=>{
+      console.log("data::", action.payload);
+      
       state.newsByCatagories = action.payload;
       state.loadingByCatagories = false;
       //to be handle the local storage if shivam sir wants
@@ -133,5 +140,6 @@ export const selectNewsByCategory = (state) => state.news.categoryNews;
 export const selectAllNews = (state) => state.news.allNews;
 export const selectReporterArticles = (state) => state.news.reporterArticles
 export const selectGeneralLoader = (state) => state.news.loading
-export const { setLoading, setNews } = newsSlice.actions;
+export const selectCategoryLoader = (state) => state.news.loadingByCatagories
+// export const { setLoading, setNews } = newsSlice.actions;
 export default newsSlice.reducer;

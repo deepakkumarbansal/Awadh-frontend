@@ -1,14 +1,14 @@
 import { apiConnector } from "../connector";
 import { articlesEndPoints } from "../apis";
 import { toast } from "react-hot-toast";
-const { GET_ALL_ARTICLE, GET_ARTICLES_BY_CATAGORY, GET_ARTICLE_BY_REPORTERS_ID } = articlesEndPoints;
+const { GET_ALL_ARTICLE, GET_ARTICLES_BY_CATAGORY, GET_ARTICLE_BY_REPORTERS_ID, DELETE_ARTICLE_BY_ID } = articlesEndPoints;
 // import {setNews} from "../../store/slice"
 
 export const getAllArticles = async (limit) => {
   const toastId = toast.loading("Loading...");
   let result = [];
   try {
-    const response = await apiConnector("GET", GET_ALL_ARTICLE, {limit});
+    const response = await apiConnector("GET", GET_ALL_ARTICLE, null, {limit});
     result = response?.data?.articles;
   } catch (error) {
     toast.error(error.message);
@@ -54,6 +54,19 @@ export const getAllArticlesByReporterId = async (reporterId) => {
     }
     console.log("art",response);
     
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const deleteArticleById = async (articleId) => {
+  try {
+    const response = await apiConnector('DELETE', DELETE_ARTICLE_BY_ID(articleId));
+    if(!response){
+      throw response.data.message;
+    }
+    console.log("delete");
     return response.data;
   } catch (error) {
     throw error;

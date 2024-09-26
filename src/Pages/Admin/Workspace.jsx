@@ -23,14 +23,16 @@ import { useSelector } from "react-redux";
 const drawerWidth = 280;
 
 const Workspace = (props) => {
+  const [editArticleData, setEditArticleData] = useState('')
   const {user, role} = useSelector(state=>state.auth);
   console.log(user, role, "work");
   
   const { window } = props;
   const [currentPage, setCurrentPage] = useState("Dashboard");
-
-  const handleMenuItemClick = (pageName) => {
+  const [isEditingDisabled, setIsEditingDisabled] = useState(true);
+  const handleMenuItemClick = (pageName, article) => {
     setCurrentPage(pageName);
+    setEditArticleData(article)
     // handleDrawerClose(); //Where it is
   };
 
@@ -70,7 +72,7 @@ const Workspace = (props) => {
         </Typography>
       </Box>
       <Divider />
-      <Sidebar userRole={role} handleMenuItemClick={handleMenuItemClick} />
+      <Sidebar userRole={role} handleMenuItemClick={handleMenuItemClick} isEditingDisabled={isEditingDisabled} />
       <Divider />
       <MenuItem>
       {/* Need to add the click handler for logout */}
@@ -198,7 +200,7 @@ const Workspace = (props) => {
         }}
       >
         <Toolbar />
-        {renderCurrentPage(currentPage, role, user)}
+        {renderCurrentPage(currentPage, role, user, setIsEditingDisabled, handleMenuItemClick, editArticleData)}
       </Box>
     </Box>
   );

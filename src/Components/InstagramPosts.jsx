@@ -15,7 +15,7 @@ const InstagramPosts = () => {
             const posts = postsResponse?.data?.data; //all images, reels, carausel
             setPosts((prev)=>[...prev, ...posts]);
             setNextUrl(postsResponse?.data?.paging?.next || null);
-            setPrevUrl(postsResponse?.data?.paging?.previous || null);
+            // setPrevUrl(postsResponse?.data?.paging?.previous || null);
         } catch (error) {
             console.log("error::instagram", error);
         }
@@ -36,14 +36,14 @@ const InstagramPosts = () => {
     <>
         {
             posts.length > 0 ? <div className='flex justify-center items-center border-2 border-red-100 h-[360px] w-1/2'>
-            <button disabled={currentPost === 0} onClick={()=>setCurrentPost(currentPost-1)}><FaAngleLeft /></button>
+            <button disabled={currentPost === 0} onClick={()=>setCurrentPost(currentPost-1)} className='border bg-gray-300 rounded-sm p-1'><FaAngleLeft /></button>
             <div className='h-full w-full'>
                 <Link to={posts[currentPost]["permalink"]}>
                     {
                         (posts[currentPost]["media_type"] === "IMAGE" || "CAROUSEL_ALBUM") && <img src={posts[currentPost]["media_url"]} alt={posts[currentPost]["caption"]} className='h-full w-full object-cover'/>
                     }
                     {
-                        (posts[currentPost]["media_type"] === "VIDEO") && <video src={posts[currentPost]["media_url"]}></video>
+                        (posts[currentPost]["media_type"] === "VIDEO") && <video src={posts[currentPost]["media_url"]} controls onMouseEnter={(e)=>e.target.play()} onMouseLeave={(e)=>e.target.pause()}></video>
                     }
                 </Link>
             </div>
@@ -53,7 +53,9 @@ const InstagramPosts = () => {
                 } else {
                     setCurrentPost(currentPost+1);
                 }
-            }}><FaAngleRight /></button>
+            }}
+            className='border bg-gray-300 rounded-sm p-1'
+            ><FaAngleRight /></button>
         </div> : 'Loading'
         }
     </>
