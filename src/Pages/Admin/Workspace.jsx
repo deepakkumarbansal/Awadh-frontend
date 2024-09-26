@@ -24,7 +24,7 @@ const drawerWidth = 280;
 
 const Workspace = (props) => {
   const [editArticleData, setEditArticleData] = useState('')
-  const {user, role} = useSelector(state=>state.auth);
+  const {user, role, userName, email} = useSelector(state=>state.auth);
   console.log(user, role, "work");
   
   const { window } = props;
@@ -72,7 +72,7 @@ const Workspace = (props) => {
           variant="h7"
           sx={{ fontFamily: "sans-serif", fontWeight: "600" }}
         >
-          {user}
+          {userName}
         </Typography>
       </Box>
       <Divider />
@@ -204,7 +204,7 @@ const Workspace = (props) => {
         }}
       >
         <Toolbar />
-        {renderCurrentPage(currentPage, role, user, setIsEditingDisabled, handleMenuItemClick, editArticleData)}
+        {renderCurrentPage(currentPage, role, user, setIsEditingDisabled, handleMenuItemClick, editArticleData, email, userName)}
       </Box>
     </Box>
   );

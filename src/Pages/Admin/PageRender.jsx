@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchRepoterArticlesAction } from "../../store/slice/newsSlice.js";
 
-const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, handleMenuItemClick, article='') => {
+const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, handleMenuItemClick, article='', userName, email) => {
   console.log(currentPage, role);
   const dispatch = useDispatch();
   useEffect(()=>{
@@ -25,7 +25,7 @@ const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, 
       case "Articles":
         return <ArticleData />;
       case "Profile":
-        return <Profile/>;
+        return <Profile />;
       case "Add Article":
         return <ArticleForm/>;
       case "Edit Article":
@@ -44,7 +44,7 @@ const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, 
         case "My Articles":
           return <MyArticles setIsEditingDisabled={setIsEditingDisabled} role={role} handleMenuItemClick={handleMenuItemClick}/>;
         case "Profile":
-          return <Profile/>;
+          return <Profile email={email} name={userName} role={role}/>;
         case "Add Article":
           return <ArticleForm handleMenuItemClick={handleMenuItemClick}/>;
         case "Edit Article":

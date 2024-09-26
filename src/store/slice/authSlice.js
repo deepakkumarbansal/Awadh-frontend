@@ -4,10 +4,12 @@ const baseUrl = import.meta.env.VITE_BACKEND_API;
 
 const initialState = {
   user: null,
+  userName: "",
   loading: false,
   role: "user",
   token: localStorage.getItem("token") ? localStorage.getItem("token") : null,
-  error: ""
+  error: "",
+  email: ""
 };
 
 const registerAction = createAsyncThunk('auth/register', async (formdata) => {
@@ -95,23 +97,32 @@ const authSlice = createSlice({
         state.error = action?.error?.message;
       })
       .addCase(loginAction.pending, (state) => {
-        state.loading = false;
-        state.error = ""
+        state.loading = true;
+        state.error = "";
+        state.role = null;
+        state.error = "";
+        state.token = "";
+        state.userName = "";
+        state.email = "";
       })
       .addCase(loginAction.fulfilled, (state, action) => {
-        console.log(action);
         state.loading = false;
         state.user = action.payload.userId;
+        state.userName = action.payload.userName;
         state.role = action.payload.role;
         state.token = action.payload.token;
-        state.error = ""
-        localStorage.setItem("token", action.payload.token)
+        state.error = "";
+        localStorage.setItem("token", action.payload.token);
+        state.email = action.payload.email;
       })
-      .addCase(loginAction.rejected, (state, action) => {
+      .addCase(loginAction.rejected, (state) => {
         state.loading = false;
-        state.user = null;
-        state.role = "user";
-        state.error = action.error.message;
+        state.error = "";
+        state.role = null;
+        state.error = "";
+        state.token = "";
+        state.userName = "";
+        state.email = "";
       })
   }
 });
