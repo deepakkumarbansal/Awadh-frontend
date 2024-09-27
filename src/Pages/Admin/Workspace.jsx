@@ -42,6 +42,7 @@ const Workspace = (props) => {
     setEditArticleData(article)
     // handleDrawerClose(); //Where it is
   };
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const drawer = (
     <div>
@@ -137,6 +138,7 @@ const Workspace = (props) => {
           sx={{ height: "10vh", boxShadow: "none", backgroundColor: "#f9fafb" }}
         >
           <IconButton
+            onClick={()=>setIsMenuOpen(!isMenuOpen)}
             color="black"
             aria-label="open drawer"
             edge="start"
@@ -173,7 +175,8 @@ const Workspace = (props) => {
         <Drawer
           container={container}
           variant="temporary"
-          open={false} // Drawer is closed by default
+          onClick={()=>setIsMenuOpen(!isMenuOpen)}
+          open={isMenuOpen} // Drawer is closed by default
           ModalProps={{
             keepMounted: true,
           }}
