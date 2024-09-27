@@ -5,13 +5,12 @@ import { NewsCatagory, TextNewsCard } from '../index';
 import usePagination from '../../hooks/usePagination';
 
 const Desh = ({ newsData }) => {
-
-  const [data, setData] = useState(newsData);
-  const {visibleData, prevPage, nextPage, currentPage, totalPages} = usePagination(data, 6)
-
+  const {articles, limit, page, totalCount} = newsData || {};
+  const {visibleData, prevPage, nextPage, currentPage, totalPages} = usePagination(articles, 6)
+  
   return (
     <>
-      <SectionCatagory name="देश" backgroundColor="red">
+      <SectionCatagory name="देश" backgroundColor="orange">
         <button
           className="border-gray-300 border-2 p-1 mr-2"
           onClick={prevPage}
@@ -31,22 +30,19 @@ const Desh = ({ newsData }) => {
         {visibleData.map((newsItem, index) => (
           <TextNewsCard
             key={index}
-            image={newsItem.img}
-            date={newsItem.date}
+            image={newsItem.images[0]}
+            date={newsItem.updatedAt}
             heading={newsItem.title}
-            author={newsItem.author}
-            slug={newsItem.slug}
+            author={newsItem.reporterId.name}
+            slug={newsItem._id}
             className="w-full justify-self-center"
-            imageHeight="auto"
-            imageWidth="100%"
-            
           >
-            <NewsCatagory
+            {/* <NewsCatagory
               catagory={newsItem.category}
               className="absolute top-4 left-4"
               backgroundColor="red"
               color="white"
-            />
+            /> */}
           </TextNewsCard>
         ))}
       </div>

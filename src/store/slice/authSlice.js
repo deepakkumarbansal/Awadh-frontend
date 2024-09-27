@@ -1,11 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router-dom";
 const baseUrl = import.meta.env.VITE_BACKEND_API;
+
 const initialState = {
   user: null,
+  userName: "",
   loading: false,
   role: "user",
   token: localStorage.getItem("token") ? localStorage.getItem("token") : null,
+  error: "",
+  email: ""
 };
 
 const registerAction = createAsyncThunk('auth/register', async (formdata) => {
@@ -17,11 +21,12 @@ const registerAction = createAsyncThunk('auth/register', async (formdata) => {
       },
       body: JSON.stringify(formdata)
     })
-    if (!response.ok) {
-      throw new Error('Failed to register', response.statusText)
+    
+    const data = await response?.json();
+    
+    if (!response.ok) {      
+      throw new Error(data.message)
     }
-    const data = response.json();
-    console.log(data);
     return data;
   } catch (error) {
     throw error
@@ -45,6 +50,8 @@ const loginAction = createAsyncThunk('auth/login', async ({formdata, navigate}) 
       console.log("home");
       
       navigate('/');
+    } else if(data.role === 'reporter') {
+      navigate('/reporter')
     } else {
       navigate('/admin')
     }
@@ -73,34 +80,49 @@ const authSlice = createSlice({
     builder
       .addCase(registerAction.pending, (state) => {
         state.loading = true;
+        state.error="";
       })
       .addCase(registerAction.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user.email;
         console.log(action);
-
+        state.error = ""
+        console.log("Success in signup");
+        
       })
       .addCase(registerAction.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
-        console.log(action.error.message);
         state.role = "user";
+        state.error = action?.error?.message;
       })
       .addCase(loginAction.pending, (state) => {
-        state.loading = false;
+        state.loading = true;
+        state.error = "";
+        state.role = null;
+        state.error = "";
+        state.token = "";
+        state.userName = "";
+        state.email = "";
       })
       .addCase(loginAction.fulfilled, (state, action) => {
-        console.log(action);
         state.loading = false;
         state.user = action.payload.userId;
+        state.userName = action.payload.userName;
         state.role = action.payload.role;
         state.token = action.payload.token;
-        localStorage.setItem("token", action.payload.token)
+        state.error = "";
+        localStorage.setItem("token", action.payload.token);
+        state.email = action.payload.email;
       })
-      .addCase(loginAction.rejected, (state, action) => {
+      .addCase(loginAction.rejected, (state) => {
         state.loading = false;
-        state.user = null;
-        state.role = "user";
+        state.error = "";
+        state.role = null;
+        state.error = "";
+        state.token = "";
+        state.userName = "";
+        state.email = "";
       })
   }
 });
@@ -109,5 +131,6 @@ export {
   registerAction,
   loginAction
 }
+export const selectAuthError = (state)=>state.auth.error
 export const { setLoading, setSignUpData, setToken } = authSlice.actions;
 export default authSlice.reducer;

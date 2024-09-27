@@ -3,11 +3,13 @@ import {Input, Password, SubmitButton} from '../index'
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 
-const Profile = () => {
+const Profile = ({email, name, role}) => {
     const currentUser = useSelector((state)=>state.auth.user);
     const {register, formState:{errors}, getValues} = useForm({
         defaultValues:{
-            name:'deepak' //to be remove
+            email:email,
+            name:name,
+            role:role,
         }
     });
     return (
@@ -21,8 +23,8 @@ const Profile = () => {
                 </div>
                 <div className='user-details w-full lg:w-[50%]'>
                     <Input type='text' name='name' register={register} placeholder='Name' errors={errors} value={getValues('name')}/>
-                    <Input type='email' name='email' register={register} placeholder='Email' errors={errors} readOnly/>
-                    <Input type='tel' name='phone' register={register} placeholder='Phone' errors={errors} />
+                    <Input type='email' name='email' register={register} placeholder='Email' errors={errors} readOnly value={getValues('email')}/>
+                    <Input type='text' name='role' register={register} placeholder='Role' errors={errors} readOnly value={getValues('role')}/>
                     <Password register={register} placeholder='Change Password' errors={errors} />
                     {/* <SubmitButton value="Signup" isSubmitPending={isSubmitPending} /> */}
                 </div>

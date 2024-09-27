@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { AdminDashboard, Layout, Login, NewsDetails, Signup } from './Components/index.js';
+import { AdminDashboard, CategoryNews, Layout, Login, NewsDetails, Signup } from './Components/index.js';
 const Home = lazy(()=>import('./Pages/Home/Home.jsx'));
 import { Provider } from 'react-redux';
 import { createTheme, ThemeProvider } from '@mui/material';
@@ -29,6 +29,10 @@ const router = createBrowserRouter([
             path: '/news/:slug',
             element: <NewsDetails />
           },
+          {
+            path: '/category/:slug',
+            element: <CategoryNews/>
+          }
         ]
       },
     ],
@@ -40,6 +44,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <Login />
+  },
+  {
+    path: '/reporter',
+    element: <AdminDashboard />
   },
   {
     path: '/admin',

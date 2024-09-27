@@ -36,6 +36,8 @@ import Profile from "./Profile/Profile";
 import Epaper from "./Epaper/Epaper";
 import ScrollContainer from "./HorizonalScrollContainer/ScrollContainer";
 import InstaPost from "./InstaPost/InstaPost";
+import CategoryNews from "../Pages/CategoryNews/CategoryNews";
+import ArticleForm from '../Pages/ArticleForm/ArticleForm'
 export {
     Layout,
     NavBar,
@@ -74,5 +76,7 @@ export {
     Profile,
     Epaper,
     ScrollContainer,
-    InstaPost
+    InstaPost,
+    CategoryNews,
+    ArticleForm
 }

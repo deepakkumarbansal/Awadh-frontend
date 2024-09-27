@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Avatar,
@@ -19,17 +19,28 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Sidebar from "./Sidebar.jsx";
 import renderCurrentPage from "./PageRender.jsx";
 import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../../Services/Operations/auth.js";
 
 const drawerWidth = 280;
 
 const Workspace = (props) => {
-  const {user, role} = useSelector(state=>state.auth);
+  const navigate = useNavigate();
+  const [editArticleData, setEditArticleData] = useState('')
+  const {user, role, userName, email} = useSelector(state=>state.auth);
+  console.log(user, role, "work");
+  
   const { window } = props;
   const [currentPage, setCurrentPage] = useState("Dashboard");
-
-  const handleMenuItemClick = (pageName) => {
+  const [isEditingDisabled, setIsEditingDisabled] = useState(true);
+  useEffect(()=>{
+    console.log(isEditingDisabled);
+  }, [isEditingDisabled])
+  
+  const handleMenuItemClick = (pageName, article) => {
     setCurrentPage(pageName);
-    handleDrawerClose(); //Where it is
+    setEditArticleData(article)
+    // handleDrawerClose(); //Where it is
   };
 
   const drawer = (
@@ -41,9 +52,12 @@ const Workspace = (props) => {
           justifyContent: "left",
           alignItems: "center",
           margin: "1rem",
+          cursor: 'pointer'
         }}
       >
-        <img src={'/images/logo.png'} alt="Awadh Kesari" width={"100%"} />
+        <Link to={'/'}>
+          <img src={'/images/logo.png'} alt="Awadh Kesari" width={"100%"} className="cursor-pointer"/>
+        </Link>
       </Box>
 
       <Box
@@ -64,11 +78,11 @@ const Workspace = (props) => {
           variant="h7"
           sx={{ fontFamily: "sans-serif", fontWeight: "600" }}
         >
-          {user.name}
+          {userName}
         </Typography>
       </Box>
       <Divider />
-      <Sidebar userRole={user.role} handleMenuItemClick={handleMenuItemClick} />
+      <Sidebar userRole={role} handleMenuItemClick={handleMenuItemClick} isEditingDisabled={isEditingDisabled} currentPage={currentPage}/>
       <Divider />
       <MenuItem>
       {/* Need to add the click handler for logout */}
@@ -82,6 +96,7 @@ const Workspace = (props) => {
             border: "none",
             cursor: "pointer",
           }}
+          onClick={logout(navigate)}
         >
           <Typography
             sx={{
@@ -107,7 +122,7 @@ const Workspace = (props) => {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex", backgroundColor: "#f9f9fb" }}>
+    <Box sx={{ display: "flex"}}> {/* "#f9f9fb" */}
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -196,7 +211,7 @@ const Workspace = (props) => {
         }}
       >
         <Toolbar />
-        {renderCurrentPage(currentPage, user)}
+        {renderCurrentPage(currentPage, role, user, setIsEditingDisabled, handleMenuItemClick, editArticleData, email, userName)}
       </Box>
     </Box>
   );

@@ -12,16 +12,16 @@ const TextNewsCard = ({children, image, content = '', date = '', heading, author
           backgroundImage: `url(${image})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          height: imageHeight,
-          width: imageWidth,
+          height: imageHeight || "300px",
+          width: imageWidth || "100%",
           flexShrink: 0,
         }}
         className="flex justify-center items-center"
       >
-        <img src={image} alt={heading} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        <img src={image} alt="News Image" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition:"center" }} />
       </div>
       <div>
-        <h3 className='font-bold text-lg' style={{fontFamily: font.subheading}}>{heading}</h3>
+        <h3 className='font-bold text-2xl mt-3' style={{fontFamily: font.subheading}}>{heading.length > 40 ? heading.slice(0, 40)+"..." : heading}</h3>
         <div className='flex gap-3 items-center text-sm'>
           {
             author && <p className='font-semibold'>{author} &nbsp; |</p>
@@ -29,7 +29,7 @@ const TextNewsCard = ({children, image, content = '', date = '', heading, author
           <p className={`font-thin ${dateClasses}`}>{date}</p>
         </div>
         {
-          content && <p>{content}</p>
+          content && <p>{content.length > 40 ? content.slice(0, 40)+"..." : content}</p>
         }
       </div>
       {children} {/* News Catagory */}

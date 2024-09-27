@@ -5,11 +5,11 @@ import { useSelector } from "react-redux";
 const AdminDashboard = () => {
   const userType = useSelector((state) => state.auth.role);
   console.log("hhe",userType);
-
+  const isAllowed = userType === 'admin' || userType === 'reporter'
   return (
     <div>
       {
-        userType === ('admin' || 'reporter') ?
+        isAllowed ?
           <Workspace />
           :
           <h3 className="font-bold flex items-center justify-center h-screen">You are not allowed to access this Page</h3>

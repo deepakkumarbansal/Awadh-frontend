@@ -1,12 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Input, Logo, Password, SubmitButton} from '../../Components/index'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../Services/Operations/auth';
-import { registerAction } from '../../store/slice/authSlice';
+import { registerAction, selectAuthError } from '../../store/slice/authSlice';
 
 const Signup = () => {
+    const [error, setError] = useState('');
+    const reduxError = useSelector(selectAuthError);
+    const { handleSubmit, register, setValue, control, formState:{errors} } = useForm();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [isSubmitPending, setIsSubmitPending] = useState(false);
+
+    useEffect(()=>{
+        setError(reduxError)
+    }, [reduxError])
+
     const handleSignup = async (data) => {
         setError("");
         setIsSubmitPending(true);
@@ -16,23 +27,21 @@ const Signup = () => {
                 setIsSubmitPending(false);
                 return;
             }
-            //to be done the processing
-            dispatch(registerAction(data))
-            
-            dispatch(login(data.email,data.password));
-            navigate('/')
+            //to be done the processing            
+            const res = await dispatch(registerAction(data)).unwrap();
+                        
+            if(res.user){
+                navigate('/')
+            }
+            // dispatch(login(data.email,data.password));
+            // navigate('/')
 
         } catch (error) {
+            console.log("errr", error);
             setError(error.message);
         }
         setIsSubmitPending(false);
     }
-    const [error, setError] = useState('');
-    const { handleSubmit, register, setValue, control, formState:{errors} } = useForm();
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const [isSubmitPending, setIsSubmitPending] = useState(false);
-
     
   return (
     <div className='flex justify-center items-center h-screen bg-gray-100'>
