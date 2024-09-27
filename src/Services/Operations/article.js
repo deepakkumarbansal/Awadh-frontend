@@ -17,6 +17,20 @@ export const getAllArticles = async (limit) => {
   return result;
 };
 
+export const getAllAdminArticles = async (limit, page) => {
+  let result = {};
+  console.log("Welcome back");
+  
+  try {
+    const response = await apiConnector("GET", GET_ALL_ARTICLE, null, {limit, page});
+    console.log("Welcome back", response);
+    result = response?.data;
+    return result
+  } catch (error) {
+    throw new Error(error)
+  }
+};
+
 export const getAllArticlesByCatagory = async (category, page=1, limit) => {
   try {    
     const response = await apiConnector("GET", GET_ARTICLES_BY_CATAGORY,null, {}, {category: category, page, limit});    

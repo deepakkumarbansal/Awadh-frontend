@@ -3,16 +3,22 @@ import UsersData from "./UsersData.jsx";
 import ArticleData from "./ArticleData.jsx";
 import ReportersData from "./ReportersData.jsx";
 import {ReportersHome, MyArticles, Profile, ArticleForm} from '../../Components/index'
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchRepoterArticlesAction } from "../../store/slice/newsSlice.js";
+import { fetchAllNewsAction, fetchRepoterArticlesAction } from "../../store/slice/newsSlice.js";
+import { fetchAllAdminNewsAction } from "../../store/slice/adminSlice.js";
 
 const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, handleMenuItemClick, article='', userName, email) => {
+  const [page, setPage] = useState(0)
   console.log(currentPage, role);
   const dispatch = useDispatch();
   useEffect(()=>{
-    dispatch(fetchRepoterArticlesAction(reporterId))
-  }, [reporterId]);
+    if(role === 'reporter'){
+      dispatch(fetchRepoterArticlesAction(reporterId))
+    } else {
+      dispatch(fetchAllAdminNewsAction(10, page));
+    }
+  }, [reporterId, role]);
 
   if (role === "admin") {
     switch (currentPage) {
@@ -23,7 +29,7 @@ const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, 
       case "Reporters":
         return <ReportersData />;
       case "Articles":
-        return <ArticleData />;
+        return <ArticleData setPag={setPage}/>;
       case "Profile":
         return <Profile />;
       case "Add Article":

@@ -10,7 +10,7 @@ const initialState = {
   reporterArticles: [],
 };
 
-const modifyDateFormatOfArticles = (articles)=> {
+export const modifyDateFormatOfArticles = (articles)=> {
   articles.forEach(({updatedAt}, index)=>{
     articles[index].updatedAt = new Date(updatedAt).toDateString();
   })

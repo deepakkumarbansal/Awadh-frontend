@@ -19,10 +19,13 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Sidebar from "./Sidebar.jsx";
 import renderCurrentPage from "./PageRender.jsx";
 import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../../Services/Operations/auth.js";
 
 const drawerWidth = 280;
 
 const Workspace = (props) => {
+  const navigate = useNavigate();
   const [editArticleData, setEditArticleData] = useState('')
   const {user, role, userName, email} = useSelector(state=>state.auth);
   console.log(user, role, "work");
@@ -49,9 +52,12 @@ const Workspace = (props) => {
           justifyContent: "left",
           alignItems: "center",
           margin: "1rem",
+          cursor: 'pointer'
         }}
       >
-        <img src={'/images/logo.png'} alt="Awadh Kesari" width={"100%"} />
+        <Link to={'/'}>
+          <img src={'/images/logo.png'} alt="Awadh Kesari" width={"100%"} className="cursor-pointer"/>
+        </Link>
       </Box>
 
       <Box
@@ -90,6 +96,7 @@ const Workspace = (props) => {
             border: "none",
             cursor: "pointer",
           }}
+          onClick={logout(navigate)}
         >
           <Typography
             sx={{
