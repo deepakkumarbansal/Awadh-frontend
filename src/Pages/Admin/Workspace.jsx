@@ -211,7 +211,7 @@ const Workspace = (props) => {
         }}
       >
         <Toolbar />
-        {renderCurrentPage(currentPage, role, user, setIsEditingDisabled, handleMenuItemClick, editArticleData, email, userName)}
+        {renderCurrentPage(currentPage, role, user, setIsEditingDisabled, handleMenuItemClick, editArticleData)}
       </Box>
     </Box>
   );

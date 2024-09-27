@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createArticle, updateArticle } from "../../Services/Operations/admin";
+import { createArticle, getAllReporters, getAllUsers, updateArticle } from "../../Services/Operations/admin";
 import { getAllAdminArticles } from "../../Services/Operations/article";
 import { modifyDateFormatOfArticles } from "./newsSlice";
 const initialState = {
     message: "",
     loading: false,
-    data: {}
+    data: {},
+    usersData:{},
+    reportersData:{},
 }
 
 export const createArticleAction = createAsyncThunk('adminOrReposter/createArticle', async(data)=>{
@@ -41,6 +43,26 @@ export const fetchAllAdminNewsAction = createAsyncThunk('admin/fetchArticles', a
         throw new Error(error);
     }
 })
+export const fetchAllUsersAction = createAsyncThunk('admin/fetchAllUsers', async (limit, page) => {
+    try {
+        const response = await getAllUsers(limit, page);
+        modifyDateFormatOfArticles(response.users);
+        return response;
+    } catch (error) {
+        throw new Error(error);
+    }
+})
+
+export const fetchAllReportersAction = createAsyncThunk('admin/fetchAllReporters', async (limit, page) => {
+    try {
+        console.log("slice pageno.", page);
+        const response = await getAllReporters(limit, page);
+        modifyDateFormatOfArticles(response.reporters);
+        return response;
+    } catch (error) {
+        throw new Error(error);
+    }
+})
 
 const adminSlice = createSlice({
     name:"adminOrReposter",
@@ -65,11 +87,11 @@ const adminSlice = createSlice({
         })
         .addCase(updateArticleAction.fulfilled, (state, action)=>{
             state.message = action.payload;
-            state.loading = true;
+            state.loading = false;
         })
         .addCase(updateArticleAction.rejected, (state)=>{
             state.message = "";
-            state.loading = true;
+            state.loading = false;
         })
         .addCase(fetchAllAdminNewsAction.pending, (state)=>{
             state.data = {};
@@ -78,17 +100,41 @@ const adminSlice = createSlice({
         .addCase(fetchAllAdminNewsAction.fulfilled, (state, action)=>{
             state.data = action.payload;
             state.loading = false;
-           
-            
         })
         .addCase(fetchAllAdminNewsAction.rejected, (state)=>{
             state.data = {};
+            state.loading = false;
+        })
+        .addCase(fetchAllUsersAction.pending, (state)=>{
+            state.usersData = {};
             state.loading = true;
+        })
+        .addCase(fetchAllUsersAction.fulfilled, (state, action)=>{
+            state.usersData = action.payload;
+            state.loading = false;
+        })
+        .addCase(fetchAllUsersAction.rejected, (state)=>{
+            state.usersData = {};
+            state.loading = false;
+        })
+        .addCase(fetchAllReportersAction.pending, (state)=>{
+            state.reportersData = {};
+            state.loading = true;
+        })
+        .addCase(fetchAllReportersAction.fulfilled, (state, action)=>{
+            state.reportersData = action.payload;
+            state.loading = false;
+        })
+        .addCase(fetchAllReportersAction.rejected, (state)=>{
+            state.reportersData = {};
+            state.loading = false;
         })
     }
 })
 
 export default adminSlice.reducer;
 export const selectArticleMessage = (state) => state.admin.message;
-export const selectArticleLoader = (state) => state.admin.loading;
+export const selectLoader = (state) => state.admin.loading;
 export const selectAllArticlesData = (state) => state.admin.data;
+export const selectAllUsersData = (state) => state.admin.usersData;
+export const selectAllReportersData = (state) => state.admin.reportersData;

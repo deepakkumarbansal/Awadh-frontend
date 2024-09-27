@@ -10,7 +10,7 @@ import {
   Legend,
   ArcElement,
 } from 'chart.js';
-import { selectAllArticlesData } from '../../store/slice/adminSlice';
+import { selectAllArticlesData, selectAllUsersData } from '../../store/slice/adminSlice';
 import { useSelector } from 'react-redux';
 
 ChartJS.register(
@@ -25,8 +25,17 @@ ChartJS.register(
 
 const AdminHome = () => {
   const data = useSelector(selectAllArticlesData);
+  const usersData = useSelector(selectAllUsersData);
+  const dateMapOfUsers = new Map();
   const dateMap = new Map();
   const articleStatusMap = new Array(0, 0, 0); // 0 for accepted, 1 for rejected and 3 for draft(pending)
+  usersData?.users?.forEach(({updatedAt})=>{
+    const date = new Date(updatedAt);
+    const month = date.getMonth();
+    const previousUsersFrequencyOfCurrentMonth = dateMapOfUsers.get(month);
+    const newUsersFrequencyOfCurrentMonth = previousUsersFrequencyOfCurrentMonth ? previousUsersFrequencyOfCurrentMonth + 1 : 1;
+    dateMapOfUsers.set(month, newUsersFrequencyOfCurrentMonth); // to be handled as only 10 users come at a time.
+  })
   data?.articles?.forEach(({updatedAt, status})=>{
     const date = new Date(updatedAt);
     const month = date.getMonth(); // 0 based
@@ -44,7 +53,7 @@ const AdminHome = () => {
     }
 
   })
-  const monthlyPostsData = [ //to be changed
+  const monthlyPostsData = [
     { label: 'January', value: dateMap.get(0) || 0 },
     { label: 'February', value: dateMap.get(1) || 0 },
     { label: 'March', value: dateMap.get(2) || 0 },
@@ -58,19 +67,19 @@ const AdminHome = () => {
     { label: 'November', value: dateMap.get(10) || 0 },
     { label: 'December', value: dateMap.get(11) || 0 },
   ];
-  const monthlyUsersData = [ //to be changed
-    { label: 'January', value: 112 },
-    { label: 'February', value: 80 },
-    { label: 'March', value: 15 },
-    { label: 'April', value: 10 },
-    { label: 'May', value: 104 },
-    { label: 'June', value: 9 },
-    { label: 'July', value: 7 },
-    { label: 'August', value: 130 },
-    { label: 'September', value: 11 },
-    { label: 'October', value: 16 },
-    { label: 'November', value: 10 },
-    { label: 'December', value: 102 },
+  const monthlyUsersData = [
+    { label: 'January', value: dateMapOfUsers.get(0) || 0 },
+    { label: 'February', value: dateMapOfUsers.get(1) || 0 },
+    { label: 'March', value: dateMapOfUsers.get(2) || 0 },
+    { label: 'April', value: dateMapOfUsers.get(3) || 0 },
+    { label: 'May', value: dateMapOfUsers.get(4) || 0 },
+    { label: 'June', value: dateMapOfUsers.get(5) || 0 },
+    { label: 'July', value: dateMapOfUsers.get(6) || 0 },
+    { label: 'August', value: dateMapOfUsers.get(7) || 0 },
+    { label: 'September', value: dateMapOfUsers.get(8) || 0 },
+    { label: 'October', value: dateMapOfUsers.get(9) || 0 },
+    { label: 'November', value: dateMapOfUsers.get(10) || 0 },
+    { label: 'December', value: dateMapOfUsers.get(11) || 0 },
   ];
   const PostPerMonthData = {
     labels: monthlyPostsData.map(entry => entry.label),

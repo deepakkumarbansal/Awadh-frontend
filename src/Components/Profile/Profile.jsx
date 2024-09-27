@@ -3,15 +3,19 @@ import {Input, Password, SubmitButton} from '../index'
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 
-const Profile = ({email, name, role}) => {
-    const currentUser = useSelector((state)=>state.auth.user);
+const Profile = () => {
+    const currentUser = useSelector((state)=>state.auth);
     const {register, formState:{errors}, getValues} = useForm({
         defaultValues:{
-            email:email,
-            name:name,
-            role:role,
+            email:currentUser?.email,
+            name:currentUser?.userName,
+            role:currentUser?.role,
         }
     });
+    useEffect(()=>{
+        console.log("CCC", currentUser);
+        
+    }, [currentUser])
     return (
         <>
             <div className='mb-4'>

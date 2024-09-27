@@ -21,6 +21,8 @@ import {useDispatch, useSelector} from 'react-redux'
 import { fetchRepoterArticlesAction, selectReporterArticles } from "../../store/slice/newsSlice";
 import { deleteArticleById } from "../../Services/Operations/article";
 import Loader from "../../Components/Loader/Loader";
+import toast from "react-hot-toast";
+import { ToastContainer } from "react-toastify";
 const ArticlesData = ({setIsEditingDisabled, role, handleMenuItemClick}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [article, setArticle] = useState('');
@@ -60,6 +62,10 @@ const ArticlesData = ({setIsEditingDisabled, role, handleMenuItemClick}) => {
   };
 
   const deleteArticle = async () => {
+    if(role != 'reporter'){
+      toast.error("User is not allowed to delete article");
+      return;
+    }
     deleteArticleById(article._id)
     .then((data)=>{
       console.log(data);
@@ -75,6 +81,10 @@ const ArticlesData = ({setIsEditingDisabled, role, handleMenuItemClick}) => {
   }
 
   const editArticle = async () => {
+    if(role != 'reporter'){
+      toast.error("User is not allowed to edit article");
+      return;
+    }
     setIsEditingDisabled(false);
     console.log("edi",article);
     
@@ -83,6 +93,17 @@ const ArticlesData = ({setIsEditingDisabled, role, handleMenuItemClick}) => {
 
   return (
     <>
+    <ToastContainer
+      position="top-right" 
+      autoClose={5000} 
+      hideProgressBar={false} 
+      newestOnTop={false} 
+      closeOnClick 
+      rtl={false} 
+      pauseOnFocusLoss 
+      draggable 
+      pauseOnHover 
+    />
       <Box sx={{ ml: 2, mt: 2 }}>
         <Typography variant="h5" fontWeight="600">
           लेख

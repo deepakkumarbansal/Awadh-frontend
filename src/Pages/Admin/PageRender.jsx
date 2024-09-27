@@ -6,10 +6,12 @@ import {ReportersHome, MyArticles, Profile, ArticleForm} from '../../Components/
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchAllNewsAction, fetchRepoterArticlesAction } from "../../store/slice/newsSlice.js";
-import { fetchAllAdminNewsAction } from "../../store/slice/adminSlice.js";
+import { fetchAllAdminNewsAction, fetchAllReportersAction, fetchAllUsersAction } from "../../store/slice/adminSlice.js";
 
-const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, handleMenuItemClick, article='', userName, email) => {
-  const [page, setPage] = useState(0)
+const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, handleMenuItemClick, article='') => {
+  const [page, setPage] = useState(0);
+  const [pageOfUsers, setPageOfUSers] = useState(1);
+  const [pageOfReporters, setPageOfReporters] = useState(1);
   console.log(currentPage, role);
   const dispatch = useDispatch();
   useEffect(()=>{
@@ -17,6 +19,10 @@ const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, 
       dispatch(fetchRepoterArticlesAction(reporterId))
     } else {
       dispatch(fetchAllAdminNewsAction(10, page));
+      dispatch(fetchAllUsersAction(10, pageOfUsers));
+      dispatch(fetchAllReportersAction(10, pageOfReporters))
+      console.log("dispatch pageno.", pageOfReporters);
+      
     }
   }, [reporterId, role]);
 
@@ -25,17 +31,17 @@ const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, 
       case "Dashboard":
         return <AdminHome />;
       case "Users":
-        return <UsersData />;
+        return <UsersData setPage={setPageOfUSers}/>;
       case "Reporters":
-        return <ReportersData />;
+        return <ReportersData setPage={setPageOfReporters}/>;
       case "Articles":
-        return <ArticleData setPag={setPage}/>;
+        return <ArticleData setPag={setPage} setIsEditingDisabled={setIsEditingDisabled} role={role} handleMenuItemClick={handleMenuItemClick}/>;
       case "Profile":
         return <Profile />;
       case "Add Article":
-        return <ArticleForm/>;
+        return <ArticleForm handleMenuItemClick={handleMenuItemClick}/>;
       case "Edit Article":
-        return <ArticleForm article={article}/>
+        return <ArticleForm article={article} handleMenuItemClick={handleMenuItemClick} setIsEditingDisabled={setIsEditingDisabled}/>
       default:
         return null;
     }
@@ -50,7 +56,7 @@ const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, 
         case "My Articles":
           return <MyArticles setIsEditingDisabled={setIsEditingDisabled} role={role} handleMenuItemClick={handleMenuItemClick}/>;
         case "Profile":
-          return <Profile email={email} name={userName} role={role}/>;
+          return <Profile/>;
         case "Add Article":
           return <ArticleForm handleMenuItemClick={handleMenuItemClick}/>;
         case "Edit Article":

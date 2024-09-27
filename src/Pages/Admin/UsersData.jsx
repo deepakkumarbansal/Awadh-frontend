@@ -17,77 +17,27 @@ import {
   Typography,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllUsersAction, selectAllUsersData, selectLoader } from "../../store/slice/adminSlice";
+import { updateUserOrReporterStatus } from "../../Services/Operations/admin";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Loader from "../../Components/Loader/Loader";
 
-// उपयोगकर्ताओं के लिए नकली डेटा
-const mockUsersData = [
-  {
-    _id: "1",
-    firstName: "राम",
-    lastName: "कुमार",
-    email: "ram.kumar@example.com",
-    mobile: "9876543210",
-    gender: "पुरुष",
-    status: "सक्रिय",
-    profilePicture: "https://via.placeholder.com/150",
-    isEmailVerified: true,
-  },
-  {
-    _id: "2",
-    firstName: "सीता",
-    lastName: "शर्मा",
-    email: "seeta.sharma@example.com",
-    mobile: "8765432109",
-    gender: "महिला",
-    status: "निष्क्रिय",
-    profilePicture: "https://via.placeholder.com/150",
-    isEmailVerified: false,
-  },
-  {
-    _id: "3",
-    firstName: "मोहन",
-    lastName: "वर्मा",
-    email: "mohan.verma@example.com",
-    mobile: "7654321098",
-    gender: "पुरुष",
-    status: "लंबित",
-    profilePicture: "https://via.placeholder.com/150",
-    isEmailVerified: true,
-  },
-  {
-    _id: "4",
-    firstName: "गीता",
-    lastName: "देवी",
-    email: "geeta.devi@example.com",
-    mobile: "6543210987",
-    gender: "महिला",
-    status: "सक्रिय",
-    profilePicture: "https://via.placeholder.com/150",
-    isEmailVerified: true,
-  },
-  {
-    _id: "5",
-    firstName: "रवि",
-    lastName: "सिंह",
-    email: "ravi.singh@example.com",
-    mobile: "5432109876",
-    gender: "पुरुष",
-    status: "निष्क्रिय",
-    profilePicture: "https://via.placeholder.com/150",
-    isEmailVerified: false,
-  },
-];
 
-const UsersData = () => {
-  // पेजिनेशन, सर्च और मेनू के लिए स्टेट
+const UsersData = ({setPage}) => {
+  const {totalCount, page, limit, users} = useSelector(selectAllUsersData);
+  const [user, setUser] = useState(null)
+  
   const [anchorEl, setAnchorEl] = useState(null);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10); // प्रति पृष्ठ डिफ़ॉल्ट पंक्तियाँ
+  // const [page, setPage] = useState(0);
+  // const [rowsPerPage, setRowsPerPage] = useState(10); // प्रति पृष्ठ डिफ़ॉल्ट पंक्तियाँ
   const [searchQuery, setSearchQuery] = useState("");
 
-  const users = mockUsersData.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
+  // const users = mockUsersData.slice(
+  //   page * rowsPerPage,
+  //   page * rowsPerPage + rowsPerPage
+  // );
 
   const handleSearchInputChange = (event) => {
     setSearchQuery(event.target.value);
@@ -117,9 +67,9 @@ const UsersData = () => {
     color: "#717f8c",
   };
 
-  // मेनू क्लिक को हैंडल करने के लिए फ़ंक्शन
-  const handleClick = (event) => {
+  const handleClick = (event, user) => {
     setAnchorEl(event.currentTarget);
+    setUser(user);
   };
 
   // मेनू बंद करने के लिए फ़ंक्शन
@@ -127,8 +77,36 @@ const UsersData = () => {
     setAnchorEl(null);
   };
 
+  const dispatch = useDispatch();
+  const loader = useSelector(selectLoader)
+  const updateUserStatus = async (status) => {
+    updateUserOrReporterStatus(user?._id, status)
+    .then(()=>{
+      toast.success("Status Updated Successfully.")
+      dispatch(fetchAllUsersAction(limit, page))
+    })
+    .catch((error)=>{
+      toast.error(error.message)
+    })
+  }
+
+  if(loader){
+    return <Loader/>
+  }
+
   return (
     <>
+    <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Box sx={{}}>
         <Box sx={{ ml: 2, mt: 2 }}>
           <Typography variant="h5" fontWeight="600">
@@ -173,13 +151,13 @@ const UsersData = () => {
                 <TableCell sx={tableHeadStyle}>नाम</TableCell>
                 <TableCell sx={tableHeadStyle}>ईमेल</TableCell>
                 <TableCell sx={tableHeadStyle}>मोबाइल नंबर</TableCell>
-                <TableCell sx={tableHeadStyle}>लिंग</TableCell>
+                {/* <TableCell sx={tableHeadStyle}>लिंग</TableCell> */}
                 <TableCell sx={tableHeadStyle}>स्थिति</TableCell>
-                <TableCell></TableCell>
+                <TableCell sx={tableHeadStyle}>ऑप्शन</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map((user) => (
+              {users?.map((user) => (
                 <TableRow
                   key={user._id}
                   sx={{
@@ -199,7 +177,7 @@ const UsersData = () => {
                     }}
                   >
                     <Avatar src={user.profilePicture} alt="no" />{" "}
-                    {user?.firstName + " " + user?.lastName}
+                    {user?.name}
                   </TableCell>
 
                   <TableCell sx={tableBodyStyle}>
@@ -217,13 +195,13 @@ const UsersData = () => {
                     )}
                   </TableCell>
                   <TableCell sx={tableBodyStyle}>{user.mobile}</TableCell>
-                  <TableCell sx={tableBodyStyle}>{user.gender}</TableCell>
+                  {/* <TableCell sx={tableBodyStyle}>{user.gender}</TableCell> */}
                   <TableCell
                     style={{
                       color:
-                        user.status === "सक्रिय"
+                        user.status === "active"
                           ? "green"
-                          : user.status === "निष्क्रिय"
+                          : user.status === "inactive"
                           ? "red"
                           : user.status === "लंबित"
                           ? "orange"
@@ -234,17 +212,61 @@ const UsersData = () => {
                     {user.status}
                   </TableCell>
                   <TableCell>
-                    <IconButton aria-label="more" onClick={handleClick}>
+                  <IconButton aria-label="more" onClick={(e)=>handleClick(e, user)}>
                       <MoreVertIcon />
                     </IconButton>
-                    <Menu
+                    {user.status === 'active' &&
+                      <Menu
                       anchorEl={anchorEl}
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
-                      <MenuItem sx={tableBodyStyle}>संपादित करें</MenuItem>
-                      <MenuItem sx={tableBodyStyle}>हटाएं</MenuItem>
+                      {/* <MenuItem
+                      sx={tableBodyStyle}
+                      onClick={() => {
+                        editArticle();
+                        handleClose();
+                      }}
+                    >
+                      संपादित करें
+                    </MenuItem> */}
+                      <MenuItem
+                      sx={tableBodyStyle}
+                      onClick={() => {
+                        updateUserStatus('inactive');
+                        handleClose();
+                      }}
+                    >
+                      inactive
+                    </MenuItem>
                     </Menu>
+                    }
+                    {user.status === 'inactive' &&
+                      <Menu
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                    >
+                      {/* <MenuItem
+                      sx={tableBodyStyle}
+                      onClick={() => {
+                        editArticle();
+                        handleClose();
+                      }}
+                    >
+                      संपादित करें
+                    </MenuItem> */}
+                      <MenuItem
+                      sx={tableBodyStyle}
+                      onClick={() => {
+                        updateUserStatus('active');
+                        handleClose();
+                      }}
+                    >
+                      active
+                    </MenuItem>
+                    </Menu>
+                    }
                   </TableCell>
                 </TableRow>
               ))}
@@ -257,8 +279,8 @@ const UsersData = () => {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={mockUsersData.length}
-        rowsPerPage={rowsPerPage}
+        count={totalCount}
+        rowsPerPage={limit}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}

@@ -7,23 +7,31 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "../../Components";
 import ReactSelect from "react-select";
 import { useDispatch, useSelector } from "react-redux";
-import { createArticleAction, updateArticleAction } from "../../store/slice/adminSlice";
+import {
+  createArticleAction,
+  fetchAllAdminNewsAction,
+  updateArticleAction,
+} from "../../store/slice/adminSlice";
 import { fetchRepoterArticlesAction } from "../../store/slice/newsSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { updateArticleStatusById } from "../../Services/Operations/admin";
 // import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 // import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-const ArticleForm = ({ article, handleMenuItemClick, setIsEditingDisabled }) => {
-
-  const fonts = ['sans-serif', 'serif', 'monospace', 'Mukta'];
-const Font = ReactQuill.Quill.import('formats/font');
-Font.whitelist = fonts; // Allow these fonts in the dropdown
-ReactQuill.Quill.register(Font, true);
+const ArticleForm = ({
+  article,
+  handleMenuItemClick,
+  setIsEditingDisabled,
+}) => {
+  const fonts = ["sans-serif", "serif", "monospace", "Mukta"];
+  const Font = ReactQuill.Quill.import("formats/font");
+  Font.whitelist = fonts; // Allow these fonts in the dropdown
+  ReactQuill.Quill.register(Font, true);
 
   const dispatch = useDispatch();
-  const userData = useSelector((state)=>state.auth);
-  const {user:reporterId, role} = userData;
+  const userData = useSelector((state) => state.auth);
+  const { user: reporterId, role } = userData;
   const s3Config = {
     bucketName: "awadh-kesari",
     dirName: "articles",
@@ -59,10 +67,9 @@ ReactQuill.Quill.register(Font, true);
     toolbar: toolbarOptions,
   };
 
-  useEffect(()=>{
-    console.log("art",article);
-    
-  }, [article])
+  useEffect(() => {
+    console.log("art", article);
+  }, [article]);
 
   const {
     register,
@@ -77,60 +84,86 @@ ReactQuill.Quill.register(Font, true);
       subheading: article?.subheading || "",
       category: article?.category || "",
       content: article?.content || "",
-      images: article?.images && article?.images[0] || null,
+      images: (article?.images && article?.images[0]) || null,
     },
   });
-  const submit = async (data)=> {    
-    if(role === 'user'){
-      setMessage('User is not allowed to create a post')
-      setTimeout(()=>{
-        navigate('/');
-      }, 10000)      
-    } else {     
-      if(article){
-        const articleId = article._id; 
-        const bodyData = {reporterId, articleId, ...data, category:getValues("category").value}
-          // const imageURL = '';
-          dispatch(updateArticleAction(bodyData)).unwrap()
-          .then(()=>{
-            toast.success("Updated Article Successfully")
-            dispatch(fetchRepoterArticlesAction(reporterId))
-            setTimeout(()=>{
-              handleMenuItemClick("My Articles");
-              setIsEditingDisabled(true)
-            }, 2000)
-            
-          })
-          .catch((e)=>{
-            toast.error("Failed to update the article!");
-            setTimeout(()=>{
-              handleMenuItemClick("My Articles");
-            }, 4000)
-          })
-
-      } else {
-        const bodyData = {reporterId, ...data, category:getValues("category").value}
-          const file = '' //some service of aws
-          // if(file){
-              dispatch(createArticleAction(bodyData)).unwrap()
+  const submit = async (data) => {
+    if (role === "user") {
+      setMessage("User is not allowed to create a post");
+      setTimeout(() => {
+        navigate("/");
+      }, 10000);
+    } else {
+      if (article) {
+        const articleId = article._id;
+        const bodyData = {
+          reporterId,
+          articleId,
+          ...data,
+          category: getValues("category").value,
+        };
+        // const imageURL = '';
+        dispatch(updateArticleAction(bodyData))
+          .unwrap()
+          .then(() => {
+            toast.success("Updated Article Successfully");
+            if(role === 'reporter') {
+              updateArticleStatusById(articleId, 'draft')
               .then(()=>{
-                toast.success("Updated Article Successfully")
-                dispatch(fetchRepoterArticlesAction(reporterId))
-                setTimeout(()=>{
-                  handleMenuItemClick("My Articles");
-                }, 2000)
-               
+                dispatch(fetchRepoterArticlesAction(reporterId));
               })
-              .catch((e)=>{
-                toast.error("Failed to create the article!");
-                setTimeout(()=>{
-                  handleMenuItemClick("My Articles");
-                }, 4000)
+              .catch((error)=>{
+                throw error;
               })
-              
-          }
+             } else dispatch(fetchAllAdminNewsAction(10, 1));
+            setTimeout(() => {
+              role === "reporter"
+                ? handleMenuItemClick("My Articles")
+                : handleMenuItemClick("Articles");
+              setIsEditingDisabled(true);
+            }, 2000);
+          })
+          .catch((e) => {
+            toast.error("Failed to update the article!");
+            setTimeout(() => {
+              role === "reporter"
+                ? handleMenuItemClick("My Articles")
+                : handleMenuItemClick("Articles");
+              setIsEditingDisabled(true);
+            }, 4000);
+          });
+      } else {
+        const bodyData = {
+          reporterId,
+          ...data,
+          category: getValues("category").value,
+        };
+        const file = ""; //some service of aws
+        // if(file){
+        dispatch(createArticleAction(bodyData))
+          .unwrap()
+          .then(() => {
+            toast.success("Updated Article Successfully");
+            role === 'reporter' ? dispatch(fetchRepoterArticlesAction(reporterId)) : dispatch(fetchAllAdminNewsAction(10, 1));
+            setTimeout(() => {
+              role === "reporter"
+                ? handleMenuItemClick("My Articles")
+                : handleMenuItemClick("Articles");
+              setIsEditingDisabled(true);
+            }, 2000);
+          })
+          .catch((e) => {
+            toast.error("Failed to create the article!");
+            setTimeout(() => {
+              role === "reporter"
+                ? handleMenuItemClick("My Articles")
+                : handleMenuItemClick("Articles");
+              setIsEditingDisabled(true);
+            }, 4000);
+          });
       }
     }
+  };
   const [error, setError] = useState("");
   const [isSubmitPending, setIsSubmitPending] = useState(false);
   const navigate = useNavigate();
@@ -159,140 +192,146 @@ ReactQuill.Quill.register(Font, true);
       setPostImageUrl(url);
     } catch (err) {
       console.error("Error uploading file:", err);
-
     }
   };
 
   return (
     <>
-    <ToastContainer 
-      position="top-right" 
-      autoClose={5000} 
-      hideProgressBar={false} 
-      newestOnTop={false} 
-      closeOnClick 
-      rtl={false} 
-      pauseOnFocusLoss 
-      draggable 
-      pauseOnHover 
-    />
-    <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-      <div className="items-center w-full">
-        <Input
-          name="title"
-          placeholder="शीर्षक"  // Hindi placeholder for "Heading"
-          register={register}
-          className="w-1/2"
-          errors={errors}
-          value={getValues("title")}
-        />
-        {/* Post image */}
-        <p>{article?.featuredImage ? "Change " : ""}Post image:</p>
-        <div className="flex items-center flex-col">
-          <div
-            className={`w-[450px] h-[200px] border-2 border-gray-500 rounded bg-white relative p-4 ${
-              postImageUrl ? "hidden" : ""
-            }`}
-          >
-            <input
-              type="file"
-              {...register("featuredImage", 
-                {
-                required: article?.featuredImage
-                  ? false
-                  // : "Post images are required",
-                  : false
-                }
-            )}
-              id="upload-image"
-              accept="image/jpg, image/png, image/gif"
-              onChange={(e) => {
-                uploadImage(e);
-              }}
-              className="absolute z-[-1]"
-            />
-            <label
-              className="border-2 h-full border-gray-400 rounded border-dashed w-full block bg-gray-100 cursor-pointer"
-              htmlFor="upload-image"
-            >
-              <img
-                src={"/images/defaultPostImage.png"}
-                alt="Post Image"
-                width={"100px"}
-                className="ml-[35%]"
-              />
-              <p className="text-xl text-center text-gray-700 font-bold">
-                Drag and drop or click here <br />{" "}
-                <span className="text-gray-400 text-lg font-normal">
-                  to upload image
-                </span>
-              </p>
-            </label>
-          </div>
-          {errors.featuredImage && (
-            <p className="text-red-500">{errors.featuredImage.message}</p>
-          )}
-          {postImageUrl && (
-            <>
-              <img src={postImageUrl} alt="" className="w-[450px] h-[200px]" />
-              <label
-                htmlFor="upload-image"
-                className="border-2 px-2 py-1 mt-2 bg-gray-600 text-gray-50 font-bold"
-              >
-                Change Image
-              </label>
-            </>
-          )}
-        </div>
-        <div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
+        <div className="items-center w-full">
           <Input
-            name="subheading"
-            placeholder="उपशीर्षक"  // Hindi placeholder for "Subheading"
+            name="title"
+            placeholder="शीर्षक" // Hindi placeholder for "Heading"
             register={register}
             className="w-1/2"
             errors={errors}
-            value={getValues("subheading")}
+            value={getValues("title")}
           />
-          <Controller
-            name="category"
-            control={control}
-            render={({ field }) => (
-              <ReactSelect
-                {...field}
-                options={updatedCategories}
-                placeholder="श्रेणी चुनें" // Hindi placeholder for "Select Category"
-                isClearable
-                isSearchable
-                // styles={customStyles}
-                defaultInputValue={getValues("category")}
+          {/* Post image */}
+          <p>{article?.featuredImage ? "Change " : ""}Post image:</p>
+          <div className="flex items-center flex-col">
+            <div
+              className={`w-[450px] h-[200px] border-2 border-gray-500 rounded bg-white relative p-4 ${
+                postImageUrl ? "hidden" : ""
+              }`}
+            >
+              <input
+                type="file"
+                {...register("featuredImage", {
+                  required: article?.featuredImage
+                    ? false
+                    : // : "Post images are required",
+                      false,
+                })}
+                id="upload-image"
+                accept="image/jpg, image/png, image/gif"
+                onChange={(e) => {
+                  uploadImage(e);
+                }}
+                className="absolute z-[-1]"
               />
+              <label
+                className="border-2 h-full border-gray-400 rounded border-dashed w-full block bg-gray-100 cursor-pointer"
+                htmlFor="upload-image"
+              >
+                <img
+                  src={"/images/defaultPostImage.png"}
+                  alt="Post Image"
+                  width={"100px"}
+                  className="ml-[35%]"
+                />
+                <p className="text-xl text-center text-gray-700 font-bold">
+                  Drag and drop or click here <br />{" "}
+                  <span className="text-gray-400 text-lg font-normal">
+                    to upload image
+                  </span>
+                </p>
+              </label>
+            </div>
+            {errors.featuredImage && (
+              <p className="text-red-500">{errors.featuredImage.message}</p>
             )}
-            rules={{ required: "Please select the Category" }}
-          />
-          {errors.category && (
-            <p className="text-red-500">{errors.category.message}</p>
-          )}
+            {postImageUrl && (
+              <>
+                <img
+                  src={postImageUrl}
+                  alt=""
+                  className="w-[450px] h-[200px]"
+                />
+                <label
+                  htmlFor="upload-image"
+                  className="border-2 px-2 py-1 mt-2 bg-gray-600 text-gray-50 font-bold"
+                >
+                  Change Image
+                </label>
+              </>
+            )}
+          </div>
+          <div>
+            <Input
+              name="subheading"
+              placeholder="उपशीर्षक" // Hindi placeholder for "Subheading"
+              register={register}
+              className="w-1/2"
+              errors={errors}
+              value={getValues("subheading")}
+            />
+            <Controller
+              name="category"
+              control={control}
+              render={({ field }) => (
+                <ReactSelect
+                  {...field}
+                  options={updatedCategories}
+                  placeholder="श्रेणी चुनें" // Hindi placeholder for "Select Category"
+                  isClearable
+                  isSearchable
+                  // styles={customStyles}
+                  defaultInputValue={getValues("category")}
+                />
+              )}
+              rules={{ required: "Please select the Category" }}
+            />
+            {errors.category && (
+              <p className="text-red-500">{errors.category.message}</p>
+            )}
+          </div>
         </div>
-      </div>
-      <p className="text-red-600">{error}</p>
-      <div>
-      <p className="text-start">सामग्री:</p> {/* Hindi for "Content" */}
-        {/* <div className="min-h-[50vh]"> */}
+        <p className="text-red-600">{error}</p>
+        <div>
+          <p className="text-start">सामग्री:</p> {/* Hindi for "Content" */}
+          {/* <div className="min-h-[50vh]"> */}
           <ReactQuill
             theme="snow"
             modules={modules}
             value={getValues("content")}
-            onChange={(value)=>{setValue("content", value)}}
+            onChange={(value) => {
+              setValue("content", value);
+            }}
             // style={{height: '100%'}}
           />
-        {/* </div> */}
-      </div>
-      <button
-        className=" w-full mt-10 border-2 shadow-md font-bold px-4 py-2 bg-green-600 rounded-md hover:bg-orange-600"
-        type="submit"
-        // isSubmitPending={isSubmitPending}
-      >{article ? "अद्यतन करें" : "प्रस्तुत करें"}</button>  {/* Hindi for "Update" or "Submit" */}
-    </form>
+          {/* </div> */}
+        </div>
+        <button
+          className=" w-full mt-10 border-2 shadow-md font-bold px-4 py-2 bg-green-600 rounded-md hover:bg-orange-600"
+          type="submit"
+          // isSubmitPending={isSubmitPending}
+        >
+          {article ? "अद्यतन करें" : "प्रस्तुत करें"}
+        </button>{" "}
+        {/* Hindi for "Update" or "Submit" */}
+      </form>
     </>
   );
 };
