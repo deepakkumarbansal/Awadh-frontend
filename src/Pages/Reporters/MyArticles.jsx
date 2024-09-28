@@ -23,7 +23,8 @@ import { deleteArticleById } from "../../Services/Operations/article";
 import Loader from "../../Components/Loader/Loader";
 import toast from "react-hot-toast";
 import { ToastContainer } from "react-toastify";
-const ArticlesData = ({setIsEditingDisabled, role, handleMenuItemClick}) => {
+const ArticlesData = ({setIsEditingDisabled, role, handleMenuItemClick, reporterId}) => {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const [article, setArticle] = useState('');
   const [reporterArticles, setReporterArticles] = useState([]);
@@ -69,10 +70,11 @@ const ArticlesData = ({setIsEditingDisabled, role, handleMenuItemClick}) => {
     deleteArticleById(article._id)
     .then((data)=>{
       console.log(data);
-      const updatedArticles = reporterArticles.filter((reporterArticle)=>{
-        return reporterArticle._id != article._id;
-      });
-      setReporterArticles(updatedArticles);
+      // const updatedArticles = reporterArticles.filter((reporterArticle)=>{
+      //   return reporterArticle._id != article._id;
+      // });
+      dispatch(fetchRepoterArticlesAction(reporterId));
+      // setReporterArticles(updatedArticles);
     })
     .catch((error)=>{
       console.log(error);

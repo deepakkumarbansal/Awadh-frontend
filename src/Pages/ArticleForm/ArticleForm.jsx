@@ -222,7 +222,7 @@ const ArticleForm = ({
           <p>{article?.featuredImage ? "Change " : ""}Post image:</p>
           <div className="flex items-center flex-col">
             <div
-              className={`w-[450px] h-[200px] border-2 border-gray-500 rounded bg-white relative p-4 ${
+              className={`w-[450px] h-[210px] border-2 border-gray-500 rounded bg-white relative p-4 ${
                 postImageUrl ? "hidden" : ""
               }`}
             >
@@ -249,7 +249,7 @@ const ArticleForm = ({
                   src={"/images/defaultPostImage.png"}
                   alt="Post Image"
                   width={"100px"}
-                  className="ml-[35%]"
+                  className="ml-[35%] mt-2"
                 />
                 <p className="text-xl text-center text-gray-700 font-bold">
                   Drag and drop or click here <br />{" "}
