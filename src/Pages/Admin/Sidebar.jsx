@@ -46,6 +46,12 @@ const Sidebar = ({ userRole, handleMenuItemClick, isEditingDisabled, currentPage
           isDisabled: false,
         },
         {
+          name: "Edit Article",
+          icon: <EditIcon />,
+          route: "/profile",
+          isDisabled: isEditingDisabled,
+        },
+        {
           name: "Profile",
           icon: <SettingsIcon />,
           route: "/profile",
