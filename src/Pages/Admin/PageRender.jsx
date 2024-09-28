@@ -54,7 +54,7 @@ const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, 
         case "Dashboard":
           return <ReportersHome />;
         case "My Articles":
-          return <MyArticles setIsEditingDisabled={setIsEditingDisabled} role={role} handleMenuItemClick={handleMenuItemClick}/>;
+          return <MyArticles setIsEditingDisabled={setIsEditingDisabled} role={role} handleMenuItemClick={handleMenuItemClick} reporterId={reporterId}/>;
         case "Profile":
           return <Profile/>;
         case "Add Article":

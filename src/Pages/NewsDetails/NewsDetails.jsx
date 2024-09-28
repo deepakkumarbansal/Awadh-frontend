@@ -55,9 +55,11 @@ const NewsDetails = () => {
               <p className="mt-3 text-lg">
                 Last Updated At: {newsItem.updatedAt.toLocaleString()}
               </p>
-              <p className="border-l-2 pl-2 mt-10 border-gray-400 text-xl">
-                {newsItem.content}
-              </p>
+              <div className="border-l-2 pl-2 mt-10 border-gray-400 text-xl">
+                {
+                  newsItem.content.includes('<') && newsItem.content.includes('>') ? <div dangerouslySetInnerHTML = {{__html: newsItem.content}}></div> : newsItem.content
+                }
+              </div>
             </div>
             <div className="w-1/4 mt-4">
               <p className="text-center w-full">Advertisement</p>

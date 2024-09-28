@@ -42,13 +42,14 @@ const loginAction = createAsyncThunk('auth/login', async ({formdata, navigate}) 
       body: JSON.stringify(formdata)
     })
     if(!response.ok){
-      throw new Error('Failed to login', response)
+      const data = await response.json();
+      const message = data.message;
+      console.log(message);
+      throw new Error(message);
     }
     const data = await response.json();
-    console.log(data);
     if(data.role === 'user'){
       console.log("home");
-      
       navigate('/');
     } else if(data.role === 'reporter') {
       navigate('/reporter')
@@ -132,5 +133,6 @@ export {
   loginAction
 }
 export const selectAuthError = (state)=>state.auth.error
+export const selectAuthLoader = (state)=>state.auth.loading
 export const { setLoading, setSignUpData, setToken } = authSlice.actions;
 export default authSlice.reducer;
