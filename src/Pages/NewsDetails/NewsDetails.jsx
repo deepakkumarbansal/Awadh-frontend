@@ -38,7 +38,7 @@ const NewsDetails = () => {
                 {newsItem?.title}
               </h2>
               <div className="my-10 border-green-200 flex justify-center">
-                <img src={newsItem?.images[0]} alt="NewsImage" />{" "}
+                <img src={newsItem?.images && newsItem?.images[0]} alt="NewsImage" />{" "}
                 {/* I have to ask that only one image or array of image is given */}
               </div>
               <div className="flex items-center gap-4">
