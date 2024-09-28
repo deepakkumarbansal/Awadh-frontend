@@ -46,6 +46,9 @@ const Signup = () => {
       <div className="flex justify-center items-center h-screen bg-gray-100">
         <div className="border-[1px] w-full sm:w-2/3 mx-3 lg:w-2/3 w-max-[1266px] min-h-[80%] rounded-xl flex flex-col items-center justify-center pb-4 shadow-xl bg-white">
           <Logo className="mt-5" />
+          <Link to={"/"} className="text-blue-500">
+              Home
+            </Link>
           <h2 className="text-2xl my-4">Create a new account</h2>
           <p className="mb-3">
             Already have any account?{" "}
