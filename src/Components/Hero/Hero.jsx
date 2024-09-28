@@ -2,6 +2,10 @@ import React from 'react';
 import { PhotoNewsCard } from '../index';
 
 const Hero = ({ newsData }) => {
+  console.log("in the hero section", newsData)
+  // const categories=["राजनैतिक","अन्य","राज्य","राजनैतिक"]
+  // const heroSet = new Set(newsData.filter((item) => categories.includes(item.category)))
+  // console.log("set",heroSet)
   return (
     <>
       <div className='md:grid md:grid-cols-3 md:grid-rows-2 md:gap-[2px] md:h-[535px]' style={{ gridTemplateColumns: '2.5fr 1fr 1fr', gridTemplateRows: '1.5fr 1fr' }}>

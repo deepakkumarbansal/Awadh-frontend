@@ -8,8 +8,12 @@ const ScrollContainer = ({items}) => {
       <ul className={`flex gap-4 text-xl ${scrollStyle['customScroll']}`}>
         {
             items.map((item, index)=>(
-                <li key={index} className=''>
-                    <Link to={item.href}>{item.text}</Link>
+              <li key={index} className=''>
+                
+                {/* here we willmake a object of id and headline, and show the nwes based on the clicked headline by passing slug in the url
+                we will  use object id instead of {item.href}
+                */}
+                    <Link to={`/news/${item.href}`}>{item.text}</Link>
                 </li>
             ))
         }
