@@ -48,6 +48,9 @@ const loginAction = createAsyncThunk('auth/login', async ({formdata, navigate}) 
       throw new Error(message);
     }
     const data = await response.json();
+    console.log("accountypt in authSlice",data.role)
+
+    localStorage.setItem("accountType", data.role)
     if(data.role === 'user'){
       console.log("home");
       navigate('/');
@@ -66,16 +69,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
   reducers: {
-    // setUser(state, value) {
-    //   // state.user = value.payload;
-    //   state.auth = 'reporter'
-    // },
-    // setLoading(state, value) {
-    //   state.loading = value.payload;
-    // },
-    // setToken(state, value) {
-    //   state.token = value.payload;
-    // },
   },
   extraReducers: (builder) => {
     builder
@@ -86,7 +79,7 @@ const authSlice = createSlice({
       .addCase(registerAction.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user.email;
-        console.log(action);
+        console.log("login data",action);
         state.error = ""
         console.log("Success in signup");
         
@@ -113,7 +106,9 @@ const authSlice = createSlice({
         state.role = action.payload.role;
         state.token = action.payload.token;
         state.error = "";
+        console.log("login data",action);
         localStorage.setItem("token", action.payload.token);
+        localStorage.setItem("accountType", action.payload.role);
         state.email = action.payload.email;
       })
       .addCase(loginAction.rejected, (state) => {
