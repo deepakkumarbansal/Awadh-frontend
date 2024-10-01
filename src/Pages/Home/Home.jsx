@@ -51,6 +51,11 @@ const Home = () => {
     fetchArticles();
   }, []);
 
+  useEffect(()=>{
+    console.log("BJP",databyCatagory);
+    
+  }, [databyCatagory])
+
   return (
     <div>
       <Section id="hero">
