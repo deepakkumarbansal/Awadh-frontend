@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { useNavigate } from "react-router-dom";
 const baseUrl = import.meta.env.VITE_BACKEND_API;
 
 const initialState = {
@@ -69,6 +68,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
   reducers: {
+
   },
   extraReducers: (builder) => {
     builder
@@ -107,8 +107,8 @@ const authSlice = createSlice({
         state.token = action.payload.token;
         state.error = "";
         console.log("login data",action);
-        localStorage.setItem("token", action.payload.token);
-        localStorage.setItem("accountType", action.payload.role);
+        // localStorage.setItem("token", action.payload.token);
+        // localStorage.setItem("accountType", action.payload.role);
         state.email = action.payload.email;
       })
       .addCase(loginAction.rejected, (state) => {
@@ -129,5 +129,6 @@ export {
 }
 export const selectAuthError = (state)=>state.auth.error
 export const selectAuthLoader = (state)=>state.auth.loading
+export const selectAuthUserRole = (state)=>state.auth.role
 export const { setLoading, setSignUpData, setToken } = authSlice.actions;
 export default authSlice.reducer;

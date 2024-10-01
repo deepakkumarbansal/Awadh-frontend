@@ -2,20 +2,18 @@ import React from 'react';
 import { PhotoNewsCard } from '../index';
 
 const Hero = ({ newsData }) => {
-  console.log("in the hero section", newsData)
-  const uniqueNews = newsData.reduce((acc, current) => {
-    if (!acc.find(item => item.category === current.category)) {
+  const uniqueNews = newsData?.reduce((acc, current) => {
+    if (acc.length < 4 && !acc.find(item => item.category === current.category)) {
       acc.push(current);
     }
     return acc;
   }, []);
-  console.log("herooo0",uniqueNews)
-  
+
   return (
     <>
       <div className='md:grid md:grid-cols-3 md:grid-rows-2 md:gap-[2px] md:h-[535px]' style={{ gridTemplateColumns: '2.5fr 1fr 1fr', gridTemplateRows: '1.5fr 1fr' }}>
         {
-          uniqueNews?.slice(0, 4)?.map((item, index) => {
+          uniqueNews?.map((item, index) => {
             const gridClasses = [
               'md:row-span-2',
               'md:row-span-1 md:col-span-2',
