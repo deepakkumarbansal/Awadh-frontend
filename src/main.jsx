@@ -4,11 +4,14 @@ import App from './App.jsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AdminDashboard, CategoryNews, Layout, Login, NewsDetails, Signup } from './Components/index.js';
-const Home = lazy(()=>import('./Pages/Home/Home.jsx'));
+import Home from './Pages/Home/Home.jsx';
 import { Provider } from 'react-redux';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './store/reducers/index.js';
+import { PersistGate } from 'redux-persist/integration/react';
+import {persistStore} from 'redux-persist'
+
 const router = createBrowserRouter([
   {
     path: '',
@@ -20,10 +23,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/',
-            element: 
-            <Suspense fallback={<h2>Loading component...</h2>}>
-              <Home/>
-            </Suspense>
+            element: <Home/>
           },
           {
             path: '/news/:slug',
@@ -63,11 +63,14 @@ const router = createBrowserRouter([
 const store = configureStore({
   reducer: rootReducer,
 });
+const persistor = persistStore(store);
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
     <ThemeProvider theme={createTheme()}>
       <RouterProvider router={router} />
     </ThemeProvider>
+    </PersistGate>
   </Provider>
 )
