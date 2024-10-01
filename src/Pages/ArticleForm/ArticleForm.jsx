@@ -16,8 +16,8 @@ import { fetchRepoterArticlesAction } from "../../store/slice/newsSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { updateArticleStatusById } from "../../Services/Operations/admin";
-// import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-// import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const ArticleForm = ({
   article,
@@ -39,6 +39,7 @@ const ArticleForm = ({
     accessKeyId: "AKIA5FTZBWWZFJ5J72ZU",
     secretAccessKey: "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",
   };
+
   const updatedCategories = catagories.map((category) => ({
     value: category,
     label: category,
@@ -70,6 +71,40 @@ const ArticleForm = ({
   useEffect(() => {
     console.log("art", article);
   }, [article]);
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      backgroundColor: 'white',
+      borderColor: state.isFocused ? '#16a349' : '#16a349',
+      borderWidth:'2px',
+      height: '3.5rem',
+      fontWeight: '600',
+      fontSize: '1.25rem',
+      boxShadow: state.isFocused ? '0 0 0 1px #16a349' : null,
+      '&:hover': {
+        borderColor: '#16a349',
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? '#16a349' : 'white',
+      '&:hover': {
+        backgroundColor: '#ef5b0c',
+      },
+      fontSize: '1.25rem',
+      fontWeight: '800',
+      color: state.isSelected ? 'black' : 'black',
+    }),
+    menu: (provided) => ({
+      ...provided,
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: 'gray',
+    }),
+  };
 
   const {
     register,
@@ -180,20 +215,22 @@ const ArticleForm = ({
           secretAccessKey: s3Config.secretAccessKey,
         },
       });
+      
       const params = {
         Bucket: s3Config.bucketName,
-        Key: `articles/${file.name}`,
+        Key: `${file.name}`,
         Body: file,
         ContentType: file.type,
       };
       const command = new PutObjectCommand(params);
-      const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+      const url = await getSignedUrl(s3Client, command, { expiresIn: 5000 });
       console.log("Uploaded successfully:", url);
       setPostImageUrl(url);
     } catch (err) {
       console.error("Error uploading file:", err);
     }
   };
+
 
   return (
     <>
@@ -297,7 +334,7 @@ const ArticleForm = ({
                   placeholder="श्रेणी चुनें" // Hindi placeholder for "Select Category"
                   isClearable
                   isSearchable
-                  // styles={customStyles}
+                  styles={customStyles}
                   defaultInputValue={getValues("category")}
                 />
               )}
@@ -310,7 +347,7 @@ const ArticleForm = ({
         </div>
         <p className="text-red-600">{error}</p>
         <div>
-          <p className="text-start">सामग्री:</p> {/* Hindi for "Content" */}
+          <p className="text-start mt-5">सामग्री:</p> {/* Hindi for "Content" */}
           {/* <div className="min-h-[50vh]"> */}
           <ReactQuill
             theme="snow"
@@ -319,12 +356,12 @@ const ArticleForm = ({
             onChange={(value) => {
               setValue("content", value);
             }}
-            // style={{height: '100%'}}
+            style={{height: '70vh'}}
           />
           {/* </div> */}
         </div>
         <button
-          className=" w-full mt-10 border-2 shadow-md font-bold px-4 py-2 bg-green-600 rounded-md hover:bg-orange-600"
+          className=" w-full mt-[100px] border-2 shadow-md font-bold px-4 py-2 bg-green-600 rounded-md hover:bg-orange-600"
           type="submit"
           // isSubmitPending={isSubmitPending}
         >

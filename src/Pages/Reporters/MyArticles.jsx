@@ -147,7 +147,7 @@ const ArticlesData = ({setIsEditingDisabled, role, handleMenuItemClick, reporter
                   }}
                 >
                   <TableCell sx={tableBodyStyle}>{index + 1}</TableCell>
-                  <TableCell sx={tableBodyStyle}>
+                  <TableCell sx={{...tableBodyStyle, width:"40%"} }>
                     <Link to={`/news/${article._id}`}>{article.title}</Link>
                   </TableCell>
                   <TableCell sx={tableBodyStyle}>{article.category}</TableCell>
