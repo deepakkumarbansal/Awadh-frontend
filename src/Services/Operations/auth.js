@@ -113,8 +113,9 @@ export function login(email, password, navigate) {
 
       localStorage.setItem("token", JSON.stringify(loginRes.data.token));
       localStorage.setItem("user", JSON.stringify(loginRes.data.user));
+      localStorage.setItem("user", JSON.stringify(loginRes.data.user));
 
-      console.log("login responce", loginRes);
+      console.log("login responce", loginRes.data);
     //   navigate("/dashboard/my-profile");
     } catch (error) {
       toast.error(error.response.data.message);
