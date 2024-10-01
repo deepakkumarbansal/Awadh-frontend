@@ -107,7 +107,7 @@ const authSlice = createSlice({
         state.token = action.payload.token;
         state.error = "";
         console.log("login data",action);
-        // localStorage.setItem("token", action.payload.token);
+        localStorage.setItem("token", action.payload.token);
         // localStorage.setItem("accountType", action.payload.role);
         state.email = action.payload.email;
       })
