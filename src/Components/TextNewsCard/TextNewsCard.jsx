@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createElement } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { font } from '../../utility/font';
@@ -28,9 +28,26 @@ const TextNewsCard = ({children, image, content = '', date = '', heading, author
           }
           <p className={`font-thin ${dateClasses}`}>{date}</p>
         </div>
+        <div>
         {
-          content && <p>{content.length > 40 ? content.slice(0, 40)+"..." : content}</p>
+          // content && <p>{content.length > 40 ? content.slice(0, 40)+"..." : content}</p>
+          // content && content.includes('<') && content.includes('>') ? <div dangerouslySetInnerHTML = {{__html: content}}></div> : content
+          content && (
+            (
+              () => {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = content;
+                const plainTextContent = tempDiv.textContent;
+                if(plainTextContent.length > 40){
+                  return <p>{plainTextContent.slice(0, 40)+ '...'}</p>
+                } else {
+                  return <p>{plainTextContent}</p>
+                }
+              }
+            )
+            )()
         }
+        </div>
       </div>
       {children} {/* News Catagory */}
     </div>
