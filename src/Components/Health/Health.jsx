@@ -10,7 +10,7 @@ const Videsh = ({ newsData }) => {
 
   return (
     <>
-      <SectionCatagory name="हेल्थ" backgroundColor="purple">
+      <SectionCatagory name="स्वास्त" backgroundColor="purple">
         <button
           className="border-gray-300 border-2 p-1 mr-2"
           onClick={prevPage}

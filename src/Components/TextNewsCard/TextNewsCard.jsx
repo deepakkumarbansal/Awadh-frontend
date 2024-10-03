@@ -18,7 +18,7 @@ const TextNewsCard = ({children, image, content = '', date = '', heading, author
         }}
         className="flex justify-center items-center"
       >
-        <img src={image} alt="News Image" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition:"center" }} />
+        <img src={image} alt="News Image" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition:"center" }} loading='lazy'/>
       </div>
       <div>
         <h3 className='font-bold text-2xl mt-3' style={{fontFamily: font.subheading}}>{heading.length > 40 ? heading.slice(0, 40)+"..." : heading}</h3>

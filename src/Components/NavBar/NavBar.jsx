@@ -41,7 +41,7 @@ const Navbar = () => {
                 { name: 'कानपुर', slug: '/category/कानपुर' },
             ],
         },
-        { name: 'राजनीतिक', slug: '/category/राजनीतिक', icon: <LiaPrayingHandsSolid /> },
+        { name: 'राजनैतिक', slug: '/category/राजनैतिक', icon: <LiaPrayingHandsSolid /> },
         // {
         //     name: 'अर्थजगत',
         //     slug: '/category/अर्थजगत',
@@ -53,7 +53,7 @@ const Navbar = () => {
         // { name: 'कैरियर', slug: '/category/' },
         // { name: 'जल व स्वच्छता', slug: '/category/जल व स्वच्छता', icons: <FaHandHoldingWater /> },
         // { name: 'सिने जगत', slug: '/category/' },
-        { name: 'हेल्थ', slug: '/category/हेल्थ', icon: <RiMentalHealthLine /> },
+        { name: 'स्वास्त', slug: '/category/स्वास्त', icon: <RiMentalHealthLine /> },
         {
             name: 'जीवन शैली',
             slug: '/category/जीवन शैली',

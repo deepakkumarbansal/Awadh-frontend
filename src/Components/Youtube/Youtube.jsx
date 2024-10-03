@@ -10,7 +10,7 @@ const Youtube = () => {
     setLoading(true);
     const YOUTUBE_API_KEY = envConfig.youtubeApiKey;
     const channelID = envConfig.channelId;
-    const url = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${channelID}&part=snippet,id&order=date&maxResults=10`;
+    const url = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${channelID}&part=snippet,id&order=date&maxResults=23`;
     try {
       const response = await fetch(url);
       if (!response.ok) {
