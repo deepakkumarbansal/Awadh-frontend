@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-const baseUrl = import.meta.env.VITE_BACKEND_API;
+import { envConfig } from "../../config/envConfig";
+const baseUrl = envConfig.baseBackendUrl;
 
 const initialState = {
   user: null,

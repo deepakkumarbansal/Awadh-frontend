@@ -244,7 +244,9 @@ const ArticleForm = ({
       //   // , { expiresIn: 5000 }
       // );
       await s3Client.send(command)
-      setPostImageUrl(`https://awadh-kesarii.s3.us-east-1.amazonaws.com/${file.name}`);
+      console.log(`https://awadh-kesari.s3.us-east-1.amazonaws.com/${file.name}`);
+      
+      setPostImageUrl(`https://awadh-kesari.s3.us-east-1.amazonaws.com/${file.name}`);
     } catch (err) {
       console.error("Error uploading file:", err);
     } finally {
