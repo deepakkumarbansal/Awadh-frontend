@@ -232,10 +232,11 @@ const ArticleForm = ({
           secretAccessKey: s3Config.secretAccessKey,
         },
       });
-
+      const timeStamp = Date.now();
+      const key = `${s3Config.dirName}/${timeStamp}`;
       const params = {
         Bucket: s3Config.bucketName,
-        Key: `${s3Config.dirName}/${file.name}`,
+        Key: key,
         Body: file,
         ContentType: file.type,
       };
@@ -244,9 +245,9 @@ const ArticleForm = ({
       //   // , { expiresIn: 5000 }
       // );
       await s3Client.send(command)
-      console.log(`https://awadh-kesari.s3.us-east-1.amazonaws.com/${file.name}`);
+      console.log(`https://awadh-kesarii.s3.us-east-1.amazonaws.com/${key}`);
       
-      setPostImageUrl(`https://awadh-kesari.s3.us-east-1.amazonaws.com/${file.name}`);
+      setPostImageUrl(`https://awadh-kesarii.s3.us-east-1.amazonaws.com/${key}`);
     } catch (err) {
       console.error("Error uploading file:", err);
     } finally {
@@ -269,7 +270,7 @@ const ArticleForm = ({
         draggable
         pauseOnHover
       />
-      <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
+      <form onSubmit={handleSubmit(submit)} className="flex flex-wrap bg-gray-50">
         <div className="items-center w-full">
           <Input
             name="title"
@@ -376,7 +377,7 @@ const ArticleForm = ({
           </div>
         </div>
         <p className="text-red-600">{error}</p>
-        <div>
+        <div className="mb-10 min-h-[90vh]">
           <p className="text-start mt-5">सामग्री:</p>{" "}
           {/* Hindi for "Content" */}
           {/* <div className="min-h-[50vh]"> */}
@@ -392,7 +393,7 @@ const ArticleForm = ({
           {/* </div> */}
         </div>
         <button
-          className=" w-full mt-[100px] border-2 shadow-md font-bold px-4 py-2 bg-green-600 rounded-md hover:bg-orange-600"
+          className=" w-full border-2 shadow-md font-bold px-4 py-2 bg-green-600 rounded-md hover:bg-orange-600 duration-200"
           type="submit"
           // isSubmitPending={isSubmitPending}
         >
