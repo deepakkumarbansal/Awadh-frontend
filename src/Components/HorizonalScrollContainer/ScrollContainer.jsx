@@ -1,11 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import scrollStyle from './ScrollContainer.module.css'
-const ScrollContainer = ({items}) => {
+const ScrollContainer = ({items}) => {  
+  console.log("scroll", items);
+  
   return (
     <div className='overflow-hidden flex items-center relative'>
         <div className='whitespace-nowrap bg-gray-300 px-6 py-3 relative z-10 text-sm font-bold' >Hindi News Papers</div>
-      <ul className={`flex gap-4 text-xl ${scrollStyle['customScroll']}`}>
+      <ul className={`flex gap-8 text-xl ${scrollStyle['customScroll']}`}>
         {
             items.map((item, index)=>(
               <li key={index} className=''>
@@ -13,7 +15,7 @@ const ScrollContainer = ({items}) => {
                 {/* here we willmake a object of id and headline, and show the nwes based on the clicked headline by passing slug in the url
                 we will  use object id instead of {item.href}
                 */}
-                    <Link to={`/news/${item.href}`}>{item.text}</Link>
+                    <Link to={`/news/${item._id}`} className='text-nowrap'>{item.title}</Link>
                 </li>
             ))
         }

@@ -34,7 +34,37 @@ const Profile = () => {
             register={register}
             placeholder="Current Password"
             errors={errors}
-            name='currentPassword'
+            name='name'
+            value={getValues("name")}
+          />
+          <Password
+            register={register}
+            placeholder="Password"
+            errors={errors}
+            name='password'
+            value={getValues("password")}
+          />
+
+          <SubmitButton value="Update Password" isSubmitPending={loading} onClick={()=>changePassword(currentUser?.email, getValues("currentPassword"), getValues("newPassword"), setLoading)}/>
+
+        </Modal>
+      );
+    };
+    // Name modal
+    const NameModal = () => {
+        const [loading, setLoading] = useState(false);
+      return (
+        <Modal
+          isVisible={isPasswordModalOpen}
+          onClose={() => {
+            setIsPasswordModalOpen(false);
+          }}
+        >
+          <Input
+            register={register}
+            placeholder="Current Password"
+            errors={errors}
+            name='New Name'
             value={getValues("currentPassword")}
           />
           <Password
