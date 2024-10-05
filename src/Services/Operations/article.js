@@ -33,7 +33,9 @@ export const getAllAdminArticles = async (limit, page) => {
 
 export const getAllArticlesByCatagory = async (category, page=1, limit) => {
   try {    
-    const response = await apiConnector("GET", GET_ARTICLES_BY_CATAGORY,null, {}, {category: category, page, limit});    
+    const response = await apiConnector("GET", GET_ARTICLES_BY_CATAGORY,null, {}, {category: category, page, limit});
+    console.log("categorySlice", response);
+        
     if(!response){
       throw new Error(response);
     }
@@ -41,7 +43,7 @@ export const getAllArticlesByCatagory = async (category, page=1, limit) => {
     return {category, data};
   } catch (error) {
     console.log(error); //Not throwing it b/c it may possible that it is used inside the Promise.all(); 
-    return {[category]: []}
+    return {[category]: {}}
   }
 }
 
@@ -52,7 +54,9 @@ export const getAllArticlesByCatagories = async (catagories =[]) => {
       const resultInObjectForm = results.reduce((accumulated, {category, data})=>{        
         accumulated[category] = data;
         return accumulated;
-      }, {});            
+      }, {});   
+      console.log("Hi slice", resultInObjectForm);
+               
       return resultInObjectForm;
     }
   } catch (error) {

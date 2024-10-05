@@ -152,12 +152,12 @@ const AdminHome = () => {
         <Bar data={totalUsersPerMonth} options={chartOptions} />
       </div>
       <div className='mt-20 max-h-[430px]'>
-        <h3 className='font-bold uppercase'>Total Posts per month</h3>
+        <h3 className='font-bold uppercase'>Total PUBLISHED ARTICLES Per Month</h3>
         <Bar data={PostPerMonthData} options={chartOptions} />
       </div>
 
       <div className='my-20 max-h-[430px]'>
-        <h3 className='font-bold uppercase'>Accepted and Rejected Posts</h3>
+        <h3 className='font-bold uppercase'>Accepted, Rejected and Draft Articles</h3>
         <Pie data={acceptedRejectedData} options={chartOptions} />
       </div>
     </>

@@ -27,11 +27,10 @@ export const fetchHomeNewsByCatagoriesAction = createAsyncThunk('news/fetchHomeN
     console.log("Error::Fetch news by catagories in home", error);
   }
 })
-export const fetchNewsByCategoryAction = createAsyncThunk('news/fetchNewsByCategory', async (category, page, limit)=>{
+export const fetchNewsByCategoryAction = createAsyncThunk('news/fetchNewsByCategory', async ({slug:category, page, limit})=>{
   try {
     const response = await getAllArticlesByCatagory(category, page, limit);
     const data = response?.data
-    console.log(data.articles, "res");
     modifyDateFormatOfArticles(data.articles);
     return data;
   } catch (error) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { PhotoNewsCard } from '../index';
 
 const Hero = ({ newsData }) => {
@@ -8,6 +8,11 @@ const Hero = ({ newsData }) => {
     }
     return acc;
   }, []);
+
+  useEffect(()=>{
+    console.log(uniqueNews, newsData, "unique");
+    
+  },[newsData])
 
   return (
     <>

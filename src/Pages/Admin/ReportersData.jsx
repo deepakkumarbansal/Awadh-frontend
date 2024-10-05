@@ -21,6 +21,9 @@ import { fetchAllReportersAction, selectAllReportersData, selectLoader } from ".
 import { updateUserOrReporterStatus } from "../../Services/Operations/admin";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../Components/Loader/Loader";
+import Modal from "../../Components/Modal/Modal";
+import { Input, SubmitButton } from "../../Components";
+import { useForm } from "react-hook-form";
 
 const ReportersData = ({setPage}) => {
   // State for pagination, search, and menu
@@ -34,6 +37,8 @@ const ReportersData = ({setPage}) => {
   //   page * rowsPerPage,
   //   page * rowsPerPage + rowsPerPage
   // );
+
+  const [isInviteModelOpen, setIsInviteModelOpen] = useState(false);
 
   const handleSearchInputChange = (event) => {
     setSearchQuery(event.target.value);
@@ -86,6 +91,42 @@ const ReportersData = ({setPage}) => {
       console.log(error);
     })
   }
+  const [sendEmailLoader, setSendEmailLoader] = useState(false)
+  //Write send email logic
+  const sendEmail = () => {
+    try {
+      setSendEmailLoader(true)
+    } catch (error) {
+      
+    } finally {
+      setSendEmailLoader(false)
+    }
+  }
+
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    control,
+    formState: { errors },
+  } = useForm();
+
+  const InviteReporterModel = () => {
+    return (
+      <Modal isVisible={isInviteModelOpen} onClose={()=>{setIsInviteModelOpen(false)}}>
+        <form onSubmit={handleSubmit(sendEmail)} className="flex flex-col">
+        <Input
+              type="email"
+              name="email"
+              register={register}
+              placeholder="Email"
+              errors={errors}
+            />
+        <SubmitButton isSubmitPending={loader} value='Send Invitation'/>
+        </form>
+      </Modal>
+    )
+  }
 
   if(loader){
     return <Loader/>
@@ -123,7 +164,10 @@ const ReportersData = ({setPage}) => {
             खोजें
           </Button>
         </Box>
-
+        {/* Invite Reporter */}
+        <div className="w-full flex justify-center my-4">
+          <button className="px-4 py-2 bg-gray-300 font-bold text-xl rounded" onClick={()=>setIsInviteModelOpen(true)}>Invite Reporter</button>
+        </div>
         {/* Table of Reporters */}
         <TableContainer
           sx={{
@@ -249,6 +293,7 @@ const ReportersData = ({setPage}) => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <InviteReporterModel/>
     </>
   );
 };

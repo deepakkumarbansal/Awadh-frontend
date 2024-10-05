@@ -22,11 +22,11 @@ const CategoryNews = () => {
   useEffect(() => {
     setTotalPages(Math.ceil(data?.totalCount / data?.limit));
   }, [data]);
-
+  
   console.log(totalPages, "hi");
   useEffect(() => {
-    dispatch(fetchNewsByCategoryAction(slug, page, 12)); //12 is the limit
-    console.log("change", slug);
+    dispatch(fetchNewsByCategoryAction({slug, page, limit:12})); //12 is the limit
+    console.log(page, totalPages, data, loading, "catagory");
   }, [slug, page]);
   return (
     <div className="mt-12 pt-10 border-t-2">
@@ -45,7 +45,7 @@ const CategoryNews = () => {
                   >
                     <Link to={`/news/${article._id}`}>
                       <TextNewsCard
-                        image={article.images[0]}
+                        image={article?.images?.[0]}
                         content={article.content}
                         date={article.updatedAt}
                         heading={article.title}
@@ -60,7 +60,7 @@ const CategoryNews = () => {
               <div className="mt-10 border-t-2 pt-5 flex justify-around">
                 <button
                   disabled={page == 1}
-                  className="px-5 py-2 rounded font-bold bg-orange-500 shadow-md hover:bg-orange-600 text-white cursor-pointer flex justify-center gap-3 items-center"
+                  className={`px-5 py-2 rounded font-bold ${page == 1 ? 'bg-gray-500 ' : 'bg-orange-500 hover:bg-orange-600'} shadow-md text-white cursor-pointer flex justify-center gap-3 items-center`}
                   onClick={() => {
                     setPage(page - 1);
                   }}
@@ -69,8 +69,8 @@ const CategoryNews = () => {
                   <p>Previous</p>
                 </button>
                 <button
-                  disabled={page == 1}
-                  className="px-5 py-2 rounded font-bold bg-green-600 shadow-md hover:bg-green-700 text-white cursor-pointer flex justify-center gap-3 items-center"
+                  disabled={page == totalPages}
+                  className={`px-5 py-2 rounded font-bold ${page == totalPages ? 'bg-gray-500 ' : 'bg-green-600 hover:bg-green-700'} shadow-md text-white cursor-pointer flex justify-center gap-3 items-center`}
                   onClick={() => {
                     setPage(page + 1);
                   }}

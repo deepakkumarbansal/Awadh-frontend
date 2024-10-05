@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { MdOutlineAccountCircle } from "react-icons/md";
 import InstagramPosts from './Components/InstagramPosts';
 import { ToastContainer } from 'react-toastify';
+import { selectAllNews } from './store/slice/newsSlice';
 
 function App() {
   const [latestNewsData, setLatestNewsData] = useState([]);
@@ -47,15 +48,17 @@ function App() {
       behavior: 'smooth'
     })
   }
-  const scrollContainerItems = [
-    {text: "heldsadkbakjdkabsasdjkasksdjbkdaksblo", href:"bsdjsd"},
-    {text: "heldsadkbakjdkabsasdjkasksdjbkdaksblo", href:"bsdjsd"},
-    {text: "heldsadkbakjdkabsasdjkasksdjbkdaksblo", href:"bsdjsd"},
-    {text: "heldsadkbakjdkabsasdjkasksdjbkdaksblo", href:"bsdjsd"},
-    {text: "heldsadkbakjdkabsasdjkasksdjbkdaksblo", href:"bsdjsd"},
-    {text: "heldsadkbakjdkabsasdjkasksdjbkdaksblo", href:"bsdjsd"},
-    {text: "heldsadkbakjdkabsasdjkasksdjbkdaksblo", href:"bsdjsd"},
-  ]
+  // const scrollContainerItems = [
+  //   {text: "heldsadkbakjdkabsasdjkasksdjbkdaksblo", href:"bsdjsd"},
+  //   {text: "heldsadkbakjdkabsasdjkasksdjbkdaksblo", href:"bsdjsd"},
+  //   {text: "heldsadkbakjdkabsasdjkasksdjbkdaksblo", href:"bsdjsd"},
+  //   {text: "heldsadkbakjdkabsasdjkasksdjbkdaksblo", href:"bsdjsd"},
+  //   {text: "heldsadkbakjdkabsasdjkasksdjbkdaksblo", href:"bsdjsd"},
+  //   {text: "heldsadkbakjdkabsasdjkasksdjbkdaksblo", href:"bsdjsd"},
+  //   {text: "heldsadkbakjdkabsasdjkasksdjbkdaksblo", href:"bsdjsd"},
+  // ]
+
+  const scrollContainerItems = useSelector(selectAllNews);
 
   return (
     <div>

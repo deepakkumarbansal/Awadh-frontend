@@ -25,6 +25,7 @@ export const articlesEndPoints = {
   GET_ARTICLE_BY_REPORTERS_ID: (articleId) =>
     BASE_URL + `/article/reporter-articels/${articleId}`,
   GET_ARTICLES_BY_CATAGORY: BASE_URL + `/article/article-category`,
+  SEARCH_ARTICLES: BASE_URL + `/article/search-article`
 };
 export const commentsEndPoints = {
   CREATE_COMMENT: BASE_URL + "/comment/create",
