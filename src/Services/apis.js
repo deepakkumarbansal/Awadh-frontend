@@ -13,7 +13,8 @@ export const profileEndpoints = {
 
 export const articlesEndPoints = {
   CREATE_ARTICLE: BASE_URL + "/article/create",
-  GET_ALL_ARTICLE: BASE_URL + "/admin/all-articles",
+  GET_ALL_ARTICLE: BASE_URL + "/article/all-articles",
+  GET_ALL_ADMIN_ARTICLE: BASE_URL + "/admin/all-articles",
   GET_ARTICLE_BY_ID:(articleId)=> BASE_URL + `/article/whole-article/${articleId}`,
   UPDATE_ARTICLE_BY_ID: (articleId)=> BASE_URL + `/article/update-article/${articleId}`,
   DELETE_ARTICLE_BY_ID: (articleId)=> BASE_URL + `/article/delete-article/${articleId}`,
@@ -30,4 +31,5 @@ export const authEndPoints = {
   REGISTER_API: BASE_URL + "/auth/register",
   FORGET_PASSWORD_API: BASE_URL + "/auth/forgetpassword",
   VERIFY_PASSWORD_API: BASE_URL + "/auth/verifypassword",
+  UPDATE_PASSWORD: BASE_URL + `/auth/changePassword`,
 };

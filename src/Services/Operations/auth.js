@@ -1,10 +1,10 @@
 import { setLoading } from "../../store/slice/authSlice";
 // import {setUser} from "../../store/slice/authSlice"
 // import { endpoints } from "../apis";
-
+import { authEndPoints } from "../apis";
 import { apiConnector } from "../connector";
 import { toast } from "react-hot-toast";
-
+import { logout as logoutAction } from "../../store/slice/authSlice";
 // const {
 // LOGIN_API
   
@@ -126,13 +126,14 @@ export function login(email, password, navigate) {
 }
 
 export function logout(navigate) {
-  return () => {
+  return (dispatch) => {
     // dispatch(setToken(null));
     // dispatch(setUser(null));
     //   dispatch(resetCart())
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("accountType");
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("user");
+    // localStorage.removeItem("accountType");
+    dispatch(logoutAction());
     toast.success("Logged Out");
     navigate("/");
   };
@@ -198,3 +199,25 @@ export function logout(navigate) {
 //     navigate("/");
 //   };
 // }
+
+export const changePassword = async (email, oldPassword, newPassword, setLoading) => {
+  setLoading(true)
+  console.log(email, oldPassword, newPassword);
+  
+  try {
+    const response = await apiConnector('POST', authEndPoints.UPDATE_PASSWORD, {email, oldPassword, newPassword});
+    console.log("update pass res::", response);
+    
+    if(response.status == '404'){
+      toast.warning(response.message);
+    } else if(response.status == '200') {
+      toast.success(response.message);
+    } else {
+      throw new Error(response.message);
+    }
+  } catch (error) {
+    toast.error(error.message);
+  } finally {
+    setLoading(false);
+  }
+}

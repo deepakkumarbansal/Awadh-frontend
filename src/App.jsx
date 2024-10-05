@@ -6,6 +6,7 @@ import { FaAngleUp } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 import { MdOutlineAccountCircle } from "react-icons/md";
 import InstagramPosts from './Components/InstagramPosts';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const [latestNewsData, setLatestNewsData] = useState([]);
@@ -58,6 +59,17 @@ function App() {
 
   return (
     <div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className='px-2 xl:px-10'>
         <Header scrollContainerItems={scrollContainerItems}/>
         <Outlet />

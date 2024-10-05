@@ -21,10 +21,12 @@ import renderCurrentPage from "./PageRender.jsx";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../Services/Operations/auth.js";
+import { useDispatch } from "react-redux";
 
 const drawerWidth = 280;
 
 const Workspace = (props) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [editArticleData, setEditArticleData] = useState('')
   const {user, role, userName, email} = useSelector(state=>state.auth);
@@ -97,7 +99,7 @@ const Workspace = (props) => {
             border: "none",
             cursor: "pointer",
           }}
-          onClick={logout(navigate)}
+          // onClick={()=>logout(navigate)(dispatch)}
         >
           <Typography
             sx={{

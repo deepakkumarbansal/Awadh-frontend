@@ -11,6 +11,8 @@ const initialState = {
 }
 
 export const createArticleAction = createAsyncThunk('adminOrReposter/createArticle', async(data)=>{
+    console.log(data, "hello");
+    
     console.log('start creating article');
     try {
         // throw new Error("testing error")

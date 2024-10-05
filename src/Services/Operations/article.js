@@ -1,7 +1,7 @@
 import { apiConnector } from "../connector";
 import { articlesEndPoints } from "../apis";
 import { toast } from "react-hot-toast";
-const { GET_ALL_ARTICLE, GET_ARTICLES_BY_CATAGORY, GET_ARTICLE_BY_REPORTERS_ID, DELETE_ARTICLE_BY_ID } = articlesEndPoints;
+const { GET_ALL_ARTICLE, GET_ARTICLES_BY_CATAGORY, GET_ARTICLE_BY_REPORTERS_ID, DELETE_ARTICLE_BY_ID, GET_ALL_ADMIN_ARTICLE } = articlesEndPoints;
 // import {setNews} from "../../store/slice"
 
 export const getAllArticles = async (limit) => {
@@ -22,7 +22,7 @@ export const getAllAdminArticles = async (limit, page) => {
   console.log("Welcome back");
   
   try {
-    const response = await apiConnector("GET", GET_ALL_ARTICLE, null, {limit, page});
+    const response = await apiConnector("GET", GET_ALL_ADMIN_ARTICLE, null, {limit, page});
     console.log("Welcome back", response);
     result = response?.data;
     return result
