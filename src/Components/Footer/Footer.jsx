@@ -7,24 +7,36 @@ import { MdLocalPhone } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import { logout } from "../../Services/Operations/auth";
+import { apiConnector } from "../../Services/connector";
+import { visitorCountApi } from "../../Services/apis";
 
 const Footer = ({ className = "" }) => {
   const isLogin = useSelector((state) => state.auth.isLogin);
-  const [visitorsCount, setVisitorsCount] = useState(999909120); // to be update
+  const [visitorsCount, setVisitorsCount] = useState(0); // to be update
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loader, setLoader] = useState(false);
 
+  
   useEffect(() => {
-    const handleReload = () => {
-      setVisitorsCount(visitorsCount + 1);
+    const fetchAndUpdateVisitorCount = async () => {
+      setLoader(true);
+      try {
+        // Fetch the current visitor count
+        const result = await apiConnector("GET", visitorCountApi.getCount);
+        setVisitorsCount(result?.data?.count);
+
+        // Update the visitor count
+        await apiConnector("POST", visitorCountApi.updateCount);
+      } catch (error) {
+        console.error("Error fetching or updating visitor count", error);
+      } finally {
+        setLoader(false);
+      }
     };
 
-    window.addEventListener("load", handleReload);
-
-    return () => {
-      window.removeEventListener("load", handleReload);
-    };
-  }, [visitorsCount]);
+    fetchAndUpdateVisitorCount(); // Call the async function
+  }, []);
 
   const handleLogin = () => {
     if (isLogin) {
@@ -112,18 +124,18 @@ const Footer = ({ className = "" }) => {
       className={`min-h-[100vh] bg-gray-950 text-gray-50  ${className} py-4 mt-10`}
     >
       <div className="flex justify-center flex-col items-center mb-10">
-          <h2 className="text-lg">Account</h2>
-          <div className="flex gap-4 mt-4">
-            <Button onClick={handleLogin} variant="outlined">
-              {isLogin ? "Logout" : "Login"}
+        <h2 className="text-lg">Account</h2>
+        <div className="flex gap-4 mt-4">
+          <Button onClick={handleLogin} variant="outlined">
+            {isLogin ? "Logout" : "Login"}
+          </Button>
+          {!isLogin ? (
+            <Button onClick={() => navigate("/signup")} variant="contained">
+              Signup
             </Button>
-            {!isLogin ? (
-              <Button onClick={() => navigate("/signup")} variant="contained">
-                Signup
-              </Button>
-            ) : (
-              ""
-            )}
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <div className="md:flex md:justify-around">
@@ -194,9 +206,13 @@ const Footer = ({ className = "" }) => {
         />
         <div className="flex gap-2 items-center flex-col items-start">
           <p className="text-lg font-medium text-white">Visitors Count: </p>
-          <div className="bg-gradient-to-r from-yellow-300 to-yellow-500 text-black font-semibold px-4 py-2 rounded-md shadow-inner">
-            {visitorsCount}
-          </div>
+          {loader ? (
+            <div className="w-12 h-12 border-4 border-dashed rounded-full border-blue-500 animate-spin"></div>
+          ) : (
+            <div className="bg-gradient-to-r from-yellow-300 to-yellow-500 text-black font-semibold px-4 py-2 rounded-md shadow-inner">
+              {visitorsCount}
+            </div>
+          )}
         </div>
         <div>
           <h1 className="mb-2">
