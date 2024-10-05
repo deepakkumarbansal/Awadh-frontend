@@ -147,22 +147,17 @@ const ArticleForm = ({
           ...data,
           category: getValues("category").value,
           images: [imageURL],
+          status: role === 'admin' ? 'accepted' : 'draft',
         };
         dispatch(updateArticleAction(bodyData))
           .unwrap()
           .then(() => {
             toast.success("Updated Article Successfully");
             if (role === "reporter") {
-              updateArticleStatusById(articleId, "draft")
-                .then(() => {
-                  console.log("updated");
-                  
-                  dispatch(fetchRepoterArticlesAction(reporterId));
-                })
-                .catch((error) => {
-                  throw error;
-                });
-            } else dispatch(fetchAllAdminNewsAction(10, 1));
+              dispatch(fetchRepoterArticlesAction(reporterId));
+            } else {
+              dispatch(fetchAllAdminNewsAction(10, 1));
+            }
             setTimeout(() => {
               role === "reporter"
                 ? handleMenuItemClick("My Articles")
@@ -187,6 +182,9 @@ const ArticleForm = ({
           category: getValues("category").value,
           images: [imageUrl],
         };
+        if(role === 'admin'){
+          bodyData.status = 'accepted';
+        }
         // if(file){
         dispatch(createArticleAction(bodyData))
           .unwrap()
@@ -270,7 +268,7 @@ const ArticleForm = ({
         draggable
         pauseOnHover
       />
-      <form onSubmit={handleSubmit(submit)} className="flex flex-wrap bg-gray-50">
+      <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
         <div className="items-center w-full">
           <Input
             name="title"
@@ -281,7 +279,7 @@ const ArticleForm = ({
             value={getValues("title")}
           />
           {/* Post image */}
-          <p>{article?.featuredImage ? "Change " : ""}Post image:</p>
+          <p>{article?.images ? "Change " : ""}Post image:</p>
           <div className="flex items-center flex-col min-h-[210px] justify-center">
             {imageUploadLoader ? (
               <div className="w-12 h-12 border-4 border-dashed rounded-full border-blue-500 animate-spin"></div>
@@ -294,8 +292,8 @@ const ArticleForm = ({
                 >
                   <input
                     type="file"
-                    {...register("featuredImage", {
-                      required: article?.images[0]
+                    {...register("images", {
+                      required: postImageUrl
                         ? false
                         : "Post images are required",
                     })}
@@ -324,8 +322,8 @@ const ArticleForm = ({
                     </p>
                   </label>
                 </div>
-                {errors.featuredImage && (
-                  <p className="text-red-500">{errors.featuredImage.message}</p>
+                {errors.images && (
+                  <p className="text-red-500">{errors.images.message}</p>
                 )}
                 {postImageUrl && (
                   <>
