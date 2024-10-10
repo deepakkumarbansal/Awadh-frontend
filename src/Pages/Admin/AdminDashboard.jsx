@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Workspace from "./Workspace";
 import { useSelector } from "react-redux";
-import { selectAuthUserRole } from "../../store/slice/authSlice";
+import { selectAuthUserRole, selectAuthUserStatus } from "../../store/slice/authSlice";
 import Loader from "../../Components/Loader/Loader";
+import { useLocation } from "react-router-dom";
 
 const AdminDashboard = () => {
-  let userType = 
-  // localStorage.getItem("accountType")
-  //   ? localStorage.getItem("accountType")
-  //   :
-     useSelector(selectAuthUserRole)
+  let userType = useSelector(selectAuthUserRole);
+  const userStatus = useSelector(selectAuthUserStatus)
+  const url = useLocation().pathname;
   const [accountType, setAccountType] = useState(userType); // State for account type
   const [isLoading, setIsLoading] = useState(true); // Loading state
   // Update account type from Redux or localStorage
@@ -19,11 +18,9 @@ const AdminDashboard = () => {
 
     setIsLoading(false); // Set loading to false after data is fetched
   }, [userType]);
+  
+  let isAllowed = (accountType === "admin" || accountType === "reporter") && (`/${userType}` == url) && userStatus === 'active' ;
 
-  // Log for debugging
-  console.log("account type", accountType, localStorage.getItem("accountType"));
-
-  const isAllowed = accountType === "admin" || accountType === "reporter";
 
   if (isLoading) {
     return <Loader/>; // Loading screen while determining account type

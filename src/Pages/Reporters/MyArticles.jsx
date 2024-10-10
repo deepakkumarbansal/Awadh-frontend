@@ -69,7 +69,6 @@ const ArticlesData = ({setIsEditingDisabled, role, handleMenuItemClick, reporter
     }
     deleteArticleById(article._id)
     .then((data)=>{
-      console.log(data);
       // const updatedArticles = reporterArticles.filter((reporterArticle)=>{
       //   return reporterArticle._id != article._id;
       // });
@@ -88,7 +87,6 @@ const ArticlesData = ({setIsEditingDisabled, role, handleMenuItemClick, reporter
       return;
     }
     setIsEditingDisabled(false);
-    console.log("edi",article);
     
     handleMenuItemClick("Edit Article", article)
   } 

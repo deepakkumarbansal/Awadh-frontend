@@ -9,10 +9,7 @@ const Hero = ({ newsData }) => {
     return acc;
   }, []);
 
-  useEffect(()=>{
-    console.log(uniqueNews, newsData, "unique");
-    
-  },[newsData])
+  
 
   return (
     <>

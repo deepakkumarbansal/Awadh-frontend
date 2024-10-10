@@ -38,6 +38,10 @@ export const authEndPoints = {
   FORGET_PASSWORD_API: BASE_URL + "/auth/forgetpassword",
   VERIFY_PASSWORD_API: BASE_URL + "/auth/verifypassword",
   UPDATE_PASSWORD: BASE_URL + `/auth/changePassword`,
+  UPDATE_NAME: BASE_URL + `/auth/changeName`,
+  SEND_INVITATION_MAIL: BASE_URL + `/admin/invite-reporter`,
+  ACCEPT_INVITE_REPORTER: (token) => BASE_URL + `/admin/accept-invite-reporter/${token}`,
+  UPDATE_AVATAR_URL: BASE_URL + `/auth/update-avatar-url`
 };
 
 export const visitorCountApi = {

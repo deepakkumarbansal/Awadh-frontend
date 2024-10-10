@@ -16,9 +16,7 @@ import { useEffect, useState } from "react";
 
 const Sidebar = ({ userRole, handleMenuItemClick, isEditingDisabled, currentPage }) => {
   let sideBarMenues = [];
-  useEffect(()=>{
-    console.log(isEditingDisabled);
-  }, [isEditingDisabled])
+
   switch (userRole) {
     case "admin":
       sideBarMenues = [

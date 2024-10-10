@@ -69,9 +69,7 @@ const ArticleForm = ({
     toolbar: toolbarOptions,
   };
 
-  useEffect(() => {
-    console.log("art", article);
-  }, [article]);
+
 
   const customStyles = {
     control: (provided, state) => ({
@@ -137,8 +135,6 @@ const ArticleForm = ({
     } else {
       if (article) {
         const articleId = article._id;
-        console.log("Update post check new image::", postImageUrl);
-        console.log("Update post check prev image::", getValues("images")[0]);
 
         const imageURL = postImageUrl;
         const bodyData = {
@@ -243,13 +239,11 @@ const ArticleForm = ({
       //   // , { expiresIn: 5000 }
       // );
       await s3Client.send(command)
-      console.log(`https://awadh-kesarii.s3.us-east-1.amazonaws.com/${key}`);
       
       setPostImageUrl(`https://awadh-kesarii.s3.us-east-1.amazonaws.com/${key}`);
     } catch (err) {
       console.error("Error uploading file:", err);
     } finally {
-      console.log("bye");
       
       setImageUploadLoader(false);
     }

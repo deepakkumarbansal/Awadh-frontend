@@ -12,7 +12,6 @@ const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, 
   const [page, setPage] = useState(0);
   const [pageOfUsers, setPageOfUSers] = useState(1);
   const [pageOfReporters, setPageOfReporters] = useState(1);
-  console.log(currentPage, role);
   const dispatch = useDispatch();
   useEffect(()=>{
     if(role === 'reporter'){
@@ -21,7 +20,6 @@ const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, 
       dispatch(fetchAllAdminNewsAction(10, page));
       dispatch(fetchAllUsersAction(10, pageOfUsers));
       dispatch(fetchAllReportersAction(10, pageOfReporters))
-      console.log("dispatch pageno.", pageOfReporters);
       
     }
   }, [reporterId, role]);
@@ -48,7 +46,6 @@ const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, 
   }
 
     if (role === "reporter") {
-      console.log("C",currentPage);
       
       switch (currentPage) {
         case "Dashboard":

@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Logo, Password, SubmitButton } from "../../Components/index";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { loginAction, selectAuthLoader } from "../../store/slice/authSlice";
+import { loginAction, selectAuthLoader, selectAuthUserRole } from "../../store/slice/authSlice";
 import { toast, ToastContainer } from "react-toastify";
 
-const Signup = () => {
-  const [error, setError] = useState("");
+const Login = () => {
+  const [error, setError] = useState("")
+  const userRole = useSelector(selectAuthUserRole);
   const {
     handleSubmit,
     register,
@@ -26,6 +27,15 @@ const Signup = () => {
         toast.error(error.message);
       });
   };
+  useEffect(()=>{
+    if(userRole === "user"){
+      navigate('/');
+    } else if(userRole === "admin"){
+      navigate('/admin');
+    } else if(userRole === "reporter"){
+      navigate('/reporter');
+    }
+  }, [userRole])
   return (
     <>
       <ToastContainer
@@ -79,4 +89,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;

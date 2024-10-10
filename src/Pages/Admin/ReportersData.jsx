@@ -24,6 +24,10 @@ import Loader from "../../Components/Loader/Loader";
 import Modal from "../../Components/Modal/Modal";
 import { Input, SubmitButton } from "../../Components";
 import { useForm } from "react-hook-form";
+import { apiConnector } from "../../Services/connector";
+import { authEndPoints } from "../../Services/apis";
+import { ToastContainer } from "react-toastify";
+import toast from "react-hot-toast";
 
 const ReportersData = ({setPage}) => {
   // State for pagination, search, and menu
@@ -83,7 +87,6 @@ const ReportersData = ({setPage}) => {
   const updateReporterStatus = async (status) => {
     updateUserOrReporterStatus(reporter?._id, status) // not updating status, telling that user not exist
     .then((data)=>{
-      console.log(data);
       //Here we can update the displayed user status using foreach but I am dispatching 
       dispatch(fetchAllReportersAction(limit, page))
     })
@@ -93,11 +96,14 @@ const ReportersData = ({setPage}) => {
   }
   const [sendEmailLoader, setSendEmailLoader] = useState(false)
   //Write send email logic
-  const sendEmail = () => {
+  const sendEmail = async() => {
+    
     try {
       setSendEmailLoader(true)
+      const response = await apiConnector('POST', authEndPoints.SEND_INVITATION_MAIL, {email: getValues("email")});
+      toast.success(response?.message);
     } catch (error) {
-      
+      toast.error(error.message);
     } finally {
       setSendEmailLoader(false)
     }
@@ -108,6 +114,7 @@ const ReportersData = ({setPage}) => {
     register,
     setValue,
     control,
+    getValues,
     formState: { errors },
   } = useForm();
 
@@ -122,7 +129,7 @@ const ReportersData = ({setPage}) => {
               placeholder="Email"
               errors={errors}
             />
-        <SubmitButton isSubmitPending={loader} value='Send Invitation'/>
+        <SubmitButton isSubmitPending={sendEmailLoader} value='Send Invitation'/>
         </form>
       </Modal>
     )
@@ -134,6 +141,17 @@ const ReportersData = ({setPage}) => {
 
   return (
     <>
+    <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Box sx={{}}>
         <Box sx={{ ml: 2, mt: 2 }}>
           <Typography variant="h5" fontWeight="600">

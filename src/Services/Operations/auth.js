@@ -127,12 +127,6 @@ export function login(email, password, navigate) {
 
 export function logout(navigate) {
   return (dispatch) => {
-    // dispatch(setToken(null));
-    // dispatch(setUser(null));
-    //   dispatch(resetCart())
-    // localStorage.removeItem("token");
-    // localStorage.removeItem("user");
-    // localStorage.removeItem("accountType");
     dispatch(logoutAction());
     toast.success("Logged Out");
     navigate("/");
@@ -200,20 +194,58 @@ export function logout(navigate) {
 //   };
 // }
 
-export const changePassword = async (email, oldPassword, newPassword, setLoading) => {
+export const changePassword = async (email, oldPassword, newPassword, setLoading, setIsPasswordModalOpen) => {
   setLoading(true)
-  console.log(email, oldPassword, newPassword);
-  
   try {
     const response = await apiConnector('POST', authEndPoints.UPDATE_PASSWORD, {email, oldPassword, newPassword});
-    console.log("update pass res::", response);
     
     if(response.status == '404'){
       toast.warning(response.message);
-    } else if(response.status == '200') {
-      toast.success(response.message);
+    } else if(response.status == '200') {      
+      return toast.success(response.message);
     } else {
       throw new Error(response.message);
+    }
+  } catch (error) {
+    toast.error(error.message);
+  } finally {
+    setLoading(false);
+    setIsPasswordModalOpen(false)
+  }
+}
+
+export const changeName = async (email, name, password, setLoading, setIsNameModalOpen) => {
+  setLoading(true)
+  try {
+    const response = await apiConnector('POST', authEndPoints.UPDATE_NAME, {email, name, password});
+    
+    if(response.status == '404'){
+      toast.warning(response.message || 'Something Went Wrong!!');
+    } else if(response.status == '200') {      
+      return toast.success(response.message|| 'Changed Name Successfully');
+    } else {
+      throw new Error(response.message || 'Something Went Wrong!!');
+    }
+  } catch (error) {
+    toast.error(error.message);
+  } finally {
+    setLoading(false);
+    setIsNameModalOpen(false)
+  }
+}
+
+
+export const updateAvatarUrl = async (email, avatarUrl, setLoading) => {
+  setLoading(true)
+  try {
+    const response = await apiConnector('POST', authEndPoints.UPDATE_AVATAR_URL, {email, avatarUrl});
+    
+    if(response.status == '404'){
+      toast.warning(response.message || 'Something Went Wrong!!');
+    } else if(response.status == '200') {      
+      return toast.success(response.message|| 'Profile Image updated Successfully');
+    } else {
+      throw new Error(response.message || 'Something Went Wrong!!');
     }
   } catch (error) {
     toast.error(error.message);
