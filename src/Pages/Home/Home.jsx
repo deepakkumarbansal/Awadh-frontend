@@ -29,9 +29,11 @@ import {
 import Youtube from "../../Components/Youtube/Youtube";
 import InstagramPosts from "../../Components/InstagramPosts";
 import Loader from "../../Components/Loader/Loader";
+import { envConfig } from "../../config/envConfig";
+const {baseBackendUrl} = envConfig
 const Home = () => {
   useEffect(()=>{
-    fetch('http://localhost:8400/api/X/tweets').then((data)=>data.json()).then((data)=>{console.log(data);
+    fetch(`${baseBackendUrl}/api/X/tweets`).then((data)=>data.json()).then((data)=>{console.log(data);
     })
   },[])
   
