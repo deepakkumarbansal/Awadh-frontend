@@ -26,49 +26,67 @@ const NewsDetails = () => {
   }, [slug]);
   return (
     <>
-      {
-        loader ? 
-        <Loader/>
-        : <div className="bg-gray-50 min-h-screen">
-        {error && <p className="text-red-500 font-bold">{error}</p>}
-        {newsItem && (
-          <div className="w-full mt-4 lg:flex lg:gap-2">
-            <div className="w-full border-2 rounded-md lg:w-4/3 shadow-md p-10">
-              <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold mb-10">
-                {newsItem?.title}
-              </h2>
-              <div className="my-10 border-green-200 flex justify-center">
-                <img src={newsItem?.images && newsItem?.images[0]} alt="NewsImage" />{" "}
-                {/* I have to ask that only one image or array of image is given */}
+      {loader ? (
+        <Loader />
+      ) : (
+        <div className="bg-gray-50 min-h-screen">
+          {error && <p className="text-red-500 font-bold">{error}</p>}
+          {newsItem && (
+            <div className="w-full mt-4 lg:flex lg:gap-2">
+              <div className="w-full border-2 rounded-md lg:w-4/3 shadow-md p-10">
+                <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold mb-10">
+                  {newsItem?.title}
+                </h2>
+                <div className="my-10 border-green-200 flex justify-center w-full">
+                  <img
+                    src={newsItem?.images && newsItem?.images[0]}
+                    alt="NewsImage"
+                    style={{
+                      objectFit: "cover",
+                      objectPosition: "center",
+                      width: "100%",
+                      height: "auto",
+                    }}
+                  />{" "}
+                  {/* I have to ask that only one image or array of image is given */}
+                </div>
+                <div className="flex items-center gap-4">
+                  <img
+                    src={newsItem?.autherAvatar || "/images/author.jpg"}
+                    // onError={()=>setAutherAvatar('/images/author.jpg')}
+                    alt={"Author avatar"}
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      objectFit: "cover",
+                    }} // Adjust style as needed
+                  />
+                  <h3 className="underline decoration-red-500 font-bold text-lg">
+                    -{newsItem.reporterId.name}
+                  </h3>
+                </div>
+                <p className="mt-3 text-lg">
+                  Last Updated At: {newsItem.updatedAt.toLocaleString()}
+                </p>
+                <div className="border-l-2 pl-2 mt-10 border-gray-400 text-xl">
+                  {newsItem.content.includes("<") &&
+                  newsItem.content.includes(">") ? (
+                    <div
+                      dangerouslySetInnerHTML={{ __html: newsItem.content }}
+                    ></div>
+                  ) : (
+                    newsItem.content
+                  )}
+                </div>
               </div>
-              <div className="flex items-center gap-4">
-                <img
-                  src={newsItem?.autherAvatar || "/images/author.jpg"}
-                  // onError={()=>setAutherAvatar('/images/author.jpg')}
-                  alt={"Author avatar"}
-                  style={{ width: "100px", height: "100px", objectFit: "cover" }} // Adjust style as needed
-                />
-                <h3 className="underline decoration-red-500 font-bold text-lg">
-                  -{newsItem.reporterId.name}
-                </h3>
-              </div>
-              <p className="mt-3 text-lg">
-                Last Updated At: {newsItem.updatedAt.toLocaleString()}
-              </p>
-              <div className="border-l-2 pl-2 mt-10 border-gray-400 text-xl">
-                {
-                  newsItem.content.includes('<') && newsItem.content.includes('>') ? <div dangerouslySetInnerHTML = {{__html: newsItem.content}}></div> : newsItem.content
-                }
+              <div className="w-1/4 mt-4">
+                <p className="text-center w-full">Advertisement</p>
+                <div className="advertismentContainer"></div>
               </div>
             </div>
-            <div className="w-1/4 mt-4">
-              <p className="text-center w-full">Advertisement</p>
-              <div className="advertismentContainer"></div>
-            </div>
-          </div>
-        )}
-      </div>
-      }
+          )}
+        </div>
+      )}
     </>
   );
 };
