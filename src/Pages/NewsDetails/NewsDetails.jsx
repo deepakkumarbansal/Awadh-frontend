@@ -33,7 +33,7 @@ const NewsDetails = () => {
         {error && <p className="text-red-500 font-bold">{error}</p>}
         {newsItem && (
           <div className="w-full mt-4 lg:flex lg:gap-2">
-            <div className="w-full border-2 rounded-md lg:w-4/3 m-4 shadow-md p-10">
+            <div className="w-full border-2 rounded-md lg:w-4/3 shadow-md p-10">
               <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold mb-10">
                 {newsItem?.title}
               </h2>
