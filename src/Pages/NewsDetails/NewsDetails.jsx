@@ -47,6 +47,7 @@ const NewsDetails = () => {
                       width: "100%",
                       height: "auto",
                     }}
+                    loading="lazy"
                   />{" "}
                   {/* I have to ask that only one image or array of image is given */}
                 </div>
