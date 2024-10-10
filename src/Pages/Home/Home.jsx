@@ -40,7 +40,6 @@ const Home = () => {
   const dispatch = useDispatch();
   const latestNews = useSelector(selectAllNews);
   const databyCatagory = useSelector(selectHomeNewsByCatagories);
-  console.log(latestNews, "latest");
 
   // fetching all the articles by catagory
   useEffect(() => {
@@ -52,7 +51,6 @@ const Home = () => {
   }, []);
 
   useEffect(()=>{
-    console.log("BJP",databyCatagory);
     
   }, [databyCatagory])
 
@@ -82,7 +80,7 @@ const Home = () => {
             <Rajnetic newsData={databyCatagory?.राजनैतिक} />
           </Section>
           <Section id="health">
-            <Health newsData={databyCatagory?.स्वास्त} />
+            <Health newsData={databyCatagory?.स्वास्थ्य} />
           </Section>
           <Section id="SamacharSangrah">
             <SamacharSangrah newsData={databyCatagory?.अन्य} />

@@ -30,14 +30,11 @@ const Workspace = (props) => {
   const navigate = useNavigate();
   const [editArticleData, setEditArticleData] = useState('')
   const {user, role, userName, email} = useSelector(state=>state.auth);
-  console.log(user, role, "work");
   
   const { window } = props;
   const [currentPage, setCurrentPage] = useState("Dashboard");
   const [isEditingDisabled, setIsEditingDisabled] = useState(true);
-  useEffect(()=>{
-    console.log(isEditingDisabled);
-  }, [isEditingDisabled])
+
   
   const handleMenuItemClick = (pageName, article) => {
     setCurrentPage(pageName);
@@ -99,7 +96,10 @@ const Workspace = (props) => {
             border: "none",
             cursor: "pointer",
           }}
-          // onClick={()=>logout(navigate)(dispatch)}
+          onClick={()=>{
+            dispatch(logout(navigate));
+            navigate('/')
+          }}
         >
           <Typography
             sx={{

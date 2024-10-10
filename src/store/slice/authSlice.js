@@ -6,10 +6,12 @@ const initialState = {
   user: null,
   userName: "",
   loading: false,
-  role: "user",
+  role: "",
   token: localStorage.getItem("token") ? localStorage.getItem("token") : null,
   error: "",
-  email: ""
+  email: "",
+  status: 'inactive',
+  avatarUrl: '',
 };
 
 const registerAction = createAsyncThunk('auth/register', async (formdata) => {
@@ -107,6 +109,8 @@ const authSlice = createSlice({
         state.token = "";
         state.userName = "";
         state.email = "";
+        state.status = 'inactive';
+        state.avatarUrl = ''
       })
       .addCase(loginAction.fulfilled, (state, action) => {
         state.loading = false;
@@ -119,6 +123,8 @@ const authSlice = createSlice({
         localStorage.setItem("token", action.payload.token);
         // localStorage.setItem("accountType", action.payload.role);
         state.email = action.payload.email;
+        state.status = action.payload.status;
+        state.avatarUrl = action.payload.avatarUrl;
       })
       .addCase(loginAction.rejected, (state) => {
         state.loading = false;
@@ -128,6 +134,8 @@ const authSlice = createSlice({
         state.token = "";
         state.userName = "";
         state.email = "";
+        state.status = 'inactive';
+        state.avatarUrl = '';
       })
   }
 });
@@ -139,6 +147,7 @@ export {
 export const selectAuthError = (state)=>state.auth.error
 export const selectAuthLoader = (state)=>state.auth.loading
 export const selectAuthUserRole = (state)=>state.auth.role
+export const selectAuthUserStatus = (state)=>state.auth.status
 export const { setLoading, setSignUpData, setToken } = authSlice.actions;
 export default authSlice.reducer;
 export const {logout} = authSlice.actions

@@ -7,4 +7,5 @@ export const envConfig = {
     aswAccessId: import.meta.env.VITE_AWS_ACCESSID,
     awsSecrateKey: import.meta.env.VITE_AWS_SECRATE_KEY,
     baseBackendUrl: import.meta.env.VITE_BACKEND_API,
+    awsUserDirectoryName: import.meta.env.VITE_AWS_USER_DIRECTORY_NAME
 }

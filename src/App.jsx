@@ -72,16 +72,24 @@ function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
+        style={{ zIndex: 9999 }}
       />
-      <div className='px-2 xl:px-10'>
-        <Header scrollContainerItems={scrollContainerItems}/>
+      <div className="px-2 xl:px-10">
+        <Header scrollContainerItems={scrollContainerItems} />
         <Outlet />
       </div>
-      <Footer className='px-2 lg:px-24' />
-      <div className={`border-[3px] bg-white fixed bottom-5 right-5 hover:border-red-500 transition-all duration-300 h-10 w-10 text-2xl flex items-center justify-center shadow-lg ${enableScroll ? 'opacity-1' : 'opacity-0'} transition-all duration-300`} onClick={scrollToTop}><FaAngleUp /></div>
+      <Footer className="px-2 lg:px-24" />
+      <div
+        className={`border-[3px] bg-white fixed bottom-5 right-5 hover:border-red-500 transition-all duration-300 h-10 w-10 text-2xl flex items-center justify-center shadow-lg ${
+          enableScroll ? "opacity-1" : "opacity-0"
+        } transition-all duration-300`}
+        onClick={scrollToTop}
+      >
+        <FaAngleUp />
+      </div>
       {/* <InstagramPosts/> */}
     </div>
-  )
+  );
 }
 
 export default App

@@ -11,6 +11,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './store/reducers/index.js';
 import { PersistGate } from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist'
+import ReporterInvitation from './Pages/Admin/ReporterInvitation.jsx';
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
   {
     path: '/admin',
     element: <AdminDashboard />
+  },
+  {
+    path: '/accept-invite-reporter',
+    element: <ReporterInvitation/>
   },
   {
     path: "*",

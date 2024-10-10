@@ -30,7 +30,7 @@ const Desh = ({ newsData }) => {
         {visibleData.map((newsItem, index) => (
           <TextNewsCard
             key={index}
-            image={newsItem.images[0]}
+            image={newsItem?.images?.[0]}
             date={newsItem.updatedAt}
             heading={newsItem.title}
             author={newsItem.reporterId.name}

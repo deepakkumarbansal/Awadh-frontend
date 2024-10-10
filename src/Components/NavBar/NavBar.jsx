@@ -53,7 +53,7 @@ const Navbar = () => {
         // { name: 'कैरियर', slug: '/category/' },
         // { name: 'जल व स्वच्छता', slug: '/category/जल व स्वच्छता', icons: <FaHandHoldingWater /> },
         // { name: 'सिने जगत', slug: '/category/' },
-        { name: 'स्वास्त', slug: '/category/स्वास्त', icon: <RiMentalHealthLine /> },
+        { name: 'स्वास्थ्य', slug: '/category/स्वास्थ्य', icon: <RiMentalHealthLine /> },
         {
             name: 'जीवन शैली',
             slug: '/category/जीवन शैली',

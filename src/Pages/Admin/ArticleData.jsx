@@ -64,7 +64,6 @@ const ArticlesData = ({
   };
 
   const handleClick = (event, article) => {
-    console.log("arrticle status", article);
 
     setAnchorEl(event.currentTarget);
     setArticle(article);
@@ -74,10 +73,7 @@ const ArticlesData = ({
     setAnchorEl(null);
   };
   const [article, setArticle] = useState("");
-  useEffect(()=>{
-    console.log(article, "choose");
-    
-  }, [article])
+
 
   const deleteArticle = async () => {
     if (role != "reporter") {
@@ -86,7 +82,6 @@ const ArticlesData = ({
     }
     deleteArticleById(article._id)
       .then((data) => {
-        console.log(data);
         const updatedArticles = articles.filter(({ _id }) => {
           return _id != article._id;
         });
@@ -102,7 +97,6 @@ const ArticlesData = ({
       return;
     }
     setIsEditingDisabled(false);
-    console.log("edi", article);
 
     handleMenuItemClick("Edit Article", article);
   };
@@ -114,7 +108,6 @@ const ArticlesData = ({
     }
     updateArticleStatusById(article._id,status)
       .then((data) => {
-        console.log(data);
         dispatch(fetchAllAdminNewsAction(limit, currentPage))
       })
       .catch((error) => {

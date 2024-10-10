@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import scrollStyle from './ScrollContainer.module.css'
 const ScrollContainer = ({items}) => {  
-  console.log("scroll", items);
   
   return (
     <div className='overflow-hidden flex items-center relative'>

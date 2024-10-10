@@ -202,10 +202,7 @@ const UsersData = ({setPage}) => {
                         user.status === "active"
                           ? "green"
                           : user.status === "inactive"
-                          ? "red"
-                          : user.status === "लंबित"
-                          ? "orange"
-                          : "black",
+                          ? "red" : "black",
                       fontWeight: "600",
                     }}
                   >

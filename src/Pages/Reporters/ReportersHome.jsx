@@ -44,10 +44,7 @@ const ReportersHome = () => {
     }
 
   })
-  useEffect(()=>{
-    console.log(dateMap);
-    console.log(articleStatusMap);
-  }, [dateMap, articleStatusMap])
+
   const monthlyPostsData = [ //to be changed
     { label: 'January', value: dateMap.get(0) || 0 },
     { label: 'February', value: dateMap.get(1) || 0 },

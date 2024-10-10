@@ -23,10 +23,8 @@ const CategoryNews = () => {
     setTotalPages(Math.ceil(data?.totalCount / data?.limit));
   }, [data]);
   
-  console.log(totalPages, "hi");
   useEffect(() => {
     dispatch(fetchNewsByCategoryAction({slug, page, limit:12})); //12 is the limit
-    console.log(page, totalPages, data, loading, "catagory");
   }, [slug, page]);
   return (
     <div className="mt-12 pt-10 border-t-2">

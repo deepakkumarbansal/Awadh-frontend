@@ -9,9 +9,11 @@ import { Button } from "@mui/material";
 import { logout } from "../../Services/Operations/auth";
 import { apiConnector } from "../../Services/connector";
 import { visitorCountApi } from "../../Services/apis";
+import { selectAuthUserRole } from "../../store/slice/authSlice";
+import toast from "react-hot-toast";
 
 const Footer = ({ className = "" }) => {
-  const isLogin = useSelector((state) => state.auth.isLogin);
+  const isLogin = useSelector(selectAuthUserRole);
   const [visitorsCount, setVisitorsCount] = useState(0); // to be update
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,8 +42,9 @@ const Footer = ({ className = "" }) => {
 
   const handleLogin = () => {
     if (isLogin) {
-      dispatch(logout());
+      dispatch(logout(navigate));
       navigate("/");
+      toast.success('Logout Successfully')
     } else {
       navigate("/login");
     }
