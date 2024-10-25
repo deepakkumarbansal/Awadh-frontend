@@ -15,61 +15,54 @@ import {
 import { fetchRepoterArticlesAction } from "../../store/slice/newsSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { updateArticleStatusById } from "../../Services/Operations/admin";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { envConfig } from "../../config/envConfig";
-const {awsBucketName, awsDirectoryName, awsRegion, aswAccessId, awsSecrateKey} = envConfig
-const ArticleForm = ({
-  article,
-  handleMenuItemClick,
-  setIsEditingDisabled,
-}) => {
+
+const { awsBucketName, awsDirectoryName, awsRegion, awsAccessId, awsSecretKey } = envConfig;
+
+const ArticleForm = ({ article, handleMenuItemClick, setIsEditingDisabled=()=>{} }) => {
   const fonts = ["sans-serif", "serif", "monospace", "Mukta"];
   const Font = ReactQuill.Quill.import("formats/font");
-  Font.whitelist = fonts; // Allow these fonts in the dropdown
+  Font.whitelist = fonts;
   ReactQuill.Quill.register(Font, true);
 
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth);
   const { user: reporterId, role } = userData;
+
   const s3Config = {
     bucketName: awsBucketName,
     dirName: awsDirectoryName,
     region: awsRegion,
-    accessKeyId: aswAccessId,
-    secretAccessKey: awsSecrateKey,
+    accessKeyId: awsAccessId,
+    secretAccessKey: awsSecretKey,
   };
 
   const updatedCategories = catagories.map((category) => ({
     value: category,
     label: category,
   }));
+
   const toolbarOptions = [
     [{ font: fonts }],
-    ["bold", "italic", "underline", "strike"], // toggled buttons
+    ["bold", "italic", "underline", "strike"],
     ["blockquote", "code-block"],
     ["link", "image", "video", "formula"],
-
-    [{ header: 1 }, { header: 2 }], // custom button values
+    [{ header: 1 }, { header: 2 }],
     [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
-    [{ script: "sub" }, { script: "super" }], // superscript/subscript
-    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-    [{ direction: "rtl" }], // text direction
-
-    [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+    [{ script: "sub" }, { script: "super" }],
+    [{ indent: "-1" }, { indent: "+1" }],
+    [{ direction: "rtl" }],
+    [{ size: ["small", false, "large", "huge"] }],
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    [{ color: [] }, { background: [] }],
     [{ align: [] }],
-
-    ["clean"], // remove formatting button
+    ["clean"],
   ];
+
   const modules = {
     toolbar: toolbarOptions,
   };
-
-
 
   const customStyles = {
     control: (provided, state) => ({
@@ -122,101 +115,59 @@ const ArticleForm = ({
     },
   });
 
+  const [postImageUrl, setPostImageUrl] = useState("");
+  const [imageUploadLoader, setImageUploadLoader] = useState(false);
+
   useEffect(() => {
-    setPostImageUrl(article?.images[0]);
+    setPostImageUrl(article?.images?.[0]);
   }, [article]);
 
   const submit = async (data) => {
     if (role === "user") {
-      setMessage("User is not allowed to create a post");
+      toast.error("User is not allowed to create a post");
       setTimeout(() => {
         navigate("/");
       }, 10000);
     } else {
-      if (article) {
-        const articleId = article._id;
+      const imageURL = postImageUrl;
+      const bodyData = {
+        reporterId,
+        ...data,
+        category: getValues("category").value,
+        images: [imageURL],
+        status: role === "admin" ? "accepted" : "draft",
+      };
 
-        const imageURL = postImageUrl;
-        const bodyData = {
-          reporterId,
-          articleId,
-          ...data,
-          category: getValues("category").value,
-          images: [imageURL],
-          status: role === 'admin' ? 'accepted' : 'draft',
-        };
-        dispatch(updateArticleAction(bodyData))
-          .unwrap()
-          .then(() => {
-            toast.success("Updated Article Successfully");
-            if (role === "reporter") {
-              dispatch(fetchRepoterArticlesAction(reporterId));
-            } else {
-              dispatch(fetchAllAdminNewsAction(10, 1));
-            }
-            setTimeout(() => {
-              role === "reporter"
-                ? handleMenuItemClick("My Articles")
-                : handleMenuItemClick("Articles");
-              setIsEditingDisabled(true);
-            }, 2000);
-          })
-          .catch((e) => {
-            toast.error("Failed to update the article!");
-            setTimeout(() => {
-              role === "reporter"
-                ? handleMenuItemClick("My Articles")
-                : handleMenuItemClick("Articles");
-              setIsEditingDisabled(true);
-            }, 4000);
-          });
-      } else {
-        const imageUrl = postImageUrl; //some service of aws
-        const bodyData = {
-          reporterId,
-          ...data,
-          category: getValues("category").value,
-          images: [imageUrl],
-        };
-        if(role === 'admin'){
-          bodyData.status = 'accepted';
+      try {
+        if (article) {
+          bodyData.articleId = article._id;
+          await dispatch(updateArticleAction(bodyData)).unwrap();
+          toast.success("Updated Article Successfully");
+        } else {
+          await dispatch(createArticleAction(bodyData)).unwrap();
+          toast.success("Created Article Successfully");
         }
-        // if(file){
-        dispatch(createArticleAction(bodyData))
-          .unwrap()
-          .then(() => {
-            toast.success("Created Article Successfully");
-            role === "reporter"
-              ? dispatch(fetchRepoterArticlesAction(reporterId))
-              : dispatch(fetchAllAdminNewsAction(10, 1));
-            setTimeout(() => {
-              role === "reporter"
-                ? handleMenuItemClick("My Articles")
-                : handleMenuItemClick("Articles");
-              setIsEditingDisabled(true);
-            }, 2000);
-          })
-          .catch((e) => {
-            toast.error("Failed to create the article!");
-            setTimeout(() => {
-              role === "reporter"
-                ? handleMenuItemClick("My Articles")
-                : handleMenuItemClick("Articles");
-              setIsEditingDisabled(true);
-            }, 4000);
-          });
+        role === "reporter"
+          ? dispatch(fetchRepoterArticlesAction(reporterId))
+          : dispatch(fetchAllAdminNewsAction(10, 1));
+
+        setTimeout(() => {
+          handleMenuItemClick(role === "reporter" ? "My Articles" : "Articles");
+          setIsEditingDisabled(true);
+        }, 2000);
+      } catch (e) {
+        toast.error("Failed to save the article!");
+        setTimeout(() => {
+          handleMenuItemClick(role === "reporter" ? "My Articles" : "Articles");
+          setIsEditingDisabled(true);
+        }, 4000);
       }
     }
   };
-  const [error, setError] = useState("");
-  const [isSubmitPending, setIsSubmitPending] = useState(false);
-  const navigate = useNavigate();
-  const [imageUploadLoader, setImageUploadLoader] = useState(false);
-  const [postImageUrl, setPostImageUrl] = useState("");
 
   const uploadImage = async (e) => {
     setImageUploadLoader(true);
-    
+
     const file = e.target.files[0];
     try {
       const s3Client = new S3Client({
@@ -235,16 +186,12 @@ const ArticleForm = ({
         ContentType: file.type,
       };
       const command = new PutObjectCommand(params);
-      // const url = await getSignedUrl(s3Client, command
-      //   // , { expiresIn: 5000 }
-      // );
-      await s3Client.send(command)
-      
-      setPostImageUrl(`https://awadh-kesarii.s3.us-east-1.amazonaws.com/${key}`);
+      await s3Client.send(command);
+
+      setPostImageUrl(`https://${s3Config.bucketName}.s3.${s3Config.region}.amazonaws.com/${key}`);
     } catch (err) {
       console.error("Error uploading file:", err);
     } finally {
-      
       setImageUploadLoader(false);
     }
   };
@@ -262,25 +209,25 @@ const ArticleForm = ({
         draggable
         pauseOnHover
       />
-      <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-        <div className="items-center w-full">
+      <form onSubmit={handleSubmit(submit)} className="flex flex-wrap bg-white shadow-lg rounded-lg p-6 border-2 min-h-screen border-gray-200">
+        <h2 className="text-2xl font-bold mb-4">{article ? "Update Article" : "Create Article"}</h2>
+        <div className="flex flex-col w-full mb-4">
           <Input
             name="title"
-            placeholder="शीर्षक" // Hindi placeholder for "Heading"
+            placeholder="Title"
             register={register}
-            className="w-1/2"
+            className="w-full mb-4"
             errors={errors}
             value={getValues("title")}
           />
-          {/* Post image */}
-          <p>{article?.images ? "Change " : ""}Post image:</p>
-          <div className="flex items-center flex-col min-h-[210px] justify-center">
+          <label htmlFor="upload-image" className="mb-2 text-lg font-semibold">Post Image:</label>
+          <div className="flex flex-col items-center mb-4">
             {imageUploadLoader ? (
-              <div className="w-12 h-12 border-4 border-dashed rounded-full border-blue-500 animate-spin"></div>
+              <div className="w-12 max-w-xs h-12 border-4 border-dashed rounded-full border-blue-500 animate-spin"></div>
             ) : (
               <>
                 <div
-                  className={`w-[450px] h-[210px] border-2 border-gray-500 rounded bg-white relative p-4 ${
+                  className={`w-full h-[150px] md:w-[450px] md:h-[210px] border-2 border-green-500 rounded bg-white relative p-4 ${
                     postImageUrl ? "hidden" : ""
                   }`}
                 >
@@ -299,18 +246,17 @@ const ArticleForm = ({
                     className="absolute z-[-1]"
                   />
                   <label
-                    className="border-2 h-full border-gray-400 rounded border-dashed w-full block bg-gray-100 cursor-pointer"
+                    className="border-2 h-full border-green-400 rounded border-dashed w-full block bg-gray-100 cursor-pointer"
                     htmlFor="upload-image"
                   >
                     <img
                       src={"/images/defaultPostImage.png"}
                       alt="Post Image"
-                      width={"100px"}
-                      className="ml-[35%] mt-2"
+                      className="w-[50px] md:w-[100px] m-auto mt-2"
                     />
-                    <p className="text-xl text-center text-gray-700 font-bold">
+                    <p className="text-sm md:text-xl text-center text-gray-700 font-bold">
                       Drag and drop or click here <br />{" "}
-                      <span className="text-gray-400 text-lg font-normal">
+                      <span className="text-gray-400 text-xs md:text-lg font-normal">
                         to upload image
                       </span>
                     </p>
@@ -324,7 +270,7 @@ const ArticleForm = ({
                     <img
                       src={postImageUrl}
                       alt=""
-                      className="max-w-[90vw] max-h-[90vh] object-contain object-center"
+                      className="max-w-[95%] max-h-[90vh] object-contain object-center"
                       
                     />
                     <label
@@ -338,41 +284,36 @@ const ArticleForm = ({
               </>
             )}
           </div>
-          <div>
-            <Input
-              name="subheading"
-              placeholder="उपशीर्षक" // Hindi placeholder for "Subheading"
-              register={register}
-              className="w-1/2"
-              errors={errors}
-              value={getValues("subheading")}
-            />
-            <Controller
-              name="category"
-              control={control}
-              render={({ field }) => (
-                <ReactSelect
-                  {...field}
-                  options={updatedCategories}
-                  placeholder="श्रेणी चुनें" // Hindi placeholder for "Select Category"
-                  isClearable
-                  isSearchable
-                  styles={customStyles}
-                  defaultInputValue={getValues("category")}
-                />
-              )}
-              rules={{ required: "Please select the Category" }}
-            />
-            {errors.category && (
-              <p className="text-red-500">{errors.category.message}</p>
+          <Input
+            name="subheading"
+            placeholder="Subheading"
+            register={register}
+            className="w-full mb-4"
+            errors={errors}
+            value={getValues("subheading")}
+          />
+          <Controller
+            name="category"
+            control={control}
+            render={({ field }) => (
+              <ReactSelect
+                {...field}
+                options={updatedCategories}
+                placeholder="Select Category"
+                isClearable
+                isSearchable
+                styles={customStyles}
+                defaultInputValue={getValues("category")}
+              />
             )}
-          </div>
+            rules={{ required: "Please select the Category" }}
+          />
+          {errors.category && (
+            <p className="text-red-500">{errors.category.message}</p>
+          )}
         </div>
-        <p className="text-red-600">{error}</p>
-        <div className="mb-10 min-h-[90vh]">
-          <p className="text-start mt-5">सामग्री:</p>{" "}
-          {/* Hindi for "Content" */}
-          {/* <div className="min-h-[50vh]"> */}
+        <label className="text-lg font-semibold mb-2">Content:</label>
+        <div className="max-w-[100%] overflow-hidden border-[2px] border-green-600">
           <ReactQuill
             theme="snow"
             modules={modules}
@@ -380,18 +321,15 @@ const ArticleForm = ({
             onChange={(value) => {
               setValue("content", value);
             }}
-            style={{ height: "70vh" }}
+            style={{ height: "70vh", width: "100%", border: "none" }}
           />
-          {/* </div> */}
         </div>
         <button
-          className=" w-full border-2 shadow-md font-bold px-4 py-2 bg-green-600 rounded-md hover:bg-orange-600 duration-200"
+          className="mt-2 w-full border-2 shadow-md font-bold px-4 py-2 bg-green-600 text-white rounded-md hover:bg-orange-600 duration-200"
           type="submit"
-          // isSubmitPending={isSubmitPending}
         >
-          {article ? "अद्यतन करें" : "प्रस्तुत करें"}
-        </button>{" "}
-        {/* Hindi for "Update" or "Submit" */}
+          {article ? "Update" : "Submit"}
+        </button>
       </form>
     </>
   );

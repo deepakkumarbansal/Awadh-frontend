@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
+import { seachArticles } from '../../Services/Operations/article';
+import { useNavigate } from 'react-router-dom';
 
-const Search = () => {
+const Search = ({toggleSearch}) => {
     const [query, setQuery] = useState('');
-
-    const handleSearch = (e) => {
+    const navigate = useNavigate();
+    const handleSearch = async (e) => {
         e.preventDefault();
         console.log('Searching for:', query);
-        setQuery('')
+        // const response = await seachArticles(query, 10, 1);
+        navigate('/search', {state: {query}});
+        setQuery('');
+        toggleSearch()
     };
 
     return (

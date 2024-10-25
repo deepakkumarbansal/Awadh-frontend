@@ -5,24 +5,41 @@ import ReportersData from "./ReportersData.jsx";
 import {ReportersHome, MyArticles, Profile, ArticleForm} from '../../Components/index'
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchAllNewsAction, fetchRepoterArticlesAction } from "../../store/slice/newsSlice.js";
+import { fetchRepoterArticlesAction } from "../../store/slice/newsSlice.js";
 import { fetchAllAdminNewsAction, fetchAllReportersAction, fetchAllUsersAction } from "../../store/slice/adminSlice.js";
 
 const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, handleMenuItemClick, article='') => {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [pageOfUsers, setPageOfUSers] = useState(1);
   const [pageOfReporters, setPageOfReporters] = useState(1);
   const dispatch = useDispatch();
   useEffect(()=>{
     if(role === 'reporter'){
-      dispatch(fetchRepoterArticlesAction(reporterId))
-    } else {
-      dispatch(fetchAllAdminNewsAction(10, page));
-      dispatch(fetchAllUsersAction(10, pageOfUsers));
-      dispatch(fetchAllReportersAction(10, pageOfReporters))
+      console.log("I am initiator",);
       
+      dispatch(fetchRepoterArticlesAction({reporterId, page}))
     }
-  }, [reporterId, role]);
+  }, [reporterId, role, page]);
+
+  useEffect(()=>{
+    if(role === "admin"){
+      dispatch(fetchAllAdminNewsAction({limit:10, page}));
+    }
+  }, [role, page]);
+
+  useEffect(()=>{
+    if(role === "admin"){
+      console.log(pageOfUsers, "users");
+      
+      dispatch(fetchAllUsersAction({limit:10, page:pageOfUsers}));
+    }
+  }, [role, pageOfUsers]);
+
+  useEffect(()=>{
+    if(role === "admin"){
+      dispatch(fetchAllReportersAction({limit:10, page:pageOfReporters}));      
+    }
+  }, [role, pageOfReporters]);
 
   if (role === "admin") {
     switch (currentPage) {
@@ -51,7 +68,7 @@ const renderCurrentPage = (currentPage, role, reporterId, setIsEditingDisabled, 
         case "Dashboard":
           return <ReportersHome />;
         case "My Articles":
-          return <MyArticles setIsEditingDisabled={setIsEditingDisabled} role={role} handleMenuItemClick={handleMenuItemClick} reporterId={reporterId}/>;
+          return <MyArticles setIsEditingDisabled={setIsEditingDisabled} role={role} handleMenuItemClick={handleMenuItemClick} reporterId={reporterId} setPag={setPage}/>;
         case "Profile":
           return <Profile/>;
         case "Add Article":

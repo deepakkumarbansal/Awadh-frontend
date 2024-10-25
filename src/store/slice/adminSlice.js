@@ -31,7 +31,7 @@ export const updateArticleAction = createAsyncThunk('adminORReporter/updateArtic
         throw error;
     }
 })
-export const fetchAllAdminNewsAction = createAsyncThunk('admin/fetchArticles', async (limit, page) => {
+export const fetchAllAdminNewsAction = createAsyncThunk('admin/fetchArticles', async ({limit, page}) => {
     console.log("Welcome to admin");
     
     try {
@@ -45,7 +45,7 @@ export const fetchAllAdminNewsAction = createAsyncThunk('admin/fetchArticles', a
         throw new Error(error);
     }
 })
-export const fetchAllUsersAction = createAsyncThunk('admin/fetchAllUsers', async (limit, page) => {
+export const fetchAllUsersAction = createAsyncThunk('admin/fetchAllUsers', async ({limit, page}) => {
     try {
         const response = await getAllUsers(limit, page);
         modifyDateFormatOfArticles(response.users);
@@ -55,9 +55,8 @@ export const fetchAllUsersAction = createAsyncThunk('admin/fetchAllUsers', async
     }
 })
 
-export const fetchAllReportersAction = createAsyncThunk('admin/fetchAllReporters', async (limit, page) => {
+export const fetchAllReportersAction = createAsyncThunk('admin/fetchAllReporters', async ({limit, page}) => {
     try {
-        console.log("slice pageno.", page);
         const response = await getAllReporters(limit, page);
         modifyDateFormatOfArticles(response.reporters);
         return response;
@@ -67,7 +66,7 @@ export const fetchAllReportersAction = createAsyncThunk('admin/fetchAllReporters
 })
 
 const adminSlice = createSlice({
-    name:"adminOrReposter",
+    name:"adminOrReporter",
     initialState: initialState,
     extraReducers: (builder) => {
         builder

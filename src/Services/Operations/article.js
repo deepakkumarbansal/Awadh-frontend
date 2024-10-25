@@ -1,14 +1,22 @@
 import { apiConnector } from "../connector";
 import { articlesEndPoints } from "../apis";
 import { toast } from "react-hot-toast";
-const { GET_ALL_ARTICLE, GET_ARTICLES_BY_CATAGORY, GET_ARTICLE_BY_REPORTERS_ID, DELETE_ARTICLE_BY_ID, GET_ALL_ADMIN_ARTICLE } = articlesEndPoints;
+const { GET_ALL_ARTICLE, GET_ARTICLES_BY_CATAGORY, GET_ARTICLE_BY_REPORTERS_ID, DELETE_ARTICLE_BY_ID, GET_ALL_ADMIN_ARTICLE, SEARCH_ARTICLES, GET_UNIQUE_ARTICLES } = articlesEndPoints;
 // import {setNews} from "../../store/slice"
 
+export const getUniqueArticles = async() => {
+  try {
+    const response = await apiConnector("GET", GET_UNIQUE_ARTICLES);
+    return response?.data?.data;
+  } catch (error) {
+    throw new Error(error.message)
+  }
+}
 export const getAllArticles = async (limit) => {
   const toastId = toast.loading("Loading...");
   let result = [];
   try {
-    const response = await apiConnector("GET", GET_ALL_ARTICLE, null, {limit});
+    const response = await apiConnector("GET", GET_ALL_ARTICLE, null, null, {limit});
     result = response?.data?.articles;
   } catch (error) {
     toast.error(error.message);
@@ -19,9 +27,10 @@ export const getAllArticles = async (limit) => {
 
 export const getAllAdminArticles = async (limit, page) => {
   let result = {};
+  console.log("limits", limit, page);
   
   try {
-    const response = await apiConnector("GET", GET_ALL_ADMIN_ARTICLE, null, {limit, page});
+    const response = await apiConnector("GET", GET_ALL_ADMIN_ARTICLE, null, {authorization: `Bearer ${localStorage.getItem("token")}`}, {limit, page});
     result = response?.data;
     return result
   } catch (error) {
@@ -60,9 +69,11 @@ export const getAllArticlesByCatagories = async (catagories =[]) => {
   }
 }
 
-export const getAllArticlesByReporterId = async (reporterId) => {
+export const getAllArticlesByReporterId = async (reporterId, page) => {
+  console.log("clicked", reporterId, page);
+  
   try {
-    const response = await apiConnector('GET', GET_ARTICLE_BY_REPORTERS_ID(reporterId));
+    const response = await apiConnector('GET', GET_ARTICLE_BY_REPORTERS_ID(reporterId), null, null, {limit: 10, page});
     if(!response){
       throw response.data.message;
     }
@@ -74,15 +85,19 @@ export const getAllArticlesByReporterId = async (reporterId) => {
   }
 }
 
-export const deleteArticleById = async (articleId) => {
+
+
+export const seachArticles = async (query, limit, page, role, path, reporterId) => {
   try {
-    const response = await apiConnector('DELETE', DELETE_ARTICLE_BY_ID(articleId));
-    if(!response){
-      throw response.data.message;
-    }
-    console.log("delete");
-    return response.data;
+    
+    const response = await apiConnector("POST", SEARCH_ARTICLES, {query, reporterId, path, role}, {}, {limit, page});
+    const information = response?.data
+    return {message: information?.message, articles:information?.data?.articles, totalCount:information?.data?.totalCount, limit: information?.data?.limitNumber, page: information?.data?.pageNumber }
   } catch (error) {
-    throw error;
+    if(error.response){
+      return {message: error.response.data?.message, data:[]}
+    } else {
+      return {message: error.message, data:[]}
+    }
   }
 }

@@ -121,7 +121,7 @@ const Navbar = () => {
             </button>
             {showSearch &&
                 <div className='absolute right-0 bg-blue-50 top-16 z-[100]'>
-                    <Search />
+                    <Search toggleSearch={toggleSearch}/>
                 </div>
             }
         </div>

@@ -1,15 +1,7 @@
 import React, { useEffect } from 'react';
 import { PhotoNewsCard } from '../index';
 
-const Hero = ({ newsData }) => {
-  const uniqueNews = newsData?.reduce((acc, current) => {
-    if (acc.length < 4 && !acc.find(item => item.category === current.category)) {
-      acc.push(current);
-    }
-    return acc;
-  }, []);
-
-  
+const Hero = ({ newsData:uniqueNews  }) => {
 
   return (
     <>

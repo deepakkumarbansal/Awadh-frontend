@@ -1,13 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAllArticles, getAllArticlesByCatagories, getAllArticlesByCatagory, getAllArticlesByReporterId } from "../../Services/Operations/article";
+import { getAllArticles, getAllArticlesByCatagories, getAllArticlesByCatagory, getAllArticlesByReporterId, getUniqueArticles } from "../../Services/Operations/article";
 
 const initialState = {
-  allNews: [],
+  uniquesArticles: [],
   newsByCatagories: {},
   loadingByCatagories: false,
   loading: false, //general loader,
   categoryNews: {},
   reporterArticles: [],
+  searchedArticels: [],
 };
 
 export const modifyDateFormatOfArticles = (articles)=> {
@@ -38,11 +39,9 @@ export const fetchNewsByCategoryAction = createAsyncThunk('news/fetchNewsByCateg
   }
 })
 
-export const fetchAllNewsAction = createAsyncThunk('news/fetchAllNews', async(limit=10)=>{
-  console.log("fetch");
-  
+export const fetchUniqueNewsAction = createAsyncThunk('news/fetchAllNews', async()=>{
   try {
-    const response = await getAllArticles(limit);
+    const response = await getUniqueArticles();
     modifyDateFormatOfArticles(response);
     return response;
   } catch (error) {
@@ -51,11 +50,11 @@ export const fetchAllNewsAction = createAsyncThunk('news/fetchAllNews', async(li
 })
 
 //repoter related
-export const fetchRepoterArticlesAction = createAsyncThunk('news/repoterArticles', async(reporterId)=>{
+export const fetchRepoterArticlesAction = createAsyncThunk('news/repoterArticles', async({reporterId, page})=>{
   console.log("id", reporterId);
   
   try {
-    const response = await getAllArticlesByReporterId(reporterId);
+    const response = await getAllArticlesByReporterId(reporterId, page);
     console.log("res", response);
     
     modifyDateFormatOfArticles(response.articles);
@@ -69,13 +68,9 @@ const newsSlice = createSlice({
   name: "news",
   initialState: initialState,
   reducers: {
-    // setNews(state, value) {
-    //   state.news = value.payload;
-    //   console.log("hell",state)
-    // },
-    // setLoading(state, value) {
-    //   state.loading = value.payload;
-    // },
+    setSearchedArticles(state, action) {
+      state.searchedArticels = action.payload;
+    },
   },
   extraReducers: (builder)=>{
     builder
@@ -95,16 +90,16 @@ const newsSlice = createSlice({
       state.newsByCatagories = {};
       state.loadingByCatagories = false;
     })
-    .addCase(fetchAllNewsAction.pending, (state)=>{
-      state.allNews = [];
+    .addCase(fetchUniqueNewsAction.pending, (state)=>{
+      state.uniquesArticles = [];
       state.loading = true
     })
-    .addCase(fetchAllNewsAction.fulfilled, (state, action)=>{
-      state.allNews = action.payload;
+    .addCase(fetchUniqueNewsAction.fulfilled, (state, action)=>{
+      state.uniquesArticles = action.payload;
       state.loading = false;
     })
-    .addCase(fetchAllNewsAction.rejected, (state)=>{
-      state.allNews = [];
+    .addCase(fetchUniqueNewsAction.rejected, (state)=>{
+      state.uniquesArticles = [];
       state.loading = false;
     })
     .addCase(fetchNewsByCategoryAction.pending, (state)=>{
@@ -136,9 +131,10 @@ const newsSlice = createSlice({
 
 export const selectHomeNewsByCatagories = (state)=>state.news.newsByCatagories;
 export const selectNewsByCategory = (state) => state.news.categoryNews;
-export const selectAllNews = (state) => state.news.allNews;
+export const selectAllNews = (state) => state.news.uniquesArticles;
 export const selectReporterArticles = (state) => state.news.reporterArticles
 export const selectGeneralLoader = (state) => state.news.loading
-export const selectCategoryLoader = (state) => state.news.loadingByCatagories
+export const selectCategoryLoader = (state) => state.news.loadingByCatagories;
+export const selectSearchedArticles = (state) => state.news.searchedArticels
 // export const { setLoading, setNews } = newsSlice.actions;
 export default newsSlice.reducer;

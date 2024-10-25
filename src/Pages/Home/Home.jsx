@@ -19,7 +19,7 @@ import { catagories } from "../../utility/categories";
 import { useDispatch, useSelector } from "react-redux";
 import "./Home.css";
 import {
-  fetchAllNewsAction,
+  fetchUniqueNewsAction,
   fetchHomeNewsByCatagoriesAction,
   selectAllNews,
   selectCategoryLoader,
@@ -46,7 +46,7 @@ const Home = () => {
   // fetching all the articles by catagory
   useEffect(() => {
     async function fetchArticles() {
-      dispatch(fetchAllNewsAction(4)); //limit is 4
+      dispatch(fetchUniqueNewsAction());
       dispatch(fetchHomeNewsByCatagoriesAction(catagories));
     }
     fetchArticles();
@@ -89,9 +89,6 @@ const Home = () => {
           </Section>
         </div>
         <div>
-          {/* <Section id="popular"><PopularNews newsData={popularNewsData} /></Section>
-          <div className='bg-gray-400 h-[300px] w-full my-10'>Ad</div>
-          <Section id="trending"><TrendingNews newsData={trendingNewsData} /></Section> */}
           <Section>
             <SectionCatagory name="Youtube videos" />
               <Youtube/>
@@ -99,11 +96,7 @@ const Home = () => {
         </div>
       </div>
       }
-      {/* <div id='container2'>
-        <Section id="travel"><Travel newsData={travelNewsData} /></Section>
-        <Section id="gadgets"><Gagets newsData={gadgetsNewsData} /></Section>
-        <Section id="health"><Health newsData={healthNewsData} /></Section>
-      </div> */}
+      
     </div>
   );
 };

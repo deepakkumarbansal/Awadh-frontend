@@ -12,6 +12,7 @@ import rootReducer from './store/reducers/index.js';
 import { PersistGate } from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist'
 import ReporterInvitation from './Pages/Admin/ReporterInvitation.jsx';
+import SearchResult from './Pages/SearchResult/SearchResult.jsx';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
           {
             path: '/category/:slug',
             element: <CategoryNews/>
+          },
+          {
+            path: '/search',
+            element: <SearchResult/>
           }
         ]
       },

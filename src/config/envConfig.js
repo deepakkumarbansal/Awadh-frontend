@@ -4,8 +4,8 @@ export const envConfig = {
     awsBucketName: import.meta.env.VITE_AWS_BUCKET_NAME,
     awsDirectoryName: import.meta.env.VITE_AWS_DIRECTORY_NAME,
     awsRegion: import.meta.env.VITE_AWS_REGION,
-    aswAccessId: import.meta.env.VITE_AWS_ACCESSID,
-    awsSecrateKey: import.meta.env.VITE_AWS_SECRATE_KEY,
+    awsAccessId: import.meta.env.VITE_AWS_ACCESSID,
+    awsSecretKey: import.meta.env.VITE_AWS_SECRATE_KEY,
     baseBackendUrl: import.meta.env.VITE_BACKEND_API,
     awsUserDirectoryName: import.meta.env.VITE_AWS_USER_DIRECTORY_NAME
 }

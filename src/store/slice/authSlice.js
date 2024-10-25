@@ -148,6 +148,7 @@ export const selectAuthError = (state)=>state.auth.error
 export const selectAuthLoader = (state)=>state.auth.loading
 export const selectAuthUserRole = (state)=>state.auth.role
 export const selectAuthUserStatus = (state)=>state.auth.status
+export const selecAuthUserId = (state)=>state.auth.user
 export const { setLoading, setSignUpData, setToken } = authSlice.actions;
 export default authSlice.reducer;
 export const {logout} = authSlice.actions

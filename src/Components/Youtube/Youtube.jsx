@@ -73,8 +73,8 @@ const Video = ({ videoId }) => {
     <iframe
       onMouseEnter={mouseEnter}
       onMouseOut={mouseOut}
-      max-width="460"
-      height="215"
+      // max-width="460"
+      // height="215"
       src={`https://www.youtube.com/embed/${videoId}?autoplay=${
         hovered ? 1 : 0
       }&controls=0&loop=1`}
